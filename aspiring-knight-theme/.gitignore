@@ -1,0 +1,13 @@
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+.htaccess
+
+# Theme specific
+node_modules/
+dist/
+.DS_Store
+Thumbs.db
+*.log
