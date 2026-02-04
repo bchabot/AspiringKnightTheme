@@ -1,11 +1,11 @@
 # Implementation Plan - Establish Theme Foundation and Tech Stack Integration
 
 ## Phase 1: Project Scaffolding & Configuration
-- [ ] Task: Initialize Theme Directory and Git
-    - [ ] Create theme folder `aspiring-knight-theme`.
-    - [ ] Initialize `style.css` with required WordPress theme header metadata.
-    - [ ] Create `functions.php`, `index.php`, `header.php`, `footer.php`.
-    - [ ] Initialize Git repository (if not already done at root) and create `.gitignore`.
+- [x] Task: Initialize Theme Directory and Git [afa7fd6]
+    - [x] Create theme folder `aspiring-knight-theme`.
+    - [x] Initialize `style.css` with required WordPress theme header metadata.
+    - [x] Create `functions.php`, `index.php`, `header.php`, `footer.php`.
+    - [x] Initialize Git repository (if not already done at root) and create `.gitignore`.
 - [ ] Task: Set up NPM and Tailwind CSS
     - [ ] Run `npm init -y` in the theme root.
     - [ ] Install Tailwind CSS, PostCSS, and Autoprefixer: `npm install -D tailwindcss postcss autoprefixer`.
