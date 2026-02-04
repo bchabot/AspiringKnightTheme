@@ -6,13 +6,13 @@
     - [x] Initialize `style.css` with required WordPress theme header metadata.
     - [x] Create `functions.php`, `index.php`, `header.php`, `footer.php`.
     - [x] Initialize Git repository (if not already done at root) and create `.gitignore`.
-- [ ] Task: Set up NPM and Tailwind CSS
-    - [ ] Run `npm init -y` in the theme root.
-    - [ ] Install Tailwind CSS, PostCSS, and Autoprefixer: `npm install -D tailwindcss postcss autoprefixer`.
-    - [ ] Initialize Tailwind config: `npx tailwindcss init`.
-    - [ ] Configure `tailwind.config.js` to scan PHP files for classes.
-    - [ ] Create source CSS file `assets/css/src/style.css` with Tailwind directives.
-    - [ ] Add build scripts to `package.json` (`dev`, `build`, `watch`).
+- [x] Task: Set up NPM and Tailwind CSS [67849c4]
+    - [x] Run `npm init -y` in the theme root.
+    - [x] Install Tailwind CSS, PostCSS, and Autoprefixer: `npm install -D tailwindcss postcss autoprefixer`.
+    - [x] Initialize Tailwind config: `npx tailwindcss init`.
+    - [x] Configure `tailwind.config.js` to scan PHP files for classes.
+    - [x] Create source CSS file `assets/css/src/style.css` with Tailwind directives.
+    - [x] Add build scripts to `package.json` (`dev`, `build`, `watch`).
 - [ ] Task: Verify Build Pipeline
     - [ ] Run the build script to generate the final CSS.
     - [ ] Verify that the output CSS contains Tailwind utilities.
