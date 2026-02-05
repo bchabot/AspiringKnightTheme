@@ -23,10 +23,10 @@
     - [x] In `functions.php`, write a function to enqueue the compiled Tailwind CSS file.
     - [x] Register a basic navigation menu support.
     - [x] Add `add_theme_support` for essential features (title-tag, post-thumbnails).
-- [ ] Task: Basic Template Structure
-    - [ ] Implement `header.php` with `wp_head()` and basic HTML structure.
-    - [ ] Implement `footer.php` with `wp_footer()` and closing tags.
-    - [ ] Create a simple `index.php` loop to display post titles, ensuring styles load.
+- [x] Task: Basic Template Structure [bf2fe20]
+    - [x] Implement `header.php` with `wp_head()` and basic HTML structure.
+    - [x] Implement `footer.php` with `wp_footer()` and closing tags.
+    - [x] Create a simple `index.php` loop to display post titles, ensuring styles load.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
 ## Phase 3: Kirki Customizer Setup
