@@ -19,10 +19,10 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
 ## Phase 2: WordPress Core Integration
-- [ ] Task: Asset Enqueueing
-    - [ ] In `functions.php`, write a function to enqueue the compiled Tailwind CSS file.
-    - [ ] Register a basic navigation menu support.
-    - [ ] Add `add_theme_support` for essential features (title-tag, post-thumbnails).
+- [x] Task: Asset Enqueueing [860111a]
+    - [x] In `functions.php`, write a function to enqueue the compiled Tailwind CSS file.
+    - [x] Register a basic navigation menu support.
+    - [x] Add `add_theme_support` for essential features (title-tag, post-thumbnails).
 - [ ] Task: Basic Template Structure
     - [ ] Implement `header.php` with `wp_head()` and basic HTML structure.
     - [ ] Implement `footer.php` with `wp_footer()` and closing tags.
