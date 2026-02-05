@@ -87,3 +87,8 @@ add_action( 'wp_enqueue_scripts', 'aspiring_knight_scripts' );
  * TGM Plugin Activation.
  */
 require get_template_directory() . '/inc/tgmpa.php';
+
+/**
+ * Customizer additions.
+ */
+require get_template_directory() . '/inc/customizer.php';
