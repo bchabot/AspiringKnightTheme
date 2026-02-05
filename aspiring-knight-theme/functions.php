@@ -78,6 +78,7 @@ add_action( 'after_setup_theme', 'aspiring_knight_setup' );
 function aspiring_knight_scripts() {
 	wp_enqueue_style( 'aspiring-knight-style', get_stylesheet_uri(), array(), '0.1.0' );
 
-	// Compiled Tailwind CSS will be enqueued here in later tasks.
+	// Enqueue Compiled Tailwind CSS.
+	wp_enqueue_style( 'aspiring-knight-tailwind', get_template_directory_uri() . '/assets/css/dist/main.css', array(), '0.1.0' );
 }
 add_action( 'wp_enqueue_scripts', 'aspiring_knight_scripts' );
