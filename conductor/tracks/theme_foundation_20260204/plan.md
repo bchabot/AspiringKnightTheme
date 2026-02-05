@@ -29,7 +29,7 @@
     - [x] Create a simple `index.php` loop to display post titles, ensuring styles load.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
-## Phase 3: Kirki Customizer Setup
+## Phase 3: Kirki Customizer Setup [checkpoint: 381dcb3]
 - [x] Task: Kirki Integration Strategy [ff9ad72]
     - [x] Decide on embedding vs. TGM Plugin Activation (TGMPA) for Kirki. (Plan: Use TGMPA to require the Kirki plugin as per best practices for modern themes).
     - [x] Download and include the TGM Plugin Activation class file.
