@@ -34,8 +34,8 @@
     - [x] Decide on embedding vs. TGM Plugin Activation (TGMPA) for Kirki. (Plan: Use TGMPA to require the Kirki plugin as per best practices for modern themes).
     - [x] Download and include the TGM Plugin Activation class file.
     - [x] Configure TGMPA in `functions.php` to recommend/require Kirki.
-- [ ] Task: Basic Customizer Configuration
-    - [ ] Create a separate file `inc/customizer.php` and require it in `functions.php`.
-    - [ ] Add a sample Kirki configuration (e.g., a "Theme Colors" panel) to verify integration.
-    - [ ] Test that the Customizer panel appears and saves a value.
+- [x] Task: Basic Customizer Configuration [ad59eb3]
+    - [x] Create a separate file `inc/customizer.php` and require it in `functions.php`.
+    - [x] Add a sample Kirki configuration (e.g., a "Theme Colors" panel) to verify integration.
+    - [x] Test that the Customizer panel appears and saves a value.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
