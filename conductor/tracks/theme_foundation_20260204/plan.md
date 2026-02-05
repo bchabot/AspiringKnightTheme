@@ -30,10 +30,10 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
 ## Phase 3: Kirki Customizer Setup
-- [ ] Task: Kirki Integration Strategy
-    - [ ] Decide on embedding vs. TGM Plugin Activation (TGMPA) for Kirki. (Plan: Use TGMPA to require the Kirki plugin as per best practices for modern themes).
-    - [ ] Download and include the TGM Plugin Activation class file.
-    - [ ] Configure TGMPA in `functions.php` to recommend/require Kirki.
+- [x] Task: Kirki Integration Strategy [ff9ad72]
+    - [x] Decide on embedding vs. TGM Plugin Activation (TGMPA) for Kirki. (Plan: Use TGMPA to require the Kirki plugin as per best practices for modern themes).
+    - [x] Download and include the TGM Plugin Activation class file.
+    - [x] Configure TGMPA in `functions.php` to recommend/require Kirki.
 - [ ] Task: Basic Customizer Configuration
     - [ ] Create a separate file `inc/customizer.php` and require it in `functions.php`.
     - [ ] Add a sample Kirki configuration (e.g., a "Theme Colors" panel) to verify integration.
