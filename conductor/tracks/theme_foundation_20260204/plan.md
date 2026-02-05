@@ -1,6 +1,6 @@
 # Implementation Plan - Establish Theme Foundation and Tech Stack Integration
 
-## Phase 1: Project Scaffolding & Configuration
+## Phase 1: Project Scaffolding & Configuration [checkpoint: fb55613]
 - [x] Task: Initialize Theme Directory and Git [afa7fd6]
     - [x] Create theme folder `aspiring-knight-theme`.
     - [x] Initialize `style.css` with required WordPress theme header metadata.
