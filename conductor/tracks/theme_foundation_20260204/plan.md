@@ -18,7 +18,7 @@
     - [x] Verify that the output CSS contains Tailwind utilities.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
 
-## Phase 2: WordPress Core Integration
+## Phase 2: WordPress Core Integration [checkpoint: 364149d]
 - [x] Task: Asset Enqueueing [860111a]
     - [x] In `functions.php`, write a function to enqueue the compiled Tailwind CSS file.
     - [x] Register a basic navigation menu support.
