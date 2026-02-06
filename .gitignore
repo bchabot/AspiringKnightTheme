@@ -8,6 +8,8 @@ wp-content/backup-db/
 # Theme specific
 node_modules/
 dist/
+assets/css/dist/*
+!assets/css/dist/main.css
 .DS_Store
 Thumbs.db
 *.log

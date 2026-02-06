@@ -7,6 +7,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        'primary': 'var(--ak-primary-color)',
+        'accent': 'var(--ak-accent-gold)',
         'knight-iron': '#3a3a3a',
         'knight-gold': '#d4af37',
         'knight-crimson': '#8b0000',
