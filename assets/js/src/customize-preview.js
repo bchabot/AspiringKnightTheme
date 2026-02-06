@@ -7,15 +7,23 @@
         document.documentElement.style.setProperty(name, value);
     };
 
-    // 1. Global Colors
-    const bgColors = [
-        'top_bar_bg_color', 'top_bar_text_color', 'accent_gold', 
-        'site_bg_color', 'article_bg_color',
-        'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 
-        'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color'
-    ];
-    bgColors.forEach(id => {
-        wp.customize(id, value => value.bind(to => updateCSSVar('--ak-' + id.replace(/_/g, '-'), to)));
+    // 1. Global Colors - Precise Mapping
+    const colorMap = {
+        'top_bar_bg_color': '--ak-top-bar-bg',
+        'top_bar_text_color': '--ak-top-bar-text',
+        'accent_gold': '--ak-accent-gold',
+        'site_bg_color': '--ak-site-bg',
+        'article_bg_color': '--ak-article-bg',
+        'header_bg_color': '--ak-header-bg',
+        'menu_bg_color': '--ak-menu-bg',
+        'submenu_bg_color': '--ak-submenu-bg',
+        'footer_bg_color': '--ak-footer-bg',
+        'sidebar_bg_color': '--ak-sidebar-bg',
+        'sidebar_border_color': '--ak-sidebar-border'
+    };
+
+    Object.keys(colorMap).forEach(id => {
+        wp.customize(id, value => value.bind(to => updateCSSVar(colorMap[id], to)));
     });
 
     // Images
@@ -29,7 +37,7 @@
     wp.customize('sidebar_padding', value => value.bind(to => updateCSSVar('--ak-sidebar-padding', to)));
 
     // 3. Categorical Typography & Effects
-    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'blog_titles', 'headings', 'article_text', 'sidebars', 'footer', 'body'];
+    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'blog_titles', 'headings', 'sidebars', 'footer', 'article_text', 'body'];
     
     categories.forEach(cat => {
         const varId = cat.replace(/_/g, '-');
