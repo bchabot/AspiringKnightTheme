@@ -116,8 +116,8 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'site_tagline' => array( 'label' => __( 'Site Tagline', 'aspiring-knight' ), 'priority' => 25 ),
 		'menus'        => array( 'label' => __( 'Navigation Menus', 'aspiring-knight' ), 'priority' => 30 ),
 		'submenus'     => array( 'label' => __( 'Sub-Menus', 'aspiring-knight' ), 'priority' => 35 ),
-		'page_titles'  => array( 'label' => __( 'Page/Post Titles', 'aspiring-knight' ), 'priority' => 40 ),
-		'headings'     => array( 'label' => __( 'General Headings', 'aspiring-knight' ), 'priority' => 45 ),
+		'blog_titles'  => array( 'label' => __( 'Blog / Post Titles', 'aspiring-knight' ), 'priority' => 40 ),
+		'headings'     => array( 'label' => __( 'Content Headers (H1-H6)', 'aspiring-knight' ), 'priority' => 45 ),
 		'sidebars'     => array( 'label' => __( 'Sidebars', 'aspiring-knight' ), 'priority' => 50 ),
 		'footer'       => array( 'label' => __( 'Footer Area', 'aspiring-knight' ), 'priority' => 55 ),
 		'body'         => array( 'label' => __( 'Body Text & Links', 'aspiring-knight' ), 'priority' => 60 ),
@@ -168,7 +168,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		) );
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_color", array( 'label' => __( 'Text Color', 'aspiring-knight' ), 'section' => $section_id ) ) );
 
-		if ( in_array($id, ['body', 'menus', 'submenus', 'sidebars', 'footer']) ) {
+		if ( in_array($id, ['body', 'menus', 'submenus', 'sidebars', 'footer', 'blog_titles']) ) {
 			$wp_customize->add_setting( "{$id}_link_color", array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 			$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_link_color", array( 'label' => __( 'Link Color', 'aspiring-knight' ), 'section' => $section_id ) ) );
 		}
@@ -357,13 +357,13 @@ function aspiring_knight_output_css_variables() {
 
 			/* Categorical Typography & Effects */
 			<?php
-			$categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'page_titles', 'headings', 'sidebars', 'footer', 'body'];
+			$categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'blog_titles', 'headings', 'sidebars', 'footer', 'body'];
 			foreach ($categories as $cat) {
 				$var_id = str_replace('_', '-', $cat);
 				
 				// Typography
-				$font = $get_mod("{$cat}_font_family", in_array($cat, ['body', 'menus', 'submenus', 'sidebars', 'footer']) ? 'Lora' : 'Cinzel');
-				if ($use_custom_headings && $custom_font_file && in_array($cat, ['site_title', 'site_tagline', 'page_titles', 'headings'])) {
+				$font = $get_mod("{$cat}_font_family", in_array($cat, ['body', 'menus', 'submenus', 'sidebars', 'footer', 'blog_titles']) ? 'Lora' : 'Cinzel');
+				if ($use_custom_headings && $custom_font_file && in_array($cat, ['site_title', 'site_tagline', 'blog_titles', 'headings'])) {
 					$font = $custom_font_name;
 				}
 				echo "--ak-{$var_id}-font-family: '" . esc_html($font) . "', serif;\n";
@@ -381,7 +381,7 @@ function aspiring_knight_output_css_variables() {
 				// Colors
 				$def_color = in_array($cat, ['site_title', 'site_tagline', 'menus', 'submenus', 'footer']) ? '#ffffff' : '#333333';
 				echo "--ak-{$var_id}-color: " . esc_html($get_mod("{$cat}_color", $def_color)) . ";\n";
-				if ( in_array($cat, ['body', 'menus', 'submenus', 'sidebars', 'footer']) ) {
+				if ( in_array($cat, ['body', 'menus', 'submenus', 'sidebars', 'footer', 'blog_titles']) ) {
 					echo "--ak-{$var_id}-link-color: " . esc_html($get_mod("{$cat}_link_color", '#d4af37')) . ";\n";
 				}
 
@@ -412,10 +412,10 @@ add_action( 'wp_head', 'aspiring_knight_output_css_variables' );
  * Enqueue Google Fonts based on Customizer settings.
  */
 function aspiring_knight_enqueue_customizer_fonts() {
-	$typos = ['site_title', 'site_tagline', 'menus', 'submenus', 'page_titles', 'headings', 'sidebars', 'footer', 'body'];
+	$typos = ['site_title', 'site_tagline', 'menus', 'submenus', 'blog_titles', 'headings', 'sidebars', 'footer', 'body'];
 	$fonts = array();
 	foreach ($typos as $t) {
-		$font = get_theme_mod("{$t}_font_family", in_array($t, ['body', 'menus', 'submenus', 'sidebars', 'footer']) ? 'Lora' : 'Cinzel');
+		$font = get_theme_mod("{$t}_font_family", in_array($t, ['body', 'menus', 'submenus', 'sidebars', 'footer', 'blog_titles']) ? 'Lora' : 'Cinzel');
 		$fonts[] = $font . ':400,400i,700,700i,900';
 	}
 	$fonts = array_unique($fonts);

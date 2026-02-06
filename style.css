@@ -82,29 +82,33 @@ a {
     color: var(--ak-sidebars-link-color) !important;
 }
 
-/* Effects & Typography for Titles and Headers */
-h1, h2, h3, h4, h5, h6 {
+/* Content Headers (H1-H6 inside entry-content) */
+.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 {
     text-shadow: var(--ak-effect-headings);
     font-family: var(--ak-headings-font-family) !important;
     text-decoration: var(--ak-underline-headers) !important;
     color: var(--ak-headings-color) !important;
 }
 
-h1 { font-size: var(--ak-h1-font-size) !important; }
-h2 { font-size: var(--ak-h2-font-size) !important; }
-h3 { font-size: var(--ak-h3-font-size) !important; }
-h4 { font-size: var(--ak-h4-font-size) !important; }
-h5 { font-size: var(--ak-h5-font-size) !important; }
-h6 { font-size: var(--ak-h6-font-size) !important; }
+.entry-content h1 { font-size: var(--ak-h1-font-size) !important; }
+.entry-content h2 { font-size: var(--ak-h2-font-size) !important; }
+.entry-content h3 { font-size: var(--ak-h3-font-size) !important; }
+.entry-content h4 { font-size: var(--ak-h4-font-size) !important; }
+.entry-content h5 { font-size: var(--ak-h5-font-size) !important; }
+.entry-content h6 { font-size: var(--ak-h6-font-size) !important; }
 
-/* Higher specificity for entry titles to override general headings */
-.site-main .entry-title,
-.site-main .entry-title a {
-    font-family: var(--ak-page-titles-font-family) !important;
-    font-size: var(--ak-page-titles-font-size) !important;
-    color: var(--ak-page-titles-color) !important;
-    text-shadow: var(--ak-effect-page-titles) !important;
-    text-decoration: var(--ak-underline-page-titles) !important;
+/* Blog / Post Titles (The main entry-title on both index and single) */
+.entry-title,
+.entry-title a {
+    font-family: var(--ak-blog-titles-font-family) !important;
+    font-size: var(--ak-blog-titles-font-size) !important;
+    color: var(--ak-blog-titles-color) !important;
+    text-shadow: var(--ak-effect-blog-titles) !important;
+    text-decoration: var(--ak-underline-blog-titles) !important;
+}
+
+.entry-title a:hover {
+    color: var(--ak-blog-titles-link-color) !important;
 }
 
 .site-title {
@@ -124,18 +128,18 @@ h6 { font-size: var(--ak-h6-font-size) !important; }
     font-size: var(--ak-site-tagline-font-size) !important;
     color: var(--ak-site-tagline-color) !important;
     text-shadow: var(--ak-effect-site-tagline) !important;
-    display: block !important; /* Ensure it stays visible */
+    display: block !important;
     margin-top: 0.5rem;
 }
 
 body {
-    font-family: var(--ak-body-font-family);
-    font-size: var(--ak-body-font-size);
-    color: var(--ak-body-color);
+    font-family: var(--ak-body-font-family) !important;
+    font-size: var(--ak-body-font-size) !important;
+    color: var(--ak-body-color) !important;
 }
 
 body a {
-    color: var(--ak-body-link-color);
+    color: var(--ak-body-link-color) !important;
 }
 
 /* Footer Styling */
