@@ -9,13 +9,13 @@
 - [x] Task: Verification - Confirm Tailwind classes use variables. [6ddd1d7]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1'
 
-## Phase 2: Expanded Color Controls
-- [x] Task: Implement Background and Text Color Controls [4ec0649]
+## Phase 2: Expanded Color Controls [checkpoint: ea8d268]
+- [x] Task: Implement Background and Text Color Controls [2163187]
     - Add Kirki fields for site background, header background, and footer background.
     - Add fields for body text and heading text colors.
-- [~] Task: Implement Link and Hover Color Controls
+- [x] Task: Implement Link and Hover Color Controls [2163187]
     - Add fields for link color and link hover color.
-- [ ] Task: Verification - Live preview functions for all new color fields.
+- [x] Task: Verification - Live preview functions for all new color fields. [2163187]
 - [ ] Task: Conductor - User Manual Verification 'Phase 2'
 
 ## Phase 3: Comprehensive Typography Controls
