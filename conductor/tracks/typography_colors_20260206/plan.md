@@ -19,9 +19,9 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 2'
 
 ## Phase 3: Comprehensive Typography Controls
-- [ ] Task: Implement Body Typography Fields
+- [x] Task: Implement Body Typography Fields [2163187]
     - Add a `typography` field for the body text (family, weight, size, line-height).
-- [ ] Task: Implement Heading Typography Fields
+- [~] Task: Implement Heading Typography Fields
     - Add a global `typography` field for all headings.
     - Add individual overrides for H1 and H2 if needed.
 - [ ] Task: Optimization - Ensure efficient Google Font loading via Kirki.
