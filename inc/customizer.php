@@ -567,6 +567,63 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			),
 		)
 	);
+
+	// Custom Font Upload
+	$wp_customize->add_setting(
+		'custom_font_file',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'esc_url_raw',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		new WP_Customize_Upload_Control(
+			$wp_customize,
+			'custom_font_file',
+			array(
+				'label'       => esc_html__( 'Custom Font File', 'aspiring-knight' ),
+				'description' => esc_html__( 'Upload a .woff2, .woff, or .ttf file.', 'aspiring-knight' ),
+				'section'     => 'typography_section',
+			)
+		)
+	);
+
+	// Custom Font Name
+	$wp_customize->add_setting(
+		'custom_font_name',
+		array(
+			'default'           => 'CustomFont',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'custom_font_name',
+		array(
+			'label'   => esc_html__( 'Custom Font Name', 'aspiring-knight' ),
+			'section' => 'typography_section',
+			'type'    => 'text',
+		)
+	);
+
+	// Use Custom Font for Headings
+	$wp_customize->add_setting(
+		'use_custom_font_headings',
+		array(
+			'default'           => false,
+			'sanitize_callback' => 'rest_sanitize_boolean',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'use_custom_font_headings',
+		array(
+			'label'   => esc_html__( 'Use Custom Font for Headings?', 'aspiring-knight' ),
+			'section' => 'typography_section',
+			'type'    => 'checkbox',
+		)
+	);
 }
 add_action( 'customize_register', 'aspiring_knight_customize_register' );
 
@@ -616,8 +673,20 @@ function aspiring_knight_output_css_variables() {
 	$headings_font_family = get_theme_mod( 'headings_font_family', 'Cinzel' );
 	$headings_font_weight = get_theme_mod( 'headings_font_weight', '700' );
 
+	$custom_font_file = get_theme_mod( 'custom_font_file' );
+	$custom_font_name = get_theme_mod( 'custom_font_name', 'CustomFont' );
+	$use_custom_headings = get_theme_mod( 'use_custom_font_headings', false );
+
 	?>
 	<style id="aspiring-knight-customizer-variables">
+		<?php if ( $custom_font_file ) : ?>
+		@font-face {
+			font-family: '<?php echo esc_html( $custom_font_name ); ?>';
+			src: url('<?php echo esc_url( $custom_font_file ); ?>');
+			font-display: swap;
+		}
+		<?php endif; ?>
+
 		:root {
 			--ak-primary-color: <?php echo esc_html( $primary_color ); ?>;
 			--ak-accent-gold: <?php echo esc_html( $accent_gold ); ?>;
@@ -642,7 +711,7 @@ function aspiring_knight_output_css_variables() {
 			--ak-body-line-height: <?php echo esc_html( $body_line_height ); ?>;
 
 			/* Headings Typography */
-			--ak-headings-font-family: '<?php echo esc_html( $headings_font_family ); ?>', serif;
+			--ak-headings-font-family: '<?php echo $use_custom_headings && $custom_font_file ? esc_html( $custom_font_name ) : esc_html( $headings_font_family ); ?>', serif;
 			--ak-headings-font-weight: <?php echo esc_html( $headings_font_weight ); ?>;
 		}
 	</style>

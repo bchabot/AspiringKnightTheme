@@ -20,11 +20,16 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
     padding: 0;
 }
 
+.main-navigation li {
+    position: relative;
+}
+
 .main-navigation li a {
     display: block;
     text-decoration: none;
     font-size: var(--ak-menu-font-size);
     transition: color 0.3s ease;
+    padding: 0.5rem 0;
 }
 
 /* Horizontal spacing for desktop */
@@ -32,6 +37,41 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
     .main-navigation ul {
         display: flex;
         gap: var(--ak-menu-spacing);
+    }
+
+    .main-navigation li ul {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: var(--ak-header-bg);
+        min-width: 200px;
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        z-index: 100;
+        padding: 0.5rem 0;
+        border-top: 2px solid var(--ak-accent-gold);
+    }
+
+    .main-navigation li:hover > ul {
+        display: flex;
+    }
+
+    .main-navigation li ul li a {
+        padding: 0.75rem 1.5rem;
+        color: var(--ak-body-text);
+    }
+
+    .main-navigation li ul li a:hover {
+        background-color: rgba(0,0,0,0.05);
+        color: var(--ak-accent-gold);
+    }
+
+    /* Support for nested sub-submenus */
+    .main-navigation li ul ul {
+        top: 0;
+        left: 100%;
     }
 }
 
@@ -49,18 +89,34 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
         padding: 5rem 2rem;
         text-align: center;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
+        overflow-y: auto;
     }
 
     #site-navigation.toggled .menu-container ul {
         flex-direction: column;
-        gap: 2rem;
+        gap: 1rem;
+        width: 100%;
     }
 
     #site-navigation.toggled .menu-container li a {
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: bold;
+        color: white;
+    }
+
+    /* Submenus on mobile - visible by default in overlay */
+    #site-navigation.toggled .sub-menu {
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        background-color: rgba(255,255,255,0.05);
+        padding: 0.5rem 0;
+    }
+
+    #site-navigation.toggled .sub-menu li a {
+        font-size: 1.1rem;
+        opacity: 0.8;
     }
 
     #site-navigation.toggled .menu-toggle {
