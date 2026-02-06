@@ -25,7 +25,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Visual & Typography Deep Refinement**
   *Link: [./tracks/visual_deep_refinement_20260206/](./tracks/visual_deep_refinement_20260206/)*
 
-- [ ] **Track: Comprehensive Visual & Typography Overhaul**
+- [x] **Track: Comprehensive Visual & Typography Overhaul**
   *Link: [./tracks/visual_overhaul_20260206/](./tracks/visual_overhaul_20260206/)*
+
+- [ ] **Track: Granular Heading Controls**
+  *Link: [./tracks/granular_headings_20260206/](./tracks/granular_headings_20260206/)*
 
 

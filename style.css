@@ -76,6 +76,13 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: var(--ak-underline-headers) !important;
 }
 
+h1 { font-size: var(--ak-h1-font-size); }
+h2 { font-size: var(--ak-h2-font-size); }
+h3 { font-size: var(--ak-h3-font-size); }
+h4 { font-size: var(--ak-h4-font-size); }
+h5 { font-size: var(--ak-h5-font-size); }
+h6 { font-size: var(--ak-h6-font-size); }
+
 .site-title {
     font-family: var(--ak-site-title-font-family);
     font-size: var(--ak-site-title-font-size);

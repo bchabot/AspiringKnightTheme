@@ -34,7 +34,13 @@
         wp.customize(cat + '_font_family', value => value.bind(to => updateCSSVar('--ak-' + varId + '-font-family', `'${to}', serif`)));
         
         // Font Size
-        wp.customize(cat + '_font_size', value => value.bind(to => updateCSSVar('--ak-' + varId + '-font-size', to)));
+        if (cat === 'headings') {
+            for (let i = 1; i <= 6; i++) {
+                wp.customize('h' + i + '_font_size', value => value.bind(to => updateCSSVar('--ak-h' + i + '-font-size', to)));
+            }
+        } else {
+            wp.customize(cat + '_font_size', value => value.bind(to => updateCSSVar('--ak-' + varId + '-font-size', to)));
+        }
         
         // Text Color
         wp.customize(cat + '_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-color', to)));
