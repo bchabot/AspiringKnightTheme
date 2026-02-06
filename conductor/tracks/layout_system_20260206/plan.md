@@ -24,9 +24,9 @@
     - Use CSS variables to control the grid order and container widths.
 - [x] Task: Verification - Layout changes instantly in Customizer live preview.
 
-## Phase 4: Responsive Layout Refinement
-- [~] Task: Mobile Layout Optimization
+## Phase 4: Responsive Layout Refinement [checkpoint: d6013de]
+- [x] Task: Mobile Layout Optimization
     - Ensure sidebar stacks correctly and container padding is appropriate for small screens.
-- [ ] Task: Final Build & Audit
+- [x] Task: Final Build & Audit
     - Run final `npm run build`.
     - Perform a manual audit of all templates.
