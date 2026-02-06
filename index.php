@@ -27,7 +27,7 @@ get_header();
 			if ( is_home() && ! is_front_page() ) :
 				?>
 				<header class="mb-10">
-					<h1 class="page-title text-4xl font-bold text-primary"><?php single_post_title(); ?></h1>
+					<h1 class="page-title text-4xl font-bold text-heading-text"><?php single_post_title(); ?></h1>
 				</header>
 				<?php
 			endif;
@@ -46,13 +46,13 @@ get_header();
 				?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'bg-white p-6 rounded-lg shadow-md border-t-4 border-accent flex flex-col' ); ?>>
 					<header class="entry-header mb-4">
-						<?php the_title( '<h2 class="entry-title text-xl font-bold text-primary hover:text-knight-crimson transition-colors"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' ); ?>
+						<?php the_title( '<h2 class="entry-title text-xl font-bold text-heading-text hover:text-link-hover transition-colors"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' ); ?>
 					</header>
 					<div class="entry-content text-gray-700 flex-grow medieval-dropcap">
 						<?php the_excerpt(); ?>
 					</div>
 					<footer class="mt-4 pt-4 border-t border-gray-100">
-						<a href="<?php echo esc_url( get_permalink() ); ?>" class="text-knight-crimson font-bold hover:text-knight-gold transition-colors"><?php esc_html_e( 'Read More &raquo;', 'aspiring-knight' ); ?></a>
+						<a href="<?php echo esc_url( get_permalink() ); ?>" class="text-link font-bold hover:text-link-hover transition-colors"><?php esc_html_e( 'Read More &raquo;', 'aspiring-knight' ); ?></a>
 					</footer>
 				</article>
 				<?php

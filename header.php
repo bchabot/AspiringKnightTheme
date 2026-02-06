@@ -23,23 +23,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php body_class( 'bg-site-bg text-body-text' ); ?>>
 <?php wp_body_open(); ?>
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'aspiring-knight' ); ?></a>
 
-	<header id="masthead" class="site-header bg-knight-iron text-white p-4">
+	<header id="masthead" class="site-header bg-header-bg text-white p-4">
 		<div class="site-branding container mx-auto flex justify-between items-center">
 			<div class="logo-wrapper">
 				<?php
 				the_custom_logo();
 				if ( is_front_page() && is_home() ) :
 					?>
-					<h1 class="site-title text-2xl font-bold text-knight-gold"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+					<h1 class="site-title text-2xl font-bold text-accent"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
 					<?php
 				else :
 					?>
-					<p class="site-title text-2xl font-bold text-knight-gold"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+					<p class="site-title text-2xl font-bold text-accent"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
 					<?php
 				endif;
 				?>
@@ -48,7 +48,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			$aspiring_knight_description = get_bloginfo( 'description', 'display' );
 			if ( $aspiring_knight_description || is_customize_preview() ) :
 				?>
-				<p class="site-description text-sm italic opacity-75"><?php echo $aspiring_knight_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+				<p class="site-description text-sm italic opacity-75 text-primary"><?php echo $aspiring_knight_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 			<?php endif; ?>
 		</div><!-- .site-branding -->
 

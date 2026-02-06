@@ -10,10 +10,10 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1'
 
 ## Phase 2: Expanded Color Controls
-- [ ] Task: Implement Background and Text Color Controls
+- [x] Task: Implement Background and Text Color Controls [4ec0649]
     - Add Kirki fields for site background, header background, and footer background.
     - Add fields for body text and heading text colors.
-- [ ] Task: Implement Link and Hover Color Controls
+- [~] Task: Implement Link and Hover Color Controls
     - Add fields for link color and link hover color.
 - [ ] Task: Verification - Live preview functions for all new color fields.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2'

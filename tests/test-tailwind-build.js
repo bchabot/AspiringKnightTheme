@@ -21,7 +21,14 @@ function runTest() {
         
         const checks = [
             { name: 'Primary Color Variable', pattern: /var\(--ak-primary-color\)/ },
-            { name: 'Accent Gold Variable', pattern: /var\(--ak-accent-gold\)/ }
+            { name: 'Accent Gold Variable', pattern: /var\(--ak-accent-gold\)/ },
+            { name: 'Site BG Variable', pattern: /var\(--ak-site-bg\)/ },
+            { name: 'Header BG Variable', pattern: /var\(--ak-header-bg\)/ },
+            { name: 'Footer BG Variable', pattern: /var\(--ak-footer-bg\)/ },
+            { name: 'Body Text Variable', pattern: /var\(--ak-body-text\)/ },
+            { name: 'Heading Text Variable', pattern: /var\(--ak-heading-text\)/ },
+            { name: 'Link Color Variable', pattern: /var\(--ak-link-color\)/ },
+            { name: 'Link Hover Variable', pattern: /var\(--ak-link-hover-color\)/ }
         ];
 
         let failed = false;
