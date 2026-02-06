@@ -148,6 +148,19 @@ body a {
     color: var(--ak-blog-titles-link-color) !important;
 }
 
+/* Article Area Text (The specific paragraph text inside the post box) */
+.entry-content p, .entry-content div, .entry-content section {
+    font-family: var(--ak-article-text-font-family) !important;
+    font-size: var(--ak-article-text-font-size) !important;
+    color: var(--ak-article-text-color) !important;
+    text-shadow: var(--ak-effect-article-text) !important;
+    text-decoration: var(--ak-underline-article-text) !important;
+}
+
+.entry-content a {
+    color: var(--ak-article-text-link-color) !important;
+}
+
 /* Site Branding */
 .site-title {
     font-family: var(--ak-site-title-font-family) !important;

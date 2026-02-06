@@ -29,7 +29,7 @@
     wp.customize('sidebar_padding', value => value.bind(to => updateCSSVar('--ak-sidebar-padding', to)));
 
     // 3. Categorical Typography & Effects
-    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'blog_titles', 'headings', 'sidebars', 'footer', 'body'];
+    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'blog_titles', 'headings', 'sidebars', 'footer', 'article_text', 'body'];
     
     categories.forEach(cat => {
         const varId = cat.replace(/_/g, '-');
@@ -48,7 +48,7 @@
         
         // Colors
         wp.customize(cat + '_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-color', to)));
-        if (['body', 'menus', 'submenus', 'sidebars', 'footer', 'blog_titles'].includes(cat)) {
+        if (['body', 'menus', 'submenus', 'sidebars', 'footer', 'blog_titles', 'article_text'].includes(cat)) {
             wp.customize(cat + '_link_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-link-color', to)));
         }
 
