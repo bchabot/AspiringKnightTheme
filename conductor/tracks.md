@@ -31,7 +31,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Granular Heading Controls**
   *Link: [./tracks/granular_headings_20260206/](./tracks/granular_headings_20260206/)*
 
-- [ ] **Track: Design System Final Polish & UX Cleanup**
+- [x] **Track: Design System Final Polish & UX Cleanup**
   *Link: [./tracks/design_polish_20260206/](./tracks/design_polish_20260206/)*
+
+- [ ] **Track: Design System UX Overhaul & Branding Fixes**
+  *Link: [./tracks/ux_overhaul_20260206/](./tracks/ux_overhaul_20260206/)*
 
 

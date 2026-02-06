@@ -7,7 +7,7 @@
         document.documentElement.style.setProperty(name, value);
     };
 
-    // 1. Global Colors (BGs & Accents)
+    // 1. Global Colors
     const bgColors = ['primary_accent', 'accent_gold', 'site_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color'];
     bgColors.forEach(id => {
         wp.customize(id, value => value.bind(to => updateCSSVar('--ak-' + id.replace(/_/g, '-'), to)));
@@ -36,8 +36,10 @@
             wp.customize(cat + '_font_size', value => value.bind(to => updateCSSVar('--ak-' + varId + '-font-size', to)));
         }
         
-        // Colors
+        // Text Color
         wp.customize(cat + '_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-color', to)));
+        
+        // Link Color
         if (['body', 'menus', 'submenus', 'sidebars'].includes(cat)) {
             wp.customize(cat + '_link_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-link-color', to)));
         }
@@ -45,7 +47,7 @@
         // Underline
         wp.customize(cat + '_underline', value => value.bind(to => updateCSSVar('--ak-underline-' + varId, to ? 'underline' : 'none')));
 
-        // Advanced Effects Logic
+        // Effects
         const updateEffect = () => {
             const shadowEnabled = wp.customize(cat + '_shadow_enable').get();
             const glowEnabled = wp.customize(cat + '_glow_enable').get();
@@ -57,16 +59,7 @@
             if (glowEnabled) val += (val ? ', ' : '') + `0 0 10px ${glowColor}`;
             if (!val) val = 'none';
             
-            // Map the category name to the effect variable name used in CSS
-            let effId = varId;
-            if (cat === 'menus') effId = 'menu-items';
-            if (cat === 'submenus') effId = 'submenu-items';
-            if (cat === 'headings') effId = 'headers';
-            if (cat === 'page_titles') effId = 'post-titles';
-            if (cat === 'site_title') effId = 'site-title';
-            if (cat === 'site_tagline') effId = 'site-tagline';
-            
-            updateCSSVar('--ak-effect-' + effId, val);
+            updateCSSVar('--ak-effect-' + varId, val);
         };
 
         wp.customize(cat + '_shadow_enable', value => value.bind(updateEffect));

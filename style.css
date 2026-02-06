@@ -34,7 +34,7 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
     font-family: var(--ak-menus-font-family);
     font-size: var(--ak-menus-font-size);
     color: var(--ak-menus-color) !important;
-    text-shadow: var(--ak-effect-menu-items);
+    text-shadow: var(--ak-effect-menus);
     transition: all 0.3s ease;
     padding: 0.5rem 0;
 }
@@ -52,7 +52,7 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
     font-family: var(--ak-submenus-font-family);
     font-size: var(--ak-submenus-font-size);
     color: var(--ak-submenus-color) !important;
-    text-shadow: var(--ak-effect-submenu-items) !important;
+    text-shadow: var(--ak-effect-submenus) !important;
     text-decoration: var(--ak-underline-submenus) !important;
 }
 
@@ -80,7 +80,7 @@ a {
 
 /* Effects & Typography for Titles and Headers */
 h1, h2, h3, h4, h5, h6 {
-    text-shadow: var(--ak-effect-headers);
+    text-shadow: var(--ak-effect-headings);
     font-family: var(--ak-headings-font-family);
     text-decoration: var(--ak-underline-headers) !important;
     color: var(--ak-headings-color);
@@ -94,21 +94,21 @@ h5 { font-size: var(--ak-h5-font-size); }
 h6 { font-size: var(--ak-h6-font-size); }
 
 .site-title {
-    font-family: var(--ak-site-title-font-family);
-    font-size: var(--ak-site-title-font-size);
+    font-family: var(--ak-site-title-font-family) !important;
+    font-size: var(--ak-site-title-font-size) !important;
 }
 
 .site-title a {
     color: var(--ak-site-title-color) !important;
-    text-shadow: var(--ak-effect-site-title);
+    text-shadow: var(--ak-effect-site-title) !important;
     text-decoration: var(--ak-underline-site-title) !important;
 }
 
 .site-description {
-    font-family: var(--ak-site-tagline-font-family);
-    font-size: var(--ak-site-tagline-font-size);
+    font-family: var(--ak-site-tagline-font-family) !important;
+    font-size: var(--ak-site-tagline-font-size) !important;
     color: var(--ak-site-tagline-color) !important;
-    text-shadow: var(--ak-effect-site-tagline);
+    text-shadow: var(--ak-effect-site-tagline) !important;
 }
 
 .entry-title {
@@ -118,8 +118,8 @@ h6 { font-size: var(--ak-h6-font-size); }
 }
 
 .entry-title a {
-    text-shadow: var(--ak-effect-post-titles);
-    text-decoration: var(--ak-underline-page-titles) !important;
+    text-shadow: var(--ak-effect-page-titles);
+    text-decoration: var(--ak-underline-site-title) !important;
 }
 
 body {
