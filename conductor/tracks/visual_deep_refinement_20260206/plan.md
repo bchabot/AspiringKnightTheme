@@ -1,4 +1,4 @@
-# Implementation Plan - Visual & Typography Deep Refinement
+# Implementation Plan - Visual & Typography Deep Refinement [checkpoint: 50ad09b]
 
 ## Phase 1: Sub-Menu & Link Fixes
 - [x] Task: Implement Granular Sub-Menu Colors
