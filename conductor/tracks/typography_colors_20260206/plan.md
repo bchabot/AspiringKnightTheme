@@ -1,6 +1,6 @@
 # Implementation Plan - Advanced Typography & Color Control
 
-## Phase 1: Foundation and CSS Bridge
+## Phase 1: Foundation and CSS Bridge [checkpoint: eed8977]
 - [x] Task: Set up CSS Variables Injection [4ec0649]
     - Create a function in `inc/customizer.php` to output a `<style>` block in the head.
     - Map initial Customizer defaults to CSS variables (e.g., `--ak-primary-color`, `--ak-accent-gold`).
