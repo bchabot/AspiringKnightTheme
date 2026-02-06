@@ -187,6 +187,21 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( "{$id}_glow_enable", array( 'label' => __( 'Enable Glow?', 'aspiring-knight' ), 'section' => $section_id, 'type' => 'checkbox' ) );
 		$wp_customize->add_setting( "{$id}_glow_color", array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_glow_color", array( 'label' => __( 'Glow Color', 'aspiring-knight' ), 'section' => $section_id ) ) );
+
+		// 6. Special Addition for Body: Drop Cap
+		if ( $id === 'body' ) {
+			$wp_customize->add_setting( 'dropcap_enable', array( 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean', 'transport' => 'postMessage' ) );
+			$wp_customize->add_control( 'dropcap_enable', array( 'label' => __( 'Enable Drop Cap?', 'aspiring-knight' ), 'section' => $section_id, 'type' => 'checkbox' ) );
+
+			$wp_customize->add_setting( 'dropcap_font_family', array( 'default' => 'Cinzel', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
+			$wp_customize->add_control( 'dropcap_font_family', array( 'label' => __( 'Drop Cap Font', 'aspiring-knight' ), 'section' => $section_id, 'type' => 'select', 'choices' => aspiring_knight_get_font_choices() ) );
+
+			$wp_customize->add_setting( 'dropcap_font_size', array( 'default' => '4rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
+			$wp_customize->add_control( 'dropcap_font_size', array( 'label' => __( 'Drop Cap Size', 'aspiring-knight' ), 'section' => $section_id, 'type' => 'text' ) );
+
+			$wp_customize->add_setting( 'dropcap_color', array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+			$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'dropcap_color', array( 'label' => __( 'Drop Cap Color', 'aspiring-knight' ), 'section' => $section_id ) ) );
+		}
 	}
 
 	$wp_customize->add_section( 'branding_assets_section', array( 'title' => esc_html__( 'Branding Assets', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 100 ) );
@@ -301,7 +316,14 @@ function aspiring_knight_output_css_variables() {
 				if ($get_mod("{$cat}_glow_enable", false)) $val .= ($val ? ', ' : '') . "0 0 10px " . $get_mod("{$cat}_glow_color", '#d4af37');
 				echo "--ak-effect-{$var_id}: " . ($val ?: 'none') . ";\n";
 			}
+
+			// Drop Cap Specifics
+			$dropcap_font = $get_mod( 'dropcap_font_family', 'Cinzel' );
 			?>
+			--ak-dropcap-display: <?php echo $get_mod( 'dropcap_enable', true ) ? 'block' : 'none'; ?>;
+			--ak-dropcap-font-family: '<?php echo esc_html( $dropcap_font ); ?>', serif;
+			--ak-dropcap-font-size: <?php echo esc_html( $get_mod( 'dropcap_font_size', '4rem' ) ); ?>;
+			--ak-dropcap-color: <?php echo esc_html( $get_mod( 'dropcap_color', '#d4af37' ) ); ?>;
 		}
 	</style>
 	<?php

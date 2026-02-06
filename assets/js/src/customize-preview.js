@@ -71,6 +71,12 @@
         wp.customize(cat + '_glow_color', value => value.bind(updateEffect));
     });
 
+    // Drop Cap Preview
+    wp.customize('dropcap_enable', value => value.bind(to => updateCSSVar('--ak-dropcap-display', to ? 'block' : 'none')));
+    wp.customize('dropcap_font_family', value => value.bind(to => updateCSSVar('--ak-dropcap-font-family', `'${to}', serif`)));
+    wp.customize('dropcap_font_size', value => value.bind(to => updateCSSVar('--ak-dropcap-font-size', to)));
+    wp.customize('dropcap_color', value => value.bind(to => updateCSSVar('--ak-dropcap-color', to)));
+
     // Branding text
     wp.customize('copyright_text', value => value.bind(to => $('.copyright-content').html(to.replace('[year]', new Date().getFullYear()))));
     wp.customize('top_bar_text', value => value.bind(to => $('.top-bar-info').html(to)));

@@ -88,6 +88,8 @@ a {
     font-family: var(--ak-headings-font-family) !important;
     text-decoration: var(--ak-underline-headers) !important;
     color: var(--ak-headings-color) !important;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
 }
 
 .entry-content h1 { font-size: var(--ak-h1-font-size) !important; }
@@ -96,6 +98,24 @@ a {
 .entry-content h4 { font-size: var(--ak-h4-font-size) !important; }
 .entry-content h5 { font-size: var(--ak-h5-font-size) !important; }
 .entry-content h6 { font-size: var(--ak-h6-font-size) !important; }
+
+/* Lists Styling */
+.entry-content ul {
+    list-style-type: disc !important;
+    margin-left: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.entry-content ol {
+    list-style-type: decimal !important;
+    margin-left: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.entry-content li {
+    margin-bottom: 0.5rem !important;
+    padding-left: 0.5rem !important;
+}
 
 /* Blog / Post Titles (The main entry-title on both index and single) */
 .entry-title,
@@ -148,6 +168,18 @@ body a {
     background-image: var(--ak-content-bg-image) !important;
     background-size: cover;
     background-position: center;
+}
+
+/* Drop Cap Logic */
+.medieval-dropcap:first-letter {
+    display: var(--ak-dropcap-display, block);
+    float: left;
+    font-family: var(--ak-dropcap-font-family, serif);
+    font-size: var(--ak-dropcap-font-size, 4rem);
+    line-height: 1;
+    margin: 0.1em 0.1em 0 0;
+    color: var(--ak-dropcap-color, var(--ak-accent-gold));
+    font-weight: bold;
 }
 
 /* Footer Styling */
