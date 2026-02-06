@@ -98,8 +98,8 @@
             
             wp.customize('custom_presets_data').set(JSON.stringify(customPresets));
             
-            alert('Preset "' + name + '" saved! Please Publish to keep changes.');
-            location.reload(); // Refresh Customizer to update dropdown choices
+            // Perform an immediate reload to refresh the dropdown without a manual prompt
+            location.reload(); 
         });
 
         // 4. Delete Logic
@@ -118,7 +118,6 @@
             wp.customize('custom_presets_data').set(JSON.stringify(customPresets));
             wp.customize('theme_preset').set('default');
             
-            alert('Preset deleted. Please Publish to keep changes.');
             location.reload();
         });
     });
