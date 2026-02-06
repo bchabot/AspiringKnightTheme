@@ -32,6 +32,11 @@ body {
 }
 .top-bar-info { color: inherit !important; }
 
+/* 2.1 Header Styling */
+.site-header {
+    background-color: var(--ak-header-bg) !important;
+}
+
 /* 3. Navigation Styling */
 .main-navigation { background-color: var(--ak-menu-bg) !important; }
 .main-navigation ul { list-style: none; margin: 0; padding: 0; }
