@@ -59,7 +59,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	) );
 
 	/**
-	 * SECTION: Site Colors
+	 * SECTION: Global Colors
 	 */
 	$wp_customize->add_section(
 		'site_colors_section',

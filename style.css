@@ -13,34 +13,34 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
 
 /* This file is primarily for WordPress metadata. Styles are generated via Tailwind CSS. */
 
-/* 1. Global Site Background */
+/* Global Site Background */
 body {
     background-color: var(--ak-site-bg) !important;
-    background-image: var(--ak-site-bg-image) !important;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     font-family: var(--ak-body-font-family) !important;
     font-size: var(--ak-body-font-size) !important;
     color: var(--ak-body-color) !important;
 }
 
-/* 2. Top Bar Styling */
-.top-bar {
-    background-color: var(--ak-top-bar-bg) !important;
-    color: var(--ak-top-bar-text) !important;
-}
-.top-bar-info { color: inherit !important; }
-
-/* 2.1 Header Styling */
-.site-header {
-    background-color: var(--ak-header-bg) !important;
+/* Wrapper background (between site and content) */
+.site-content-wrapper {
+    background-color: var(--ak-wrapper-bg) !important;
 }
 
-/* 3. Navigation Styling */
-.main-navigation { background-color: var(--ak-menu-bg) !important; }
-.main-navigation ul { list-style: none; margin: 0; padding: 0; }
-.main-navigation li { position: relative; }
+/* Navigation Styling */
+.main-navigation {
+    background-color: var(--ak-menu-bg) !important;
+}
+
+.main-navigation ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.main-navigation li {
+    position: relative;
+}
+
 .main-navigation li a {
     display: block;
     text-decoration: var(--ak-underline-menus) !important;
@@ -51,10 +51,16 @@ body {
     transition: all 0.3s ease;
     padding: 0.5rem 0;
 }
-.main-navigation li a:hover { color: var(--ak-menus-link-color) !important; }
 
-/* Sub-menus */
-.main-navigation li ul { background-color: var(--ak-submenu-bg) !important; }
+.main-navigation li a:hover {
+    color: var(--ak-menus-link-color) !important;
+}
+
+/* Sub-menu styling */
+.main-navigation li ul {
+    background-color: var(--ak-submenu-bg) !important;
+}
+
 .main-navigation li ul li a {
     font-family: var(--ak-submenus-font-family) !important;
     font-size: var(--ak-submenus-font-size) !important;
@@ -62,40 +68,22 @@ body {
     text-shadow: var(--ak-effect-submenus) !important;
     text-decoration: var(--ak-underline-submenus) !important;
 }
+
 .main-navigation li ul li a:hover {
     color: var(--ak-submenus-link-color) !important;
     background-color: rgba(255,255,255,0.05) !important;
 }
 
-/* 4. Main Article Box (The actual text area) */
-article.post, article.page {
-    background-color: var(--ak-article-bg) !important;
-    background-image: var(--ak-article-bg-image) !important;
-    background-size: cover;
-    background-position: center;
-    padding: 3rem !important;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-    margin-bottom: 2rem !important;
+/* Global Links */
+a {
+    text-decoration: var(--ak-underline-body) !important;
 }
 
-/* 5. Main Article Text Content */
-.entry-content, 
-.entry-content p, 
-.entry-content li, 
-.entry-content blockquote,
-.entry-content div {
-    font-family: var(--ak-article-text-font-family) !important;
-    font-size: var(--ak-article-text-font-size) !important;
-    color: var(--ak-article-text-color) !important;
-    text-shadow: var(--ak-effect-article-text) !important;
-}
-.entry-content a {
-    color: var(--ak-article-text-link-color) !important;
-    text-decoration: var(--ak-underline-article-text) !important;
+body a {
+    color: var(--ak-body-link-color) !important;
 }
 
-/* 6. Sidebar Styling */
+/* Sidebar Styling */
 .widget-area section.widget {
     background-color: var(--ak-sidebar-bg) !important;
     border: 1px solid var(--ak-sidebar-border) !important;
@@ -105,26 +93,50 @@ article.post, article.page {
     color: var(--ak-sidebars-color) !important;
     text-shadow: var(--ak-effect-sidebars) !important;
 }
+
 .widget-area a {
     text-decoration: var(--ak-underline-sidebars) !important;
     color: var(--ak-sidebars-link-color) !important;
 }
 
-/* 7. Headings & Titles */
-h1, h2, h3, h4, h5, h6 {
+/* Content Headers (H1-H6 inside entry-content) */
+.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 {
     text-shadow: var(--ak-effect-headings);
     font-family: var(--ak-headings-font-family) !important;
     text-decoration: var(--ak-underline-headers) !important;
     color: var(--ak-headings-color) !important;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
 }
-h1 { font-size: var(--ak-h1-font-size) !important; }
-h2 { font-size: var(--ak-h2-font-size) !important; }
-h3 { font-size: var(--ak-h3-font-size) !important; }
-h4 { font-size: var(--ak-h4-font-size) !important; }
-h5 { font-size: var(--ak-h5-font-size) !important; }
-h6 { font-size: var(--ak-h6-font-size) !important; }
 
-.entry-title, .entry-title a {
+.entry-content h1 { font-size: var(--ak-h1-font-size) !important; }
+.entry-content h2 { font-size: var(--ak-h2-font-size) !important; }
+.entry-content h3 { font-size: var(--ak-h3-font-size) !important; }
+.entry-content h4 { font-size: var(--ak-h4-font-size) !important; }
+.entry-content h5 { font-size: var(--ak-h5-font-size) !important; }
+.entry-content h6 { font-size: var(--ak-h6-font-size) !important; }
+
+/* Lists Styling */
+.entry-content ul {
+    list-style-type: disc !important;
+    margin-left: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.entry-content ol {
+    list-style-type: decimal !important;
+    margin-left: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.entry-content li {
+    margin-bottom: 0.5rem !important;
+    padding-left: 0.5rem !important;
+}
+
+/* Blog / Post Titles */
+.entry-title,
+.entry-title a {
     font-family: var(--ak-blog-titles-font-family) !important;
     font-size: var(--ak-blog-titles-font-size) !important;
     color: var(--ak-blog-titles-color) !important;
@@ -132,10 +144,30 @@ h6 { font-size: var(--ak-h6-font-size) !important; }
     text-decoration: var(--ak-underline-blog-titles) !important;
 }
 
+.entry-title a:hover {
+    color: var(--ak-blog-titles-link-color) !important;
+}
+
+/* Article Area Text (The specific paragraph text inside the post box) */
+.entry-content p, .entry-content div, .entry-content section {
+    font-family: var(--ak-article-text-font-family) !important;
+    font-size: var(--ak-article-text-font-size) !important;
+    color: var(--ak-article-text-color) !important;
+    text-shadow: var(--ak-effect-article-text) !important;
+    text-decoration: var(--ak-underline-article-text) !important;
+}
+
+.entry-content a {
+    color: var(--ak-article-text-link-color) !important;
+}
+
+/* Site Branding */
 .site-title {
     font-family: var(--ak-site-title-font-family) !important;
     font-size: var(--ak-site-title-font-size) !important;
+    line-height: 1.2;
 }
+
 .site-title a {
     color: var(--ak-site-title-color) !important;
     text-shadow: var(--ak-effect-site-title) !important;
@@ -148,22 +180,33 @@ h6 { font-size: var(--ak-h6-font-size) !important; }
     color: var(--ak-site-tagline-color) !important;
     text-shadow: var(--ak-effect-site-tagline) !important;
     display: block !important;
+    margin-top: 0.5rem;
 }
 
-/* 8. Drop Cap */
-.medieval-dropcap > p:first-of-type::first-letter,
-.entry-content p:first-of-type::first-letter {
-    display: var(--ak-dropcap-display, block) !important;
-    float: left !important;
-    font-family: var(--ak-dropcap-font-family, serif) !important;
-    font-size: var(--ak-dropcap-font-size, 4rem) !important;
-    line-height: 1 !important;
-    margin: 0.1em 0.1em 0 0 !important;
-    color: var(--ak-dropcap-color, var(--ak-accent-gold)) !important;
-    font-weight: bold !important;
+/* The actual white box background for text */
+.site-main {
+    background-color: var(--ak-article-bg) !important;
+    background-image: var(--ak-article-bg-image) !important;
+    background-size: cover;
+    background-position: center;
+    padding: 3rem !important;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
 }
 
-/* 9. Footer Styling */
+/* Drop Cap Logic */
+.medieval-dropcap:first-letter {
+    display: var(--ak-dropcap-display, block);
+    float: left;
+    font-family: var(--ak-dropcap-font-family, serif);
+    font-size: var(--ak-dropcap-font-size, 4rem);
+    line-height: 1;
+    margin: 0.1em 0.1em 0 0;
+    color: var(--ak-dropcap-color, var(--ak-accent-gold));
+    font-weight: bold;
+}
+
+/* Footer Styling */
 .site-footer {
     background-color: var(--ak-footer-bg) !important;
     font-family: var(--ak-footer-font-family) !important;
@@ -171,20 +214,111 @@ h6 { font-size: var(--ak-h6-font-size) !important; }
     color: var(--ak-footer-color) !important;
     text-shadow: var(--ak-effect-footer) !important;
 }
+
 .site-footer a {
     color: var(--ak-footer-link-color) !important;
     text-decoration: var(--ak-underline-footer) !important;
 }
 
-/* Utilities */
+/* Top Bar Styling */
+.top-bar {
+    background-color: var(--ak-top-bar-bg) !important;
+    color: var(--ak-top-bar-text) !important;
+}
+
+/* Horizontal spacing for desktop */
 @media (min-width: 1024px) {
-    .main-navigation ul { display: flex; gap: var(--ak-menu-spacing); }
-    .main-navigation li ul {
-        position: absolute; top: 100%; left: 0; min-width: 200px; display: none;
-        flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        z-index: 100; padding: 0.5rem 0; border-top: 2px solid var(--ak-accent-gold);
+    .main-navigation ul {
+        display: flex;
+        gap: var(--ak-menu-spacing);
     }
-    .main-navigation li:hover > ul { display: flex; }
-    .main-navigation li ul li a { padding: 0.75rem 1.5rem; }
-    .main-navigation li ul ul { top: 0; left: 100%; }
+
+    .main-navigation li ul {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 200px;
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        z-index: 100;
+        padding: 0.5rem 0; border-top: 2px solid var(--ak-accent-gold);
+    }
+
+    .main-navigation li:hover > ul {
+        display: flex;
+    }
+
+    .main-navigation li ul li a {
+        padding: 0.75rem 1.5rem;
+    }
+
+    /* Support for nested sub-submenus */
+    .main-navigation li ul ul {
+        top: 0;
+        left: 100%;
+    }
+}
+
+/* Mobile Overlay Menu */
+@media (max-width: 1023px) {
+    #site-navigation.toggled .menu-container {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--ak-header-bg);
+        z-index: 9999;
+        padding: 5rem 2rem;
+        text-align: center;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        overflow-y: auto;
+    }
+
+    #site-navigation.toggled .menu-container ul {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    #site-navigation.toggled .menu-container li a {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    /* Submenus on mobile - visible by default in overlay */
+    #site-navigation.toggled .sub-menu {
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+        background-color: rgba(255,255,255,0.05);
+        padding: 0.5rem 0;
+    }
+
+    #site-navigation.toggled .sub-menu li a {
+        font-size: 1.1rem;
+        opacity: 0.8;
+    }
+
+    #site-navigation.toggled .menu-toggle {
+        position: fixed;
+        top: 1.5rem;
+        right: 1rem;
+        z-index: 10000;
+    }
+    
+    /* Toggle icon animation */
+    #site-navigation.toggled .menu-toggle span:nth-child(1) {
+        transform: rotate(45deg) translateY(0.5rem);
+    }
+    #site-navigation.toggled .menu-toggle span:nth-child(2) {
+        opacity: 0;
+    }
+    #site-navigation.toggled .menu-toggle span:nth-child(3) {
+        transform: rotate(-45deg) translateY(-0.5rem);
+    }
 }
