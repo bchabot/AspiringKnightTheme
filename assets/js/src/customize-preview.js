@@ -7,7 +7,7 @@
         document.documentElement.style.setProperty(name, value);
     };
 
-    // 1. Global Colors (BGs & Accents)
+    // 1. Global Colors
     const bgColors = [
         'top_bar_bg_color', 'top_bar_text_color', 'accent_gold', 
         'site_bg_color', 'article_bg_color',
@@ -29,7 +29,7 @@
     wp.customize('sidebar_padding', value => value.bind(to => updateCSSVar('--ak-sidebar-padding', to)));
 
     // 3. Categorical Typography & Effects
-    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'blog_titles', 'headings', 'sidebars', 'footer', 'article_text', 'body'];
+    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'blog_titles', 'headings', 'article_text', 'sidebars', 'footer', 'body'];
     
     categories.forEach(cat => {
         const varId = cat.replace(/_/g, '-');
