@@ -39,7 +39,7 @@
         
         // Colors
         wp.customize(cat + '_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-color', to)));
-        if (['body', 'menus', 'submenus', 'sidebars'].includes(cat)) {
+        if (['body', 'menus', 'submenus', 'sidebars', 'footer'].includes(cat)) {
             wp.customize(cat + '_link_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-link-color', to)));
         }
 

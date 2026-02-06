@@ -50,7 +50,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	$wp_customize->add_setting( 'theme_preset', array( 'default' => 'default', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( 'theme_preset', array(
 		'label'    => __( 'Choose a Design Preset', 'aspiring-knight' ),
-		'description' => __( 'Selecting a preset will instantly update all colors and fonts below.', 'aspiring-knight' ),
+		'description' => __( 'Selecting a preset will instantly update all colors and fonts below. You can still tweak them afterwards.', 'aspiring-knight' ),
 		'section'  => 'ds_presets_section',
 		'type'     => 'select',
 		'choices'  => aspiring_knight_get_preset_choices(),
@@ -189,7 +189,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_glow_color", array( 'label' => __( 'Glow Color', 'aspiring-knight' ), 'section' => $section_id ) ) );
 	}
 
-	// Custom Font Upload
+	// Custom Font Upload (Inside Body Section)
 	$wp_customize->add_setting( 'custom_font_file', array( 'default' => '', 'sanitize_callback' => 'esc_url_raw', 'transport' => 'refresh' ) );
 	$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'custom_font_file', array( 'label' => __( 'Upload Font File (.woff2)', 'aspiring-knight' ), 'section' => 'ds_body_section' ) ) );
 	$wp_customize->add_setting( 'custom_font_name', array( 'default' => 'CustomFont', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'refresh' ) );

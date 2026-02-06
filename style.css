@@ -15,7 +15,7 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
 
 /* Navigation Styling */
 .main-navigation {
-    background-color: var(--ak-menu-bg);
+    background-color: var(--ak-menu-bg) !important;
 }
 
 .main-navigation ul {
@@ -31,10 +31,10 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
 .main-navigation li a {
     display: block;
     text-decoration: var(--ak-underline-menus) !important;
-    font-family: var(--ak-menus-font-family);
-    font-size: var(--ak-menus-font-size);
+    font-family: var(--ak-menus-font-family) !important;
+    font-size: var(--ak-menus-font-size) !important;
     color: var(--ak-menus-color) !important;
-    text-shadow: var(--ak-effect-menus);
+    text-shadow: var(--ak-effect-menus) !important;
     transition: all 0.3s ease;
     padding: 0.5rem 0;
 }
@@ -49,8 +49,8 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
 }
 
 .main-navigation li ul li a {
-    font-family: var(--ak-submenus-font-family);
-    font-size: var(--ak-submenus-font-size);
+    font-family: var(--ak-submenus-font-family) !important;
+    font-size: var(--ak-submenus-font-size) !important;
     color: var(--ak-submenus-color) !important;
     text-shadow: var(--ak-effect-submenus) !important;
     text-decoration: var(--ak-underline-submenus) !important;
@@ -71,26 +71,23 @@ a {
     background-color: var(--ak-sidebar-bg) !important;
     border: 1px solid var(--ak-sidebar-border) !important;
     padding: var(--ak-sidebar-padding) !important;
+    font-family: var(--ak-sidebars-font-family) !important;
+    font-size: var(--ak-sidebars-font-size) !important;
+    color: var(--ak-sidebars-color) !important;
+    text-shadow: var(--ak-effect-sidebars) !important;
 }
 
 .widget-area a {
     text-decoration: var(--ak-underline-sidebars) !important;
-    color: var(--ak-sidebars-link-color);
-}
-
-.widget-area {
-    font-family: var(--ak-sidebars-font-family);
-    font-size: var(--ak-sidebars-font-size);
-    color: var(--ak-sidebars-color);
-    text-shadow: var(--ak-effect-sidebars);
+    color: var(--ak-sidebars-link-color) !important;
 }
 
 /* Effects & Typography for Titles and Headers */
 h1, h2, h3, h4, h5, h6 {
     text-shadow: var(--ak-effect-headings);
-    font-family: var(--ak-headings-font-family);
+    font-family: var(--ak-headings-font-family) !important;
     text-decoration: var(--ak-underline-headers) !important;
-    color: var(--ak-headings-color);
+    color: var(--ak-headings-color) !important;
 }
 
 h1 { font-size: var(--ak-h1-font-size) !important; }
@@ -99,6 +96,16 @@ h3 { font-size: var(--ak-h3-font-size) !important; }
 h4 { font-size: var(--ak-h4-font-size) !important; }
 h5 { font-size: var(--ak-h5-font-size) !important; }
 h6 { font-size: var(--ak-h6-font-size) !important; }
+
+/* Higher specificity for entry titles to override general headings */
+.site-main .entry-title,
+.site-main .entry-title a {
+    font-family: var(--ak-page-titles-font-family) !important;
+    font-size: var(--ak-page-titles-font-size) !important;
+    color: var(--ak-page-titles-color) !important;
+    text-shadow: var(--ak-effect-page-titles) !important;
+    text-decoration: var(--ak-underline-page-titles) !important;
+}
 
 .site-title {
     font-family: var(--ak-site-title-font-family) !important;
@@ -117,19 +124,8 @@ h6 { font-size: var(--ak-h6-font-size) !important; }
     font-size: var(--ak-site-tagline-font-size) !important;
     color: var(--ak-site-tagline-color) !important;
     text-shadow: var(--ak-effect-site-tagline) !important;
-    display: block;
+    display: block !important; /* Ensure it stays visible */
     margin-top: 0.5rem;
-}
-
-.entry-title {
-    font-family: var(--ak-page-titles-font-family);
-    font-size: var(--ak-page-titles-font-size);
-    color: var(--ak-page-titles-color) !important;
-}
-
-.entry-title a {
-    text-shadow: var(--ak-effect-page-titles);
-    text-decoration: var(--ak-underline-page-titles) !important;
 }
 
 body {
@@ -144,6 +140,7 @@ body a {
 
 /* Footer Styling */
 .site-footer {
+    background-color: var(--ak-footer-bg) !important;
     font-family: var(--ak-footer-font-family) !important;
     font-size: var(--ak-footer-font-size) !important;
     color: var(--ak-footer-color) !important;
