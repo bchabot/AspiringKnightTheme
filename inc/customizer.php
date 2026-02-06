@@ -39,20 +39,31 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		)
 	);
 
+	// Hidden setting to store custom presets JSON
+	$wp_customize->add_setting( 'custom_presets_data', array(
+		'default'           => '{}',
+		'sanitize_callback' => 'sanitize_text_field',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( 'custom_presets_data', array( 'type' => 'hidden', 'section' => 'ds_presets_section' ) );
+
 	$wp_customize->add_setting( 'theme_preset', array( 'default' => 'default', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( 'theme_preset', array(
 		'label'    => __( 'Choose a Design Preset', 'aspiring-knight' ),
 		'description' => __( 'Selecting a preset will instantly update all colors and fonts below.', 'aspiring-knight' ),
 		'section'  => 'ds_presets_section',
 		'type'     => 'select',
-		'choices'  => array(
-			'default'       => 'Aspiring Knight (Original)',
-			'medieval'      => 'Medieval Influence (Bold & Dark)',
-			'modern'        => 'Modern Minimalist (Clean)',
-			'dark'          => 'Knight of the Night (Dark Mode)',
-			'monochrome'    => 'Iron & Stone (Monochrome)',
-			'high_contrast' => 'High Contrast (Accessibility)',
-		),
+		'choices'  => aspiring_knight_get_preset_choices(),
+	) );
+
+	// Save New Preset UI
+	$wp_customize->add_setting( 'new_preset_name', array( 'default' => '', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
+	$wp_customize->add_control( 'new_preset_name', array(
+		'label'    => __( 'Save Current as Preset', 'aspiring-knight' ),
+		'description' => __( 'Enter a name and click the save icon (handled in JS).', 'aspiring-knight' ),
+		'section'  => 'ds_presets_section',
+		'type'     => 'text',
+		'input_attrs' => array( 'placeholder' => __( 'Preset Name...', 'aspiring-knight' ) ),
 	) );
 
 	/**
@@ -178,7 +189,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_glow_color", array( 'label' => __( 'Glow Color', 'aspiring-knight' ), 'section' => $section_id ) ) );
 	}
 
-	// Custom Font Upload (Inside Body Section)
+	// Custom Font Upload
 	$wp_customize->add_setting( 'custom_font_file', array( 'default' => '', 'sanitize_callback' => 'esc_url_raw', 'transport' => 'refresh' ) );
 	$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'custom_font_file', array( 'label' => __( 'Upload Font File (.woff2)', 'aspiring-knight' ), 'section' => 'ds_body_section' ) ) );
 	$wp_customize->add_setting( 'custom_font_name', array( 'default' => 'CustomFont', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'refresh' ) );
@@ -261,6 +272,29 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	$wp_customize->add_control( 'copyright_text', array( 'label' => __( 'Copyright Text', 'aspiring-knight' ), 'section' => 'ds_footer_layout_section', 'type' => 'textarea' ) );
 }
 add_action( 'customize_register', 'aspiring_knight_customize_register', 20 );
+
+/**
+ * Get preset choices including custom ones.
+ */
+function aspiring_knight_get_preset_choices() {
+	$choices = array(
+		'default'       => 'Aspiring Knight (Original)',
+		'medieval'      => 'Medieval Influence (Bold & Dark)',
+		'modern'        => 'Modern Minimalist (Clean)',
+		'dark'          => 'Knight of the Night (Dark Mode)',
+		'monochrome'    => 'Iron & Stone (Monochrome)',
+		'high_contrast' => 'High Contrast (Accessibility)',
+	);
+
+	$custom_presets = json_decode( get_theme_mod( 'custom_presets_data', '{}' ), true );
+	if ( ! empty( $custom_presets ) ) {
+		foreach ( $custom_presets as $id => $data ) {
+			$choices[ $id ] = '👤 ' . $data['name'];
+		}
+	}
+
+	return $choices;
+}
 
 /**
  * Get font choices for Customizer.
