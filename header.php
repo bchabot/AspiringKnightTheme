@@ -25,6 +25,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <?php
 $header_layout = get_theme_mod( 'header_layout', 'logo-left' );
+$header_bg_image = get_theme_mod( 'header_bg_image', '' );
+$header_style = 'padding-top: var(--ak-header-padding); padding-bottom: var(--ak-header-padding);';
+
+if ( $header_bg_image ) {
+	$header_style .= 'background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(' . esc_url( $header_bg_image ) . '); background-size: cover; background-position: center;';
+}
+
 $header_class  = 'site-header bg-header-bg text-white';
 $container_class = 'site-branding container mx-auto flex flex-col lg:flex-row justify-between items-center';
 
@@ -52,7 +59,7 @@ if ( 'logo-center' === $header_layout ) {
 		</div>
 	<?php endif; ?>
 
-	<header id="masthead" class="<?php echo esc_attr( $header_class ); ?>" style="padding-top: var(--ak-header-padding); padding-bottom: var(--ak-header-padding);">
+	<header id="masthead" class="<?php echo esc_attr( $header_class ); ?>" style="<?php echo esc_attr( $header_style ); ?>">
 		<div class="<?php echo esc_attr( $container_class ); ?>" style="max-width: var(--ak-container-width);">
 			<div class="logo-wrapper mb-4 lg:mb-0">
 				<?php

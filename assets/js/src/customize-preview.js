@@ -52,6 +52,12 @@
     wp.customize('menu_spacing', value => {
         value.bind(to => updateCSSVar('--ak-menu-spacing', to));
     });
+    wp.customize('menu_text_color', value => {
+        value.bind(to => updateCSSVar('--ak-menu-text-color', to));
+    });
+    wp.customize('menu_hover_color', value => {
+        value.bind(to => updateCSSVar('--ak-menu-hover-color', to));
+    });
     wp.customize('copyright_text', value => {
         value.bind(to => {
             $('.copyright-content').html(to.replace('[year]', new Date().getFullYear()));

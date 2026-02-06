@@ -28,8 +28,13 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
     display: block;
     text-decoration: none;
     font-size: var(--ak-menu-font-size);
+    color: var(--ak-menu-text-color);
     transition: color 0.3s ease;
     padding: 0.5rem 0;
+}
+
+.main-navigation li a:hover {
+    color: var(--ak-menu-hover-color);
 }
 
 /* Horizontal spacing for desktop */

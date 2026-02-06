@@ -9,8 +9,21 @@
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'bg-white p-6 rounded-lg shadow-md border-t-4 border-accent flex flex-col' ); ?>>
-	<header class="entry-header mb-4">
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'bg-white rounded-lg shadow-md border-t-4 border-accent flex flex-col overflow-hidden' ); ?>>
+	<?php if ( has_post_thumbnail() ) : ?>
+		<div class="post-thumbnail relative h-64 overflow-hidden">
+			<?php if ( ! is_singular() ) : ?>
+				<a href="<?php echo esc_url( get_permalink() ); ?>" class="block h-full">
+					<?php the_post_thumbnail( 'large', array( 'class' => 'w-full h-full object-cover transition-transform duration-500 hover:scale-105' ) ); ?>
+				</a>
+			<?php else : ?>
+				<?php the_post_thumbnail( 'large', array( 'class' => 'w-full h-full object-cover' ) ); ?>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+
+	<div class="p-6 flex flex-col flex-grow">
+		<header class="entry-header mb-4">
 		<?php
 		if ( is_singular() ) :
 			the_title( '<h1 class="entry-title text-3xl font-headings text-heading-text font-headings-bold mb-4">', '</h1>' );

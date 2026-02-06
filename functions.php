@@ -56,6 +56,17 @@ function aspiring_knight_setup() {
 	add_theme_support( 'customize-selective-refresh-widgets' );
 
 	/**
+	 * Add support for custom background.
+	 */
+	add_theme_support(
+		'custom-background',
+		array(
+			'default-color' => 'f4f4f4',
+			'default-image' => '',
+		)
+	);
+
+	/**
 	 * Add support for core custom logo.
 	 *
 	 * @link https://codex.wordpress.org/Theme_Logo

@@ -13,7 +13,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Template Hierarchy & Layout Systems**
   *Link: [./tracks/layout_system_20260206/](./tracks/layout_system_20260206/)*
 
-- [ ] **Track: Header & Footer Component System**
+- [x] **Track: Header & Footer Component System**
   *Link: [./tracks/header_footer_20260206/](./tracks/header_footer_20260206/)*
+
+- [ ] **Track: Media Integration & Advanced Layout Controls**
+  *Link: [./tracks/media_layout_20260206/](./tracks/media_layout_20260206/)*
 
 

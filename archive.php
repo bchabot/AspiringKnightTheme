@@ -10,6 +10,13 @@
 get_header();
 ?>
 
+<?php
+$archive_layout = get_theme_mod( 'archive_layout', 'grid' );
+$grid_class = 'grid grid-cols-1 md:grid-cols-2 gap-8';
+if ( 'list' === $archive_layout ) {
+	$grid_class = 'flex flex-col gap-8';
+}
+?>
 	<div class="container mx-auto flex flex-col lg:flex-row gap-12 py-12 px-4" style="max-width: var(--ak-container-width);">
 		<main id="primary" class="site-main flex-grow min-w-0">
 
@@ -22,7 +29,7 @@ get_header();
 					?>
 				</header><!-- .page-header -->
 
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+				<div class="<?php echo esc_attr( $grid_class ); ?>">
 					<?php
 					/* Start the Loop */
 					while ( have_posts() ) :
