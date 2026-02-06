@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'aspiring-knight' ); ?></a>
 
 	<header id="masthead" class="site-header bg-header-bg text-white p-4">
-		<div class="site-branding container mx-auto flex justify-between items-center">
+		<div class="site-branding container mx-auto flex justify-between items-center" style="max-width: var(--ak-container-width);">
 			<div class="logo-wrapper">
 				<?php
 				the_custom_logo();

@@ -73,6 +73,26 @@ function aspiring_knight_setup() {
 add_action( 'after_setup_theme', 'aspiring_knight_setup' );
 
 /**
+ * Register widget area.
+ *
+ * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
+ */
+function aspiring_knight_widgets_init() {
+	register_sidebar(
+		array(
+			'name'          => esc_html__( 'Sidebar', 'aspiring-knight' ),
+			'id'            => 'sidebar-1',
+			'description'   => esc_html__( 'Add widgets here.', 'aspiring-knight' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s bg-white p-6 rounded-lg shadow-sm mb-8">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title text-lg font-headings font-headings-bold mb-4 pb-2 border-b border-gray-100">',
+			'after_title'   => '</h2>',
+		)
+	);
+}
+add_action( 'widgets_init', 'aspiring_knight_widgets_init' );
+
+/**
  * Enqueue scripts and styles.
  */
 function aspiring_knight_scripts() {
@@ -82,6 +102,21 @@ function aspiring_knight_scripts() {
 	wp_enqueue_style( 'aspiring-knight-tailwind', get_template_directory_uri() . '/assets/css/dist/main.css', array(), '0.1.0' );
 }
 add_action( 'wp_enqueue_scripts', 'aspiring_knight_scripts' );
+
+/**
+ * Add layout classes to the body.
+ */
+function aspiring_knight_body_classes( $classes ) {
+	$layout = get_theme_mod( 'global_layout', 'sidebar-right' );
+	$classes[] = 'layout-' . $layout;
+
+	if ( 'full-width' === $layout || ! is_active_sidebar( 'sidebar-1' ) ) {
+		$classes[] = 'no-sidebar';
+	}
+
+	return $classes;
+}
+add_filter( 'body_class', 'aspiring_knight_body_classes' );
 
 /**
  * TGM Plugin Activation.

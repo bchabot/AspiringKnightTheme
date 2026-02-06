@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 	<footer id="colophon" class="site-footer bg-footer-bg text-white py-8 mt-12">
-		<div class="site-info container mx-auto text-center text-sm opacity-75">
+		<div class="site-info container mx-auto text-center text-sm opacity-75" style="max-width: var(--ak-container-width);">
 			<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'aspiring-knight' ) ); ?>" class="hover:text-accent transition-colors">
 				<?php
 				/* translators: %s: CMS name, i.e. WordPress. */

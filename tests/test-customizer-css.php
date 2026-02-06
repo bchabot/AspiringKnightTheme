@@ -21,6 +21,8 @@ function get_theme_mod( $name, $default = false ) {
         'body_line_height' => '1.5',
         'headings_font_family' => 'Cinzel',
         'headings_font_weight' => '700',
+        'global_layout' => 'sidebar-left',
+        'container_width' => '1400px',
     ];
     return isset( $mods[ $name ] ) ? $mods[ $name ] : $default;
 }
@@ -53,6 +55,8 @@ function test_css_variables_output() {
         '--ak-body-line-height: 1.5;',
         "--ak-headings-font-family: 'Cinzel', serif;",
         '--ak-headings-font-weight: 700;',
+        '--ak-container-width: 1400px;',
+        '--ak-sidebar-order: -1;',
     ];
 
     $failed = false;

@@ -23,6 +23,60 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	);
 
 	/**
+	 * Layout Settings Section
+	 */
+	$wp_customize->add_section(
+		'layout_section',
+		array(
+			'title'    => esc_html__( 'Layout Settings', 'aspiring-knight' ),
+			'panel'    => 'global_styles_panel',
+			'priority' => 5,
+		)
+	);
+
+	// Global Layout
+	$wp_customize->add_setting(
+		'global_layout',
+		array(
+			'default'           => 'sidebar-right',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh', // Layout changes usually benefit from a full refresh
+		)
+	);
+	$wp_customize->add_control(
+		'global_layout',
+		array(
+			'label'    => esc_html__( 'Global Layout', 'aspiring-knight' ),
+			'section'  => 'layout_section',
+			'type'     => 'select',
+			'choices'  => array(
+				'sidebar-right' => esc_html__( 'Content / Sidebar', 'aspiring-knight' ),
+				'sidebar-left'  => esc_html__( 'Sidebar / Content', 'aspiring-knight' ),
+				'full-width'    => esc_html__( 'Full Width', 'aspiring-knight' ),
+			),
+		)
+	);
+
+	// Container Width
+	$wp_customize->add_setting(
+		'container_width',
+		array(
+			'default'           => '1200px',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'postMessage',
+		)
+	);
+	$wp_customize->add_control(
+		'container_width',
+		array(
+			'label'       => esc_html__( 'Container Max Width', 'aspiring-knight' ),
+			'description' => esc_html__( 'e.g., 1200px, 90%, 1400px', 'aspiring-knight' ),
+			'section'     => 'layout_section',
+			'type'        => 'text',
+		)
+	);
+
+	/**
 	 * Colors Section
 	 */
 	$wp_customize->add_section(
@@ -364,6 +418,10 @@ function aspiring_knight_output_css_variables() {
 	$link_color         = get_theme_mod( 'link_color', '#8b0000' );
 	$link_hover_color   = get_theme_mod( 'link_hover_color', '#d4af37' );
 
+	// Layout
+	$global_layout      = get_theme_mod( 'global_layout', 'sidebar-right' );
+	$container_width    = get_theme_mod( 'container_width', '1200px' );
+
 	// Typography
 	$body_font_family   = get_theme_mod( 'body_font_family', 'Lora' );
 	$body_font_size     = get_theme_mod( 'body_font_size', '18px' );
@@ -383,6 +441,10 @@ function aspiring_knight_output_css_variables() {
 			--ak-heading-text: <?php echo esc_html( $heading_text_color ); ?>;
 			--ak-link-color: <?php echo esc_html( $link_color ); ?>;
 			--ak-link-hover-color: <?php echo esc_html( $link_hover_color ); ?>;
+
+			/* Layout */
+			--ak-container-width: <?php echo esc_html( $container_width ); ?>;
+			--ak-sidebar-order: <?php echo 'sidebar-left' === $global_layout ? '-1' : '1'; ?>;
 
 			/* Body Typography */
 			--ak-body-font-family: '<?php echo esc_html( $body_font_family ); ?>', serif;
