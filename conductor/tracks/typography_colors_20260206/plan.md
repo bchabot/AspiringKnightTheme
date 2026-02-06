@@ -18,12 +18,12 @@
 - [x] Task: Verification - Live preview functions for all new color fields. [2163187]
 - [ ] Task: Conductor - User Manual Verification 'Phase 2'
 
-## Phase 3: Comprehensive Typography Controls
-- [x] Task: Implement Body Typography Fields [2163187]
+## Phase 3: Comprehensive Typography Controls [checkpoint: aed8ea7]
+- [x] Task: Implement Body Typography Fields [e772510]
     - Add a `typography` field for the body text (family, weight, size, line-height).
-- [~] Task: Implement Heading Typography Fields
+- [x] Task: Implement Heading Typography Fields [e772510]
     - Add a global `typography` field for all headings.
     - Add individual overrides for H1 and H2 if needed.
-- [ ] Task: Optimization - Ensure efficient Google Font loading via Kirki.
-- [ ] Task: Verification - Fonts render correctly and change instantly in Customizer.
+- [x] Task: Optimization - Ensure efficient Google Font loading via Kirki. [e772510]
+- [x] Task: Verification - Fonts render correctly and change instantly in Customizer. [e772510]
 - [ ] Task: Conductor - User Manual Verification 'Phase 3'
