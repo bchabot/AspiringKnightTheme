@@ -13,13 +13,7 @@ add_action( 'tgmpa_register', 'aspiring_knight_register_required_plugins' );
  * Register the required plugins for this theme.
  */
 function aspiring_knight_register_required_plugins() {
-	$plugins = array(
-		array(
-			'name'      => 'Kirki Customizer Framework',
-			'slug'      => 'kirki',
-			'required'  => true,
-		),
-	);
+	$plugins = array();
 
 	$config = array(
 		'id'           => 'aspiring-knight',
