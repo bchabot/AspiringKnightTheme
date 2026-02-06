@@ -4,9 +4,9 @@
 - [x] Task: Set up CSS Variables Injection [4ec0649]
     - Create a function in `inc/customizer.php` to output a `<style>` block in the head.
     - Map initial Customizer defaults to CSS variables (e.g., `--ak-primary-color`, `--ak-accent-gold`).
-- [ ] Task: Update Tailwind Config
+- [x] Task: Update Tailwind Config [6ddd1d7]
     - Modify `tailwind.config.js` to extend the theme with the new CSS variables.
-- [ ] Task: Verification - Confirm Tailwind classes use variables.
+- [x] Task: Verification - Confirm Tailwind classes use variables. [6ddd1d7]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1'
 
 ## Phase 2: Expanded Color Controls
