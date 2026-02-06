@@ -27,7 +27,7 @@ get_header();
 			if ( is_home() && ! is_front_page() ) :
 				?>
 				<header class="mb-10">
-					<h1 class="page-title text-4xl font-bold text-knight-iron"><?php single_post_title(); ?></h1>
+					<h1 class="page-title text-4xl font-bold text-primary"><?php single_post_title(); ?></h1>
 				</header>
 				<?php
 			endif;
@@ -44,9 +44,9 @@ get_header();
 				 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
 				 */
 				?>
-				<article id="post-<?php the_ID(); ?>" <?php post_class( 'bg-white p-6 rounded-lg shadow-md border-t-4 border-knight-gold flex flex-col' ); ?>>
+				<article id="post-<?php the_ID(); ?>" <?php post_class( 'bg-white p-6 rounded-lg shadow-md border-t-4 border-accent flex flex-col' ); ?>>
 					<header class="entry-header mb-4">
-						<?php the_title( '<h2 class="entry-title text-xl font-bold text-knight-iron hover:text-knight-crimson transition-colors"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' ); ?>
+						<?php the_title( '<h2 class="entry-title text-xl font-bold text-primary hover:text-knight-crimson transition-colors"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' ); ?>
 					</header>
 					<div class="entry-content text-gray-700 flex-grow medieval-dropcap">
 						<?php the_excerpt(); ?>
