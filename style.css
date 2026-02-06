@@ -168,6 +168,9 @@ body a {
     background-image: var(--ak-content-bg-image) !important;
     background-size: cover;
     background-position: center;
+    padding: 3rem !important;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
 }
 
 /* Drop Cap Logic */
@@ -194,6 +197,16 @@ body a {
 .site-footer a {
     color: var(--ak-footer-link-color) !important;
     text-decoration: var(--ak-underline-footer) !important;
+}
+
+/* Top Bar Styling */
+.top-bar {
+    background-color: var(--ak-primary-accent) !important;
+}
+
+/* Knight Iron Accent use cases */
+.btn-primary, .button-primary {
+    background-color: var(--ak-primary-accent) !important;
 }
 
 /* Horizontal spacing for desktop */
