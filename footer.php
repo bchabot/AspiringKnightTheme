@@ -17,10 +17,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php
 $footer_columns = get_theme_mod( 'footer_columns', 3 );
 $copyright_text = get_theme_mod( 'copyright_text', 'Proudly powered by WordPress' );
+$footer_bg_image = get_theme_mod( 'footer_bg_image', '' );
+$footer_style = '';
+
+if ( $footer_bg_image ) {
+	$footer_style = 'background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(' . esc_url( $footer_bg_image ) . '); background-size: cover; background-position: center;';
+}
+
 $grid_class = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-' . $footer_columns . ' gap-12';
 ?>
 
-	<footer id="colophon" class="site-footer bg-footer-bg text-white py-12 mt-12">
+	<footer id="colophon" class="site-footer bg-footer-bg text-white py-12 mt-12" style="<?php echo esc_attr( $footer_style ); ?>">
 		<div class="container mx-auto px-4" style="max-width: var(--ak-container-width);">
 			
 			<?php if ( $footer_columns > 0 ) : ?>

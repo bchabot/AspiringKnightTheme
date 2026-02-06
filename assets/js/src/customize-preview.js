@@ -52,11 +52,37 @@
     wp.customize('menu_spacing', value => {
         value.bind(to => updateCSSVar('--ak-menu-spacing', to));
     });
+    wp.customize('menu_bg_color', value => {
+        value.bind(to => updateCSSVar('--ak-menu-bg', to));
+    });
     wp.customize('menu_text_color', value => {
         value.bind(to => updateCSSVar('--ak-menu-text-color', to));
     });
     wp.customize('menu_hover_color', value => {
         value.bind(to => updateCSSVar('--ak-menu-hover-color', to));
+    });
+    wp.customize('link_underline', value => {
+        value.bind(to => updateCSSVar('--ak-link-underline', to ? 'underline' : 'none'));
+    });
+
+    // Shadows & Glows
+    const shadowCSS = '2px 2px 4px rgba(0,0,0,0.3)';
+    const glowCSS = '0 0 8px var(--ak-accent-gold)';
+
+    wp.customize('shadow_menu_items', value => {
+        value.bind(to => updateCSSVar('--ak-shadow-menu', to ? shadowCSS : 'none'));
+    });
+    wp.customize('shadow_submenu_items', value => {
+        value.bind(to => updateCSSVar('--ak-shadow-submenu', to ? shadowCSS : 'none'));
+    });
+    wp.customize('shadow_headers', value => {
+        value.bind(to => updateCSSVar('--ak-shadow-headers', to ? shadowCSS : 'none'));
+    });
+    wp.customize('shadow_post_titles', value => {
+        value.bind(to => updateCSSVar('--ak-shadow-post-titles', to ? shadowCSS : 'none'));
+    });
+    wp.customize('shadow_site_title', value => {
+        value.bind(to => updateCSSVar('--ak-shadow-site-title', to ? glowCSS : 'none'));
     });
     wp.customize('copyright_text', value => {
         value.bind(to => {

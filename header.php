@@ -46,7 +46,7 @@ if ( 'logo-center' === $header_layout ) {
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'aspiring-knight' ); ?></a>
 
-	<?php if ( get_theme_mod( 'show_top_bar', false ) ) : ?>
+	<?php if ( get_theme_mod( 'show_top_bar', true ) ) : ?>
 		<div class="top-bar bg-primary text-white py-2 text-sm">
 			<div class="container mx-auto px-4 flex justify-between items-center" style="max-width: var(--ak-container-width);">
 				<div class="top-bar-info">
@@ -59,25 +59,33 @@ if ( 'logo-center' === $header_layout ) {
 		</div>
 	<?php endif; ?>
 
+	<?php if ( get_theme_mod( 'show_banner_image', true ) && get_theme_mod( 'site_title_banner' ) ) : ?>
+		<div class="site-title-banner w-full">
+			<img src="<?php echo esc_url( get_theme_mod( 'site_title_banner' ) ); ?>" alt="<?php bloginfo( 'name' ); ?>" class="w-full h-auto block">
+		</div>
+	<?php endif; ?>
+
 	<header id="masthead" class="<?php echo esc_attr( $header_class ); ?>" style="<?php echo esc_attr( $header_style ); ?>">
 		<div class="<?php echo esc_attr( $container_class ); ?>" style="max-width: var(--ak-container-width);">
 			<div class="logo-wrapper mb-4 lg:mb-0">
 				<?php
 				the_custom_logo();
-				if ( is_front_page() && is_home() ) :
-					?>
-					<h1 class="site-title text-2xl font-headings-bold text-accent font-headings"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-					<?php
-				else :
-					?>
-					<p class="site-title text-2xl font-headings-bold text-accent font-headings"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-					<?php
+				if ( get_theme_mod( 'show_site_title', true ) ) :
+					if ( is_front_page() && is_home() ) :
+						?>
+						<h1 class="site-title text-2xl font-headings-bold text-accent font-headings"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+						<?php
+					else :
+						?>
+						<p class="site-title text-2xl font-headings-bold text-accent font-headings"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+						<?php
+					endif;
 				endif;
 				?>
 			</div>
 			<?php
 			$aspiring_knight_description = get_bloginfo( 'description', 'display' );
-			if ( $aspiring_knight_description || is_customize_preview() ) :
+			if ( ( $aspiring_knight_description || is_customize_preview() ) && get_theme_mod( 'show_site_tagline', true ) ) :
 				?>
 				<p class="site-description text-sm italic opacity-75 text-primary"><?php echo $aspiring_knight_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 			<?php endif; ?>
