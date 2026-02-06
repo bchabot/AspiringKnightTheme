@@ -8,7 +8,7 @@
     };
 
     // 1. Global Colors
-    const bgColors = ['primary_accent', 'accent_gold', 'site_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color'];
+    const bgColors = ['primary_accent', 'accent_gold', 'site_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color'];
     bgColors.forEach(id => {
         wp.customize(id, value => value.bind(to => updateCSSVar('--ak-' + id.replace(/_/g, '-'), to)));
     });
@@ -17,6 +17,7 @@
     wp.customize('container_width', value => value.bind(to => updateCSSVar('--ak-container-width', to)));
     wp.customize('header_padding', value => value.bind(to => updateCSSVar('--ak-header-padding', to)));
     wp.customize('menu_spacing', value => value.bind(to => updateCSSVar('--ak-menu-spacing', to)));
+    wp.customize('sidebar_padding', value => value.bind(to => updateCSSVar('--ak-sidebar-padding', to)));
 
     // 3. Categorical Typography & Effects
     const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'page_titles', 'headings', 'sidebars', 'body'];
@@ -27,7 +28,7 @@
         // Font Family
         wp.customize(cat + '_font_family', value => value.bind(to => updateCSSVar('--ak-' + varId + '-font-family', `'${to}', serif`)));
         
-        // Font Size (Special for headings)
+        // Font Size
         if (cat === 'headings') {
             for (let i = 1; i <= 6; i++) {
                 wp.customize('h' + i + '_font_size', value => value.bind(to => updateCSSVar('--ak-h' + i + '-font-size', to)));
@@ -36,10 +37,8 @@
             wp.customize(cat + '_font_size', value => value.bind(to => updateCSSVar('--ak-' + varId + '-font-size', to)));
         }
         
-        // Text Color
+        // Colors
         wp.customize(cat + '_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-color', to)));
-        
-        // Link Color
         if (['body', 'menus', 'submenus', 'sidebars'].includes(cat)) {
             wp.customize(cat + '_link_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-link-color', to)));
         }
@@ -47,7 +46,7 @@
         // Underline
         wp.customize(cat + '_underline', value => value.bind(to => updateCSSVar('--ak-underline-' + varId, to ? 'underline' : 'none')));
 
-        // Effects
+        // Advanced Effects Logic
         const updateEffect = () => {
             const shadowEnabled = wp.customize(cat + '_shadow_enable').get();
             const glowEnabled = wp.customize(cat + '_glow_enable').get();

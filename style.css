@@ -66,6 +66,13 @@ a {
     text-decoration: var(--ak-underline-body) !important;
 }
 
+/* Sidebar Styling */
+.widget-area section.widget {
+    background-color: var(--ak-sidebar-bg) !important;
+    border: 1px solid var(--ak-sidebar-border) !important;
+    padding: var(--ak-sidebar-padding) !important;
+}
+
 .widget-area a {
     text-decoration: var(--ak-underline-sidebars) !important;
     color: var(--ak-sidebars-link-color);
@@ -86,16 +93,17 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--ak-headings-color);
 }
 
-h1 { font-size: var(--ak-h1-font-size); }
-h2 { font-size: var(--ak-h2-font-size); }
-h3 { font-size: var(--ak-h3-font-size); }
-h4 { font-size: var(--ak-h4-font-size); }
-h5 { font-size: var(--ak-h5-font-size); }
-h6 { font-size: var(--ak-h6-font-size); }
+h1 { font-size: var(--ak-h1-font-size) !important; }
+h2 { font-size: var(--ak-h2-font-size) !important; }
+h3 { font-size: var(--ak-h3-font-size) !important; }
+h4 { font-size: var(--ak-h4-font-size) !important; }
+h5 { font-size: var(--ak-h5-font-size) !important; }
+h6 { font-size: var(--ak-h6-font-size) !important; }
 
 .site-title {
     font-family: var(--ak-site-title-font-family) !important;
     font-size: var(--ak-site-title-font-size) !important;
+    line-height: 1.2;
 }
 
 .site-title a {
@@ -109,6 +117,8 @@ h6 { font-size: var(--ak-h6-font-size); }
     font-size: var(--ak-site-tagline-font-size) !important;
     color: var(--ak-site-tagline-color) !important;
     text-shadow: var(--ak-effect-site-tagline) !important;
+    display: block;
+    margin-top: 0.5rem;
 }
 
 .entry-title {
@@ -119,7 +129,7 @@ h6 { font-size: var(--ak-h6-font-size); }
 
 .entry-title a {
     text-shadow: var(--ak-effect-page-titles);
-    text-decoration: var(--ak-underline-site-title) !important;
+    text-decoration: var(--ak-underline-page-titles) !important;
 }
 
 body {
