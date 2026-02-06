@@ -133,6 +133,7 @@ a {
 }
 
 body {
+    background-color: var(--ak-site-bg) !important;
     font-family: var(--ak-body-font-family) !important;
     font-size: var(--ak-body-font-size) !important;
     color: var(--ak-body-color) !important;
@@ -140,6 +141,13 @@ body {
 
 body a {
     color: var(--ak-body-link-color) !important;
+}
+
+.site-main {
+    background-color: var(--ak-content-bg) !important;
+    background-image: var(--ak-content-bg-image) !important;
+    background-size: cover;
+    background-position: center;
 }
 
 /* Footer Styling */
