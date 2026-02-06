@@ -6,6 +6,19 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'body': ['var(--ak-body-font-family)', 'serif'],
+        'headings': ['var(--ak-headings-font-family)', 'serif'],
+      },
+      fontWeight: {
+        'headings-bold': 'var(--ak-headings-font-weight)',
+      },
+      fontSize: {
+        'body': 'var(--ak-body-font-size)',
+      },
+      lineHeight: {
+        'body': 'var(--ak-body-line-height)',
+      },
       colors: {
         'primary': 'var(--ak-primary-color)',
         'accent': 'var(--ak-accent-gold)',

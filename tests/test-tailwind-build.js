@@ -28,7 +28,12 @@ function runTest() {
             { name: 'Body Text Variable', pattern: /var\(--ak-body-text\)/ },
             { name: 'Heading Text Variable', pattern: /var\(--ak-heading-text\)/ },
             { name: 'Link Color Variable', pattern: /var\(--ak-link-color\)/ },
-            { name: 'Link Hover Variable', pattern: /var\(--ak-link-hover-color\)/ }
+            { name: 'Link Hover Variable', pattern: /var\(--ak-link-hover-color\)/ },
+            { name: 'Body Font Family', pattern: /var\(--ak-body-font-family\)/ },
+            { name: 'Body Font Size', pattern: /var\(--ak-body-font-size\)/ },
+            { name: 'Body Line Height', pattern: /var\(--ak-body-line-height\)/ },
+            { name: 'Headings Font Family', pattern: /var\(--ak-headings-font-family\)/ },
+            { name: 'Headings Font Weight', pattern: /var\(--ak-headings-font-weight\)/ }
         ];
 
         let failed = false;

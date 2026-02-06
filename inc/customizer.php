@@ -30,18 +30,72 @@ if ( class_exists( 'Kirki' ) ) {
 	 * Colors Section
 	 */
 	Kirki::add_section(
-		'colors_section',
+		'typography_section',
 		array(
-			'title'    => esc_html__( 'Colors', 'aspiring-knight' ),
+			'title'    => esc_html__( 'Typography', 'aspiring-knight' ),
 			'panel'    => 'global_styles_panel',
-			'priority' => 10,
+			'priority' => 20,
 		)
 	);
-
+	
 	/**
-	 * Primary Color Field
+	 * Body Typography
 	 */
 	Kirki::add_field(
+		'aspiring_knight',
+		array(
+			'type'        => 'typography',
+			'settings'    => 'body_typography',
+			'label'       => esc_html__( 'Body Typography', 'aspiring-knight' ),
+			'section'     => 'typography_section',
+			'default'     => array(
+				'font-family'    => 'Lora',
+				'variant'        => 'regular',
+				'font-size'      => '18px',
+				'line-height'    => '1.6',
+				'letter-spacing' => '0',
+				'color'          => '#333333',
+				'text-transform' => 'none',
+			),
+			'priority'    => 10,
+			'transport'   => 'postMessage',
+					'output'      => array(
+						array(
+							'element' => 'body',
+						),
+					),
+				)
+			);
+			
+			/**
+			 * Headings Typography
+			 */
+			Kirki::add_field(
+				'aspiring_knight',
+				array(
+					'type'        => 'typography',
+					'settings'    => 'headings_typography',
+					'label'       => esc_html__( 'Headings Typography', 'aspiring-knight' ),
+					'section'     => 'typography_section',
+					'default'     => array(
+						'font-family'    => 'Cinzel',
+						'variant'        => '700',
+						'text-transform' => 'none',
+					),
+					'priority'    => 20,
+					'transport'   => 'postMessage',
+					'output'      => array(
+						array(
+							'element' => array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', '.site-title' ),
+						),
+					),
+				)
+			);
+			
+			/**
+			 * Primary Color Field
+			 */
+				Kirki::add_field(
 		'aspiring_knight',
 		array(
 			'type'        => 'color',
@@ -189,6 +243,8 @@ function aspiring_knight_output_css_variables() {
 	$heading_text_color = get_theme_mod( 'heading_text_color', '#1a1a1a' );
 	$link_color        = get_theme_mod( 'link_color', '#8b0000' );
 	$link_hover_color  = get_theme_mod( 'link_hover_color', '#d4af37' );
+	$body_typography   = get_theme_mod( 'body_typography', array() );
+	$headings_typography = get_theme_mod( 'headings_typography', array() );
 	?>
 	<style id="aspiring-knight-customizer-variables">
 		:root {
@@ -201,6 +257,15 @@ function aspiring_knight_output_css_variables() {
 			--ak-heading-text: <?php echo esc_html( $heading_text_color ); ?>;
 			--ak-link-color: <?php echo esc_html( $link_color ); ?>;
 			--ak-link-hover-color: <?php echo esc_html( $link_hover_color ); ?>;
+
+			/* Body Typography */
+			--ak-body-font-family: <?php echo esc_html( $body_typography['font-family'] ?? 'Lora' ); ?>;
+			--ak-body-font-size: <?php echo esc_html( $body_typography['font-size'] ?? '18px' ); ?>;
+			--ak-body-line-height: <?php echo esc_html( $body_typography['line-height'] ?? '1.6' ); ?>;
+
+			/* Headings Typography */
+			--ak-headings-font-family: <?php echo esc_html( $headings_typography['font-family'] ?? 'Cinzel' ); ?>;
+			--ak-headings-font-weight: <?php echo esc_html( str_replace( 'regular', '400', $headings_typography['variant'] ?? '700' ) ); ?>;
 		}
 	</style>
 	<?php

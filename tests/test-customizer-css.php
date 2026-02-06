@@ -16,6 +16,16 @@ function get_theme_mod( $name, $default = false ) {
         'heading_text_color' => '#000000',
         'link_color' => '#0000ee',
         'link_hover_color' => '#ee0000',
+        'body_typography' => [
+            'font-family' => 'Open Sans',
+            'variant'     => 'regular',
+            'font-size'   => '16px',
+            'line-height' => '1.5',
+        ],
+        'headings_typography' => [
+            'font-family' => 'Cinzel',
+            'variant'     => '700',
+        ],
     ];
     return isset( $mods[ $name ] ) ? $mods[ $name ] : $default;
 }
@@ -43,6 +53,11 @@ function test_css_variables_output() {
         '--ak-heading-text: #000000;',
         '--ak-link-color: #0000ee;',
         '--ak-link-hover-color: #ee0000;',
+        '--ak-body-font-family: Open Sans;',
+        '--ak-body-font-size: 16px;',
+        '--ak-body-line-height: 1.5;',
+        '--ak-headings-font-family: Cinzel;',
+        '--ak-headings-font-weight: 700;',
     ];
 
     $failed = false;
