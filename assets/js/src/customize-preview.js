@@ -13,19 +13,13 @@
         wp.customize(id, value => value.bind(to => updateCSSVar('--ak-' + id.replace(/_/g, '-'), to)));
     });
 
-    // 2. Underlining
-    const underlineAreas = ['titles', 'headers', 'menus', 'sidebars', 'body'];
-    underlineAreas.forEach(area => {
-        wp.customize('underline_' + area, value => value.bind(to => updateCSSVar('--ak-underline-' + area, to ? 'underline' : 'none')));
-    });
-
-    // 3. Layout & Spacing
+    // 2. Layout & Spacing
     wp.customize('container_width', value => value.bind(to => updateCSSVar('--ak-container-width', to)));
     wp.customize('header_padding', value => value.bind(to => updateCSSVar('--ak-header-padding', to)));
     wp.customize('menu_spacing', value => value.bind(to => updateCSSVar('--ak-menu-spacing', to)));
 
-    // 4. Categorical Typography & Effects
-    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'page_titles', 'headings', 'body'];
+    // 3. Categorical Typography & Effects
+    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'page_titles', 'headings', 'sidebars', 'body'];
     
     categories.forEach(cat => {
         const varId = cat.replace(/_/g, '-');
@@ -33,7 +27,7 @@
         // Font Family
         wp.customize(cat + '_font_family', value => value.bind(to => updateCSSVar('--ak-' + varId + '-font-family', `'${to}', serif`)));
         
-        // Font Size
+        // Font Size (Special for headings)
         if (cat === 'headings') {
             for (let i = 1; i <= 6; i++) {
                 wp.customize('h' + i + '_font_size', value => value.bind(to => updateCSSVar('--ak-h' + i + '-font-size', to)));
@@ -42,13 +36,14 @@
             wp.customize(cat + '_font_size', value => value.bind(to => updateCSSVar('--ak-' + varId + '-font-size', to)));
         }
         
-        // Text Color
+        // Colors
         wp.customize(cat + '_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-color', to)));
-        
-        // Link Color
-        if (['body', 'menus', 'submenus'].includes(cat)) {
+        if (['body', 'menus', 'submenus', 'sidebars'].includes(cat)) {
             wp.customize(cat + '_link_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-link-color', to)));
         }
+
+        // Underline
+        wp.customize(cat + '_underline', value => value.bind(to => updateCSSVar('--ak-underline-' + varId, to ? 'underline' : 'none')));
 
         // Advanced Effects Logic
         const updateEffect = () => {
@@ -68,6 +63,8 @@
             if (cat === 'submenus') effId = 'submenu-items';
             if (cat === 'headings') effId = 'headers';
             if (cat === 'page_titles') effId = 'post-titles';
+            if (cat === 'site_title') effId = 'site-title';
+            if (cat === 'site_tagline') effId = 'site-tagline';
             
             updateCSSVar('--ak-effect-' + effId, val);
         };
@@ -78,7 +75,7 @@
         wp.customize(cat + '_glow_color', value => value.bind(updateEffect));
     });
 
-    // Footer/Header dynamic text
+    // Branding text
     wp.customize('copyright_text', value => value.bind(to => $('.copyright-content').html(to.replace('[year]', new Date().getFullYear()))));
     wp.customize('top_bar_text', value => value.bind(to => $('.top-bar-info').html(to)));
 

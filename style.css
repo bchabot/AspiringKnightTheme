@@ -53,6 +53,7 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
     font-size: var(--ak-submenus-font-size);
     color: var(--ak-submenus-color) !important;
     text-shadow: var(--ak-effect-submenu-items) !important;
+    text-decoration: var(--ak-underline-submenus) !important;
 }
 
 .main-navigation li ul li a:hover {
@@ -60,13 +61,21 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
     background-color: rgba(255,255,255,0.05) !important;
 }
 
-/* Global Link Underlining */
+/* Global Links */
 a {
     text-decoration: var(--ak-underline-body) !important;
 }
 
 .widget-area a {
     text-decoration: var(--ak-underline-sidebars) !important;
+    color: var(--ak-sidebars-link-color);
+}
+
+.widget-area {
+    font-family: var(--ak-sidebars-font-family);
+    font-size: var(--ak-sidebars-font-size);
+    color: var(--ak-sidebars-color);
+    text-shadow: var(--ak-effect-sidebars);
 }
 
 /* Effects & Typography for Titles and Headers */
@@ -74,6 +83,7 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: var(--ak-effect-headers);
     font-family: var(--ak-headings-font-family);
     text-decoration: var(--ak-underline-headers) !important;
+    color: var(--ak-headings-color);
 }
 
 h1 { font-size: var(--ak-h1-font-size); }
@@ -91,13 +101,14 @@ h6 { font-size: var(--ak-h6-font-size); }
 .site-title a {
     color: var(--ak-site-title-color) !important;
     text-shadow: var(--ak-effect-site-title);
-    text-decoration: var(--ak-underline-titles) !important;
+    text-decoration: var(--ak-underline-site-title) !important;
 }
 
 .site-description {
     font-family: var(--ak-site-tagline-font-family);
     font-size: var(--ak-site-tagline-font-size);
     color: var(--ak-site-tagline-color) !important;
+    text-shadow: var(--ak-effect-site-tagline);
 }
 
 .entry-title {
@@ -108,7 +119,7 @@ h6 { font-size: var(--ak-h6-font-size); }
 
 .entry-title a {
     text-shadow: var(--ak-effect-post-titles);
-    text-decoration: var(--ak-underline-titles) !important;
+    text-decoration: var(--ak-underline-page-titles) !important;
 }
 
 body {

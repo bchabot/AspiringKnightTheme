@@ -73,11 +73,11 @@ if ( 'logo-center' === $header_layout ) {
 				if ( get_theme_mod( 'show_site_title', true ) ) :
 					if ( is_front_page() && is_home() ) :
 						?>
-						<h1 class="site-title text-2xl font-headings-bold text-accent font-headings"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+						<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
 						<?php
 					else :
 						?>
-						<p class="site-title text-2xl font-headings-bold text-accent font-headings"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+						<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
 						<?php
 					endif;
 				endif;
@@ -87,7 +87,7 @@ if ( 'logo-center' === $header_layout ) {
 			$aspiring_knight_description = get_bloginfo( 'description', 'display' );
 			if ( ( $aspiring_knight_description || is_customize_preview() ) && get_theme_mod( 'show_site_tagline', true ) ) :
 				?>
-				<p class="site-description text-sm italic opacity-75 text-primary"><?php echo $aspiring_knight_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+				<p class="site-description"><?php echo $aspiring_knight_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 			<?php endif; ?>
 		</div><!-- .site-branding -->
 

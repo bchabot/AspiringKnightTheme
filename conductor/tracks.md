@@ -28,7 +28,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Comprehensive Visual & Typography Overhaul**
   *Link: [./tracks/visual_overhaul_20260206/](./tracks/visual_overhaul_20260206/)*
 
-- [ ] **Track: Granular Heading Controls**
+- [x] **Track: Granular Heading Controls**
   *Link: [./tracks/granular_headings_20260206/](./tracks/granular_headings_20260206/)*
+
+- [ ] **Track: Design System Final Polish & UX Cleanup**
+  *Link: [./tracks/design_polish_20260206/](./tracks/design_polish_20260206/)*
 
 
