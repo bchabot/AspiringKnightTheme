@@ -9,7 +9,7 @@
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class( 'bg-white rounded-lg shadow-md border-t-4 border-accent flex flex-col overflow-hidden' ); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'rounded-lg shadow-md border-t-4 border-accent flex flex-col overflow-hidden' ); ?>>
 	<?php if ( has_post_thumbnail() ) : ?>
 		<div class="post-thumbnail relative h-64 overflow-hidden">
 			<?php if ( ! is_singular() ) : ?>

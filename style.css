@@ -148,8 +148,12 @@ body a {
     color: var(--ak-blog-titles-link-color) !important;
 }
 
-/* Article Area Text (The specific paragraph text inside the post box) */
-.entry-content p, .entry-content div, .entry-content section {
+/* Main Article Text (Targeting the entire content area) */
+.entry-content, 
+.entry-content p, 
+.entry-content li, 
+.entry-content div, 
+.entry-content blockquote {
     font-family: var(--ak-article-text-font-family) !important;
     font-size: var(--ak-article-text-font-size) !important;
     color: var(--ak-article-text-color) !important;
@@ -183,8 +187,8 @@ body a {
     margin-top: 0.5rem;
 }
 
-/* The actual white box background for text */
-.site-main {
+/* The actual Box containing the text */
+article {
     background-color: var(--ak-article-bg) !important;
     background-image: var(--ak-article-bg-image) !important;
     background-size: cover;
@@ -192,18 +196,19 @@ body a {
     padding: 3rem !important;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    margin-bottom: 2rem !important;
 }
 
-/* Drop Cap Logic */
-.medieval-dropcap:first-letter {
-    display: var(--ak-dropcap-display, block);
-    float: left;
-    font-family: var(--ak-dropcap-font-family, serif);
-    font-size: var(--ak-dropcap-font-size, 4rem);
-    line-height: 1;
-    margin: 0.1em 0.1em 0 0;
-    color: var(--ak-dropcap-color, var(--ak-accent-gold));
-    font-weight: bold;
+/* Drop Cap Logic - Improved specificity */
+.entry-content.medieval-dropcap > p:first-of-type::first-letter {
+    display: var(--ak-dropcap-display, block) !important;
+    float: left !important;
+    font-family: var(--ak-dropcap-font-family, serif) !important;
+    font-size: var(--ak-dropcap-font-size, 4rem) !important;
+    line-height: 1 !important;
+    margin: 0.1em 0.1em 0 0 !important;
+    color: var(--ak-dropcap-color, var(--ak-accent-gold)) !important;
+    font-weight: bold !important;
 }
 
 /* Footer Styling */
@@ -224,6 +229,10 @@ body a {
 .top-bar {
     background-color: var(--ak-top-bar-bg) !important;
     color: var(--ak-top-bar-text) !important;
+}
+
+.top-bar-info {
+    color: inherit !important;
 }
 
 /* Horizontal spacing for desktop */
