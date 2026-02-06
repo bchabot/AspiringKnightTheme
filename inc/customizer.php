@@ -53,7 +53,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	$wp_customize->add_setting( 'new_preset_name', array( 'default' => '', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( 'new_preset_name', array(
 		'label'    => __( 'Save Current as Preset', 'aspiring-knight' ),
-		'description' => __( 'Enter a name and click the save icon.', 'aspiring-knight' ),
 		'section'  => 'ds_presets_section',
 		'type'     => 'text',
 		'input_attrs' => array( 'placeholder' => __( 'Preset Name...', 'aspiring-knight' ) ),
@@ -76,8 +75,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'top_bar_text_color' => array( 'label' => __( 'Top Bar Text Color', 'aspiring-knight' ), 'default' => '#ffffff' ),
 		'accent_gold'        => array( 'label' => __( 'Gold Accent / Highlights', 'aspiring-knight' ), 'default' => '#d4af37' ),
 		'site_bg_color'      => array( 'label' => __( 'Global Site Background', 'aspiring-knight' ), 'default' => '#f4f4f4' ),
-		'wrapper_bg_color'   => array( 'label' => __( 'Main Wrapper Background', 'aspiring-knight' ), 'default' => 'transparent' ),
-		'article_bg_color'   => array( 'label' => __( 'Article Area Background', 'aspiring-knight' ), 'default' => '#ffffff' ),
+		'article_bg_color'   => array( 'label' => __( 'Article Box Background', 'aspiring-knight' ), 'default' => '#ffffff' ),
 		'header_bg_color'    => array( 'label' => __( 'Header Background', 'aspiring-knight' ), 'default' => '#3a3a3a' ),
 		'menu_bg_color'      => array( 'label' => __( 'Menu Background', 'aspiring-knight' ), 'default' => 'transparent' ),
 		'submenu_bg_color'   => array( 'label' => __( 'Sub-menu Background', 'aspiring-knight' ), 'default' => '#3a3a3a' ),
@@ -95,7 +93,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'background_image', array( 'label' => __( 'Global Background Image', 'aspiring-knight' ), 'section' => 'site_colors_section' ) ) );
 
 	$wp_customize->add_setting( 'article_bg_image', array( 'transport' => 'refresh', 'sanitize_callback' => 'esc_url_raw' ) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'article_bg_image', array( 'label' => __( 'Article Area Background Image', 'aspiring-knight' ), 'section' => 'site_colors_section' ) ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'article_bg_image', array( 'label' => __( 'Article Box Background Image', 'aspiring-knight' ), 'section' => 'site_colors_section' ) ) );
 
 	/**
 	 * CATEGORICAL DESIGN SECTIONS
@@ -215,7 +213,7 @@ function aspiring_knight_get_preset_choices() {
  * Get font choices for Customizer.
  */
 function aspiring_knight_get_font_choices() {
-	return array( 'Lora' => 'Lora (Classic Serif)', 'Cinzel' => 'Cinzel (Medieval Decorative)', 'MedievalSharp' => 'MedievalSharp (Medieval Angular)', 'EB Garamond' => 'EB Garamond (Elegant Serif)', 'Playfair Display' => 'Playfair Display (High-Contrast Serif)', 'Libre Baskerville' => 'Libre Baskerville (Traditional Serif)', 'Almendra' => 'Almendra (Calligraphic Medieval)', 'Crimson Text' => 'Crimson Text (Book Serif)', 'Montserrat'       => 'Montserrat (Modern Sans)', 'Open Sans'        => 'Open Sans (Clean Sans)' );
+	return array( 'Lora' => 'Lora (Classic Serif)', 'Cinzel' => 'Cinzel (Medieval Decorative)', 'MedievalSharp' => 'MedievalSharp (Medieval Angular)', 'EB Garamond' => 'EB Garamond (Elegant Serif)', 'Playfair Display' => 'Playfair Display (High-Contrast Serif)', 'Libre Baskerville' => 'Libre Baskerville (Traditional Serif)', 'Almendra' => 'Almendra (Calligraphic Medieval)', 'Crimson Text' => 'Crimson Text (Book Serif)', 'Montserrat' => 'Montserrat (Modern Sans)', 'Open Sans' => 'Open Sans (Clean Sans)' );
 }
 
 /**
@@ -240,7 +238,6 @@ function aspiring_knight_output_css_variables() {
 			--ak-top-bar-text: <?php echo esc_html( $get_mod( 'top_bar_text_color', '#ffffff' ) ); ?>;
 			--ak-accent-gold: <?php echo esc_html( $get_mod( 'accent_gold', '#d4af37' ) ); ?>;
 			--ak-site-bg: <?php echo esc_html( $get_mod( 'site_bg_color', '#f4f4f4' ) ); ?>;
-			--ak-wrapper-bg: <?php echo esc_html( $get_mod( 'wrapper_bg_color', 'transparent' ) ); ?>;
 			--ak-article-bg: <?php echo esc_html( $get_mod( 'article_bg_color', '#ffffff' ) ); ?>;
 			--ak-article-bg-image: <?php echo $article_bg_image ? 'url(' . esc_url($article_bg_image) . ')' : 'none'; ?>;
 			--ak-header-bg: <?php echo esc_html( $get_mod( 'header_bg_color', '#3a3a3a' ) ); ?>;
@@ -264,18 +261,14 @@ function aspiring_knight_output_css_variables() {
 				$font = $get_mod("{$cat}_font_family", in_array($cat, ['body', 'menus', 'submenus', 'sidebars', 'footer', 'article_text']) ? 'Lora' : 'Cinzel');
 				if ($use_custom_headings && $custom_font_file && in_array($cat, ['site_title', 'site_tagline', 'blog_titles', 'headings'])) $font = $custom_font_name;
 				echo "--ak-{$var_id}-font-family: '" . esc_html($font) . "', serif;\n";
-				
 				if ($cat === 'headings') {
 					for ($i=1;$i<=6;$i++) echo "--ak-h{$i}-font-size: " . esc_html($get_mod("h{$i}_font_size", (array('1'=>'48px','2'=>'36px','3'=>'30px','4'=>'24px','5'=>'20px','6'=>'18px'))[$i])) . ";\n";
 				} else {
-					$def_size = ($cat === 'site_title' ? '2.5rem' : '18px');
-					echo "--ak-{$var_id}-font-size: " . esc_html($get_mod("{$cat}_font_size", $def_size)) . ";\n";
+					echo "--ak-{$var_id}-font-size: " . esc_html($get_mod("{$cat}_font_size", ($cat === 'site_title' ? '2.5rem' : '18px'))) . ";\n";
 				}
-
 				echo "--ak-{$var_id}-color: " . esc_html($get_mod("{$cat}_color", in_array($cat, ['site_title', 'site_tagline', 'menus', 'submenus', 'footer']) ? '#ffffff' : '#333333')) . ";\n";
 				if ( in_array($cat, ['body', 'menus', 'submenus', 'sidebars', 'footer', 'blog_titles', 'article_text']) ) echo "--ak-{$var_id}-link-color: " . esc_html($get_mod("{$cat}_link_color", '#d4af37')) . ";\n";
 				echo "--ak-underline-{$var_id}: " . ($get_mod("{$cat}_underline", in_array($cat, ['body', 'article_text'])) ? 'underline' : 'none') . ";\n";
-
 				$val = '';
 				if ($get_mod("{$cat}_shadow_enable", false)) $val .= "2px 2px 4px " . $get_mod("{$cat}_shadow_color", '#000000');
 				if ($get_mod("{$cat}_glow_enable", false)) $val .= ($val ? ', ' : '') . "0 0 10px " . $get_mod("{$cat}_glow_color", '#d4af37');
