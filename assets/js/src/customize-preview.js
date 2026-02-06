@@ -20,7 +20,7 @@
     wp.customize('sidebar_padding', value => value.bind(to => updateCSSVar('--ak-sidebar-padding', to)));
 
     // 3. Categorical Typography & Effects
-    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'page_titles', 'headings', 'sidebars', 'body'];
+    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'page_titles', 'headings', 'sidebars', 'footer', 'body'];
     
     categories.forEach(cat => {
         const varId = cat.replace(/_/g, '-');

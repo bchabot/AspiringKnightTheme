@@ -155,6 +155,14 @@ function aspiring_knight_customize_preview_js() {
 add_action( 'customize_preview_init', 'aspiring_knight_customize_preview_js' );
 
 /**
+ * Enqueue JS for Customizer controls (Presets).
+ */
+function aspiring_knight_customize_controls_js() {
+	wp_enqueue_script( 'aspiring-knight-customize-controls', get_template_directory_uri() . '/assets/js/src/customize-controls.js', array( 'customize-controls', 'jquery' ), '0.1.0', true );
+}
+add_action( 'customize_controls_enqueue_scripts', 'aspiring_knight_customize_controls_js' );
+
+/**
  * TGM Plugin Activation.
  */
 require get_template_directory() . '/inc/tgmpa.php';

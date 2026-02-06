@@ -142,6 +142,19 @@ body a {
     color: var(--ak-body-link-color);
 }
 
+/* Footer Styling */
+.site-footer {
+    font-family: var(--ak-footer-font-family) !important;
+    font-size: var(--ak-footer-font-size) !important;
+    color: var(--ak-footer-color) !important;
+    text-shadow: var(--ak-effect-footer) !important;
+}
+
+.site-footer a {
+    color: var(--ak-footer-link-color) !important;
+    text-decoration: var(--ak-underline-footer) !important;
+}
+
 /* Horizontal spacing for desktop */
 @media (min-width: 1024px) {
     .main-navigation ul {
