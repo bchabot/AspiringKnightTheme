@@ -5,38 +5,28 @@
  */
 
 (function($) {
-    // Helper to update CSS variables on :root
     const updateCSSVar = (name, value) => {
         document.documentElement.style.setProperty(name, value);
     };
 
     // Colors
-    wp.customize('primary_color', value => {
-        value.bind(to => updateCSSVar('--ak-primary-color', to));
+    const colorSettings = [
+        'primary_color', 'accent_gold', 'site_bg_color', 'header_bg_color', 
+        'menu_bg_color', 'menu_text_color', 'menu_hover_color',
+        'submenu_bg_color', 'submenu_text_color', 'submenu_hover_color',
+        'footer_bg_color', 'shadow_color', 'glow_color',
+        'body_text_color', 'heading_text_color', 'link_color', 'link_hover_color'
+    ];
+
+    colorSettings.forEach(id => {
+        wp.customize(id, value => {
+            value.bind(to => updateCSSVar('--ak-' + id.replace(/_/g, '-'), to));
+        });
     });
-    wp.customize('accent_gold', value => {
-        value.bind(to => updateCSSVar('--ak-accent-gold', to));
-    });
-    wp.customize('site_bg_color', value => {
-        value.bind(to => updateCSSVar('--ak-site-bg', to));
-    });
-    wp.customize('header_bg_color', value => {
-        value.bind(to => updateCSSVar('--ak-header-bg', to));
-    });
-    wp.customize('footer_bg_color', value => {
-        value.bind(to => updateCSSVar('--ak-footer-bg', to));
-    });
-    wp.customize('body_text_color', value => {
-        value.bind(to => updateCSSVar('--ak-body-text', to));
-    });
-    wp.customize('heading_text_color', value => {
-        value.bind(to => updateCSSVar('--ak-heading-text', to));
-    });
-    wp.customize('link_color', value => {
-        value.bind(to => updateCSSVar('--ak-link-color', to));
-    });
-    wp.customize('link_hover_color', value => {
-        value.bind(to => updateCSSVar('--ak-link-hover-color', to));
+
+    // Link Underline
+    wp.customize('link_underline', value => {
+        value.bind(to => updateCSSVar('--ak-link-underline', to ? 'underline' : 'none'));
     });
 
     // Layout
@@ -46,72 +36,47 @@
     wp.customize('header_padding', value => {
         value.bind(to => updateCSSVar('--ak-header-padding', to));
     });
-    wp.customize('menu_font_size', value => {
-        value.bind(to => updateCSSVar('--ak-menu-font-size', to));
-    });
-    wp.customize('menu_spacing', value => {
-        value.bind(to => updateCSSVar('--ak-menu-spacing', to));
-    });
-    wp.customize('menu_bg_color', value => {
-        value.bind(to => updateCSSVar('--ak-menu-bg', to));
-    });
-    wp.customize('menu_text_color', value => {
-        value.bind(to => updateCSSVar('--ak-menu-text-color', to));
-    });
-    wp.customize('menu_hover_color', value => {
-        value.bind(to => updateCSSVar('--ak-menu-hover-color', to));
-    });
-    wp.customize('link_underline', value => {
-        value.bind(to => updateCSSVar('--ak-link-underline', to ? 'underline' : 'none'));
-    });
 
-    // Shadows & Glows
-    const shadowCSS = '2px 2px 4px rgba(0,0,0,0.3)';
-    const glowCSS = '0 0 8px var(--ak-accent-gold)';
-
-    wp.customize('shadow_menu_items', value => {
-        value.bind(to => updateCSSVar('--ak-shadow-menu', to ? shadowCSS : 'none'));
-    });
-    wp.customize('shadow_submenu_items', value => {
-        value.bind(to => updateCSSVar('--ak-shadow-submenu', to ? shadowCSS : 'none'));
-    });
-    wp.customize('shadow_headers', value => {
-        value.bind(to => updateCSSVar('--ak-shadow-headers', to ? shadowCSS : 'none'));
-    });
-    wp.customize('shadow_post_titles', value => {
-        value.bind(to => updateCSSVar('--ak-shadow-post-titles', to ? shadowCSS : 'none'));
-    });
-    wp.customize('shadow_site_title', value => {
-        value.bind(to => updateCSSVar('--ak-shadow-site-title', to ? glowCSS : 'none'));
-    });
-    wp.customize('copyright_text', value => {
-        value.bind(to => {
-            $('.copyright-content').html(to.replace('[year]', new Date().getFullYear()));
+    // Typography Groups
+    const typoGroups = ['site_title', 'post_title', 'headings', 'body', 'menu'];
+    typoGroups.forEach(group => {
+        wp.customize(group + '_font_family', value => {
+            value.bind(to => updateCSSVar('--ak-' + group.replace(/_/g, '-') + '-font-family', `'${to}', serif`));
         });
+        wp.customize(group + '_font_size', value => {
+            value.bind(to => updateCSSVar('--ak-' + group.replace(/_/g, '-') + '-font-size', to));
+        });
+    });
+
+    // Effects logic (approximate preview)
+    const updateEffect = (element) => {
+        const shadowEnabled = wp.customize('shadow_' + element).get();
+        const glowEnabled = wp.customize('glow_' + element).get();
+        const shadowColor = wp.customize('shadow_color').get();
+        const glowColor = wp.customize('glow_color').get();
+        
+        let val = '';
+        if (shadowEnabled) val += `2px 2px 4px ${shadowColor}`;
+        if (glowEnabled) val += (val ? ', ' : '') + `0 0 10px ${glowColor}`;
+        if (!val) val = 'none';
+        
+        updateCSSVar('--ak-effect-' + element.replace(/_/g, '-'), val);
+    };
+
+    const effectElements = ['menu_items', 'submenu_items', 'headers', 'post_titles', 'site_title'];
+    effectElements.forEach(el => {
+        wp.customize('shadow_' + el, value => value.bind(() => updateEffect(el)));
+        wp.customize('glow_' + el, value => value.bind(() => updateEffect(el)));
+    });
+    wp.customize('shadow_color', value => value.bind(() => effectElements.forEach(updateEffect)));
+    wp.customize('glow_color', value => value.bind(() => effectElements.forEach(updateEffect)));
+
+    // Other handlers
+    wp.customize('copyright_text', value => {
+        value.bind(to => $('.copyright-content').html(to.replace('[year]', new Date().getFullYear())));
     });
     wp.customize('top_bar_text', value => {
-        value.bind(to => {
-            $('.top-bar-info').html(to);
-        });
-    });
-
-    // Typography - Body
-    wp.customize('body_font_family', value => {
-        value.bind(to => updateCSSVar('--ak-body-font-family', `'${to}', serif`));
-    });
-    wp.customize('body_font_size', value => {
-        value.bind(to => updateCSSVar('--ak-body-font-size', to));
-    });
-    wp.customize('body_line_height', value => {
-        value.bind(to => updateCSSVar('--ak-body-line-height', to));
-    });
-
-    // Typography - Headings
-    wp.customize('headings_font_family', value => {
-        value.bind(to => updateCSSVar('--ak-headings-font-family', `'${to}', serif`));
-    });
-    wp.customize('headings_font_weight', value => {
-        value.bind(to => updateCSSVar('--ak-headings-font-weight', to));
+        value.bind(to => $('.top-bar-info').html(to));
     });
 
 })(jQuery);

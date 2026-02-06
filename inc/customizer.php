@@ -42,7 +42,12 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'menu_bg_color'      => array( 'label' => __( 'Menu Background', 'aspiring-knight' ), 'default' => 'transparent' ),
 		'menu_text_color'    => array( 'label' => __( 'Menu Link Color', 'aspiring-knight' ), 'default' => '#ffffff' ),
 		'menu_hover_color'   => array( 'label' => __( 'Menu Link Hover', 'aspiring-knight' ), 'default' => '#d4af37' ),
+		'submenu_bg_color'   => array( 'label' => __( 'Sub-menu Background', 'aspiring-knight' ), 'default' => '#3a3a3a' ),
+		'submenu_text_color' => array( 'label' => __( 'Sub-menu Link Color', 'aspiring-knight' ), 'default' => '#ffffff' ),
+		'submenu_hover_color'=> array( 'label' => __( 'Sub-menu Link Hover', 'aspiring-knight' ), 'default' => '#d4af37' ),
 		'footer_bg_color'    => array( 'label' => __( 'Footer Background', 'aspiring-knight' ), 'default' => '#3a3a3a' ),
+		'shadow_color'       => array( 'label' => __( 'Text Shadow Color', 'aspiring-knight' ), 'default' => '#000000' ),
+		'glow_color'         => array( 'label' => __( 'Text Glow Color', 'aspiring-knight' ), 'default' => '#d4af37' ),
 		'body_text_color'    => array( 'label' => __( 'Body Text Color', 'aspiring-knight' ), 'default' => '#333333' ),
 		'heading_text_color' => array( 'label' => __( 'Heading Text Color', 'aspiring-knight' ), 'default' => '#1a1a1a' ),
 		'link_color'         => array( 'label' => __( 'General Link Color', 'aspiring-knight' ), 'default' => '#8b0000' ),
@@ -221,23 +226,37 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		)
 	);
 
-	// Font families
-	$fonts = array(
-		'body_font_family'     => __( 'Body Font Family', 'aspiring-knight' ),
-		'headings_font_family' => __( 'Headings Font Family', 'aspiring-knight' ),
+	// Granular Typography Groups
+	$typo_groups = array(
+		'site_title' => __( 'Site Title', 'aspiring-knight' ),
+		'post_title' => __( 'Page/Post Titles', 'aspiring-knight' ),
+		'headings'   => __( 'General Headings (H1-H6)', 'aspiring-knight' ),
+		'body'       => __( 'Body Text', 'aspiring-knight' ),
+		'menu'       => __( 'Navigation Menu', 'aspiring-knight' ),
 	);
 
-	foreach ( $fonts as $id => $label ) {
-		$wp_customize->add_setting( $id, array(
-			'default'           => 'body_font_family' === $id ? 'Lora' : 'Cinzel',
+	foreach ( $typo_groups as $id => $label ) {
+		$wp_customize->add_setting( "{$id}_font_family", array(
+			'default'           => in_array($id, ['body', 'menu']) ? 'Lora' : 'Cinzel',
 			'sanitize_callback' => 'sanitize_text_field',
 			'transport'         => 'postMessage',
 		) );
-		$wp_customize->add_control( $id, array(
-			'label'   => $label,
+		$wp_customize->add_control( "{$id}_font_family", array(
+			'label'   => sprintf( __( '%s Font Family', 'aspiring-knight' ), $label ),
 			'section' => 'typography_section',
 			'type'    => 'select',
 			'choices' => aspiring_knight_get_font_choices(),
+		) );
+
+		$wp_customize->add_setting( "{$id}_font_size", array(
+			'default'           => '18px',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'postMessage',
+		) );
+		$wp_customize->add_control( "{$id}_font_size", array(
+			'label'   => sprintf( __( '%s Font Size', 'aspiring-knight' ), $label ),
+			'section' => 'typography_section',
+			'type'    => 'text',
 		) );
 	}
 
@@ -257,11 +276,56 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'transport'         => 'postMessage',
 		) );
 		$wp_customize->add_control( "shadow_{$id}", array(
-			'label'    => sprintf( __( 'Enable Shadow/Glow for %s?', 'aspiring-knight' ), $label ),
+			'label'    => sprintf( __( 'Enable Drop Shadow for %s?', 'aspiring-knight' ), $label ),
+			'section'  => 'typography_section',
+			'type'     => 'checkbox',
+		) );
+
+		$wp_customize->add_setting( "glow_{$id}", array(
+			'default'           => false,
+			'sanitize_callback' => 'rest_sanitize_boolean',
+			'transport'         => 'postMessage',
+		) );
+		$wp_customize->add_control( "glow_{$id}", array(
+			'label'    => sprintf( __( 'Enable Glow for %s?', 'aspiring-knight' ), $label ),
 			'section'  => 'typography_section',
 			'type'     => 'checkbox',
 		) );
 	}
+
+	// Custom Font Upload
+	$wp_customize->add_setting( 'custom_font_file', array(
+		'default'           => '',
+		'sanitize_callback' => 'esc_url_raw',
+		'transport'         => 'refresh',
+	) );
+	$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'custom_font_file', array(
+		'label'       => esc_html__( 'Custom Font File', 'aspiring-knight' ),
+		'description' => esc_html__( 'Upload a .woff2, .woff, or .ttf file.', 'aspiring-knight' ),
+		'section'     => 'typography_section',
+	) ) );
+
+	$wp_customize->add_setting( 'custom_font_name', array(
+		'default'           => 'CustomFont',
+		'sanitize_callback' => 'sanitize_text_field',
+		'transport'         => 'refresh',
+	) );
+	$wp_customize->add_control( 'custom_font_name', array(
+		'label'   => esc_html__( 'Custom Font Name', 'aspiring-knight' ),
+		'section' => 'typography_section',
+		'type'    => 'text',
+	) );
+
+	$wp_customize->add_setting( 'use_custom_font_headings', array(
+		'default'           => false,
+		'sanitize_callback' => 'rest_sanitize_boolean',
+		'transport'         => 'refresh',
+	) );
+	$wp_customize->add_control( 'use_custom_font_headings', array(
+		'label'   => esc_html__( 'Use Custom Font for Headings?', 'aspiring-knight' ),
+		'section' => 'typography_section',
+		'type'    => 'checkbox',
+	) );
 
 	/**
 	 * 5. Footer Section
@@ -333,42 +397,19 @@ function aspiring_knight_get_font_choices() {
  */
 function aspiring_knight_output_css_variables() {
 	$mods = get_theme_mods();
-	
-	// Helper to get mod with default
 	$get_mod = function( $name, $default ) use ( $mods ) {
-		return $mods[ $name ] ?? $default;
+		return isset($mods[ $name ]) ? $mods[ $name ] : $default;
 	};
-
-	$primary_color      = $get_mod( 'primary_color', '#3a3a3a' );
-	$accent_gold        = $get_mod( 'accent_gold', '#d4af37' );
-	$site_bg_color      = $get_mod( 'site_bg_color', '#f4f4f4' );
-	$header_bg_color    = $get_mod( 'header_bg_color', '#3a3a3a' );
-	$menu_bg_color      = $get_mod( 'menu_bg_color', 'transparent' );
-	$menu_text_color    = $get_mod( 'menu_text_color', '#ffffff' );
-	$menu_hover_color   = $get_mod( 'menu_hover_color', '#d4af37' );
-	$footer_bg_color    = $get_mod( 'footer_bg_color', '#3a3a3a' );
-	$body_text_color    = $get_mod( 'body_text_color', '#333333' );
-	$heading_text_color = $get_mod( 'heading_text_color', '#1a1a1a' );
-	$link_color         = $get_mod( 'link_color', '#8b0000' );
-	$link_hover_color   = $get_mod( 'link_hover_color', '#d4af37' );
-	$link_underline     = $get_mod( 'link_underline', true );
-
-	$container_width    = $get_mod( 'container_width', '1200px' );
-	$header_padding     = $get_mod( 'header_padding', '20px' );
-	$menu_font_size     = $get_mod( 'menu_font_size', '16px' );
-	$menu_spacing       = $get_mod( 'menu_spacing', '2rem' );
-
-	$body_font_family   = $get_mod( 'body_font_family', 'Lora' );
-	$headings_font_family = $get_mod( 'headings_font_family', 'Cinzel' );
-	$headings_font_weight = $get_mod( 'headings_font_weight', '700' );
 
 	$custom_font_file = $get_mod( 'custom_font_file', '' );
 	$custom_font_name = $get_mod( 'custom_font_name', 'CustomFont' );
 	$use_custom_headings = $get_mod( 'use_custom_font_headings', false );
 
-	// Effects
-	$shadow_css = '2px 2px 4px rgba(0,0,0,0.3)';
-	$glow_css   = '0 0 8px var(--ak-accent-gold)';
+	// Effects Settings
+	$shadow_color = $get_mod( 'shadow_color', '#000000' );
+	$glow_color   = $get_mod( 'glow_color', '#d4af37' );
+	$shadow_def   = "2px 2px 4px {$shadow_color}";
+	$glow_def     = "0 0 10px {$glow_color}";
 
 	?>
 	<style id="aspiring-knight-customizer-variables">
@@ -381,35 +422,51 @@ function aspiring_knight_output_css_variables() {
 		<?php endif; ?>
 
 		:root {
-			--ak-primary-color: <?php echo esc_html( $primary_color ); ?>;
-			--ak-accent-gold: <?php echo esc_html( $accent_gold ); ?>;
-			--ak-site-bg: <?php echo esc_html( $site_bg_color ); ?>;
-			--ak-header-bg: <?php echo esc_html( $header_bg_color ); ?>;
-			--ak-menu-bg: <?php echo esc_html( $menu_bg_color ); ?>;
-			--ak-menu-text-color: <?php echo esc_html( $menu_text_color ); ?>;
-			--ak-menu-hover-color: <?php echo esc_html( $menu_hover_color ); ?>;
-			--ak-footer-bg: <?php echo esc_html( $footer_bg_color ); ?>;
-			--ak-body-text: <?php echo esc_html( $body_text_color ); ?>;
-			--ak-heading-text: <?php echo esc_html( $heading_text_color ); ?>;
-			--ak-link-color: <?php echo esc_html( $link_color ); ?>;
-			--ak-link-hover-color: <?php echo esc_html( $link_hover_color ); ?>;
-			--ak-link-underline: <?php echo $link_underline ? 'underline' : 'none'; ?>;
+			--ak-primary-color: <?php echo esc_html( $get_mod( 'primary_color', '#3a3a3a' ) ); ?>;
+			--ak-accent-gold: <?php echo esc_html( $get_mod( 'accent_gold', '#d4af37' ) ); ?>;
+			--ak-site-bg: <?php echo esc_html( $get_mod( 'site_bg_color', '#f4f4f4' ) ); ?>;
+			--ak-header-bg: <?php echo esc_html( $get_mod( 'header_bg_color', '#3a3a3a' ) ); ?>;
+			--ak-menu-bg: <?php echo esc_html( $get_mod( 'menu_bg_color', 'transparent' ) ); ?>;
+			--ak-menu-text-color: <?php echo esc_html( $get_mod( 'menu_text_color', '#ffffff' ) ); ?>;
+			--ak-menu-hover-color: <?php echo esc_html( $get_mod( 'menu_hover_color', '#d4af37' ) ); ?>;
+			--ak-submenu-bg: <?php echo esc_html( $get_mod( 'submenu_bg_color', '#3a3a3a' ) ); ?>;
+			--ak-submenu-text-color: <?php echo esc_html( $get_mod( 'submenu_text_color', '#ffffff' ) ); ?>;
+			--ak-submenu-hover-color: <?php echo esc_html( $get_mod( 'submenu_hover_color', '#d4af37' ) ); ?>;
+			--ak-footer-bg: <?php echo esc_html( $get_mod( 'footer_bg_color', '#3a3a3a' ) ); ?>;
+			--ak-body-text: <?php echo esc_html( $get_mod( 'body_text_color', '#333333' ) ); ?>;
+			--ak-heading-text: <?php echo esc_html( $get_mod( 'heading_text_color', '#1a1a1a' ) ); ?>;
+			--ak-link-color: <?php echo esc_html( $get_mod( 'link_color', '#8b0000' ) ); ?>;
+			--ak-link-hover-color: <?php echo esc_html( $get_mod( 'link_hover_color', '#d4af37' ) ); ?>;
+			--ak-link-underline: <?php echo $get_mod( 'link_underline', true ) ? 'underline' : 'none'; ?>;
 
-			--ak-container-width: <?php echo esc_html( $container_width ); ?>;
-			--ak-header-padding: <?php echo esc_html( $header_padding ); ?>;
-			--ak-menu-font-size: <?php echo esc_html( $menu_font_size ); ?>;
-			--ak-menu-spacing: <?php echo esc_html( $menu_spacing ); ?>;
+			--ak-container-width: <?php echo esc_html( $get_mod( 'container_width', '1200px' ) ); ?>;
+			--ak-header-padding: <?php echo esc_html( $get_mod( 'header_padding', '20px' ) ); ?>;
 
-			--ak-body-font-family: '<?php echo esc_html( $body_font_family ); ?>', serif;
-			--ak-headings-font-family: '<?php echo $use_custom_headings && $custom_font_file ? esc_html( $custom_font_name ) : esc_html( $headings_font_family ); ?>', serif;
-			--ak-headings-font-weight: <?php echo esc_html( $headings_font_weight ); ?>;
+			/* Typography */
+			<?php
+			$typos = ['site_title', 'post_title', 'headings', 'body', 'menu'];
+			foreach ($typos as $t) {
+				$font = $get_mod("{$t}_font_family", in_array($t, ['body', 'menu']) ? 'Lora' : 'Cinzel');
+				if ($use_custom_headings && $custom_font_file && in_array($t, ['site_title', 'post_title', 'headings'])) {
+					$font = $custom_font_name;
+				}
+				echo "--ak-{$t}-font-family: '" . esc_html($font) . "', serif;\n";
+				echo "--ak-{$t}-font-size: " . esc_html($get_mod("{$t}_font_size", '18px')) . ";\n";
+			}
+			?>
 
-			/* Effects */
-			--ak-shadow-menu: <?php echo $get_mod( 'shadow_menu_items', false ) ? $shadow_css : 'none'; ?>;
-			--ak-shadow-submenu: <?php echo $get_mod( 'shadow_submenu_items', false ) ? $shadow_css : 'none'; ?>;
-			--ak-shadow-headers: <?php echo $get_mod( 'shadow_headers', false ) ? $shadow_css : 'none'; ?>;
-			--ak-shadow-post-titles: <?php echo $get_mod( 'shadow_post_titles', false ) ? $shadow_css : 'none'; ?>;
-			--ak-shadow-site-title: <?php echo $get_mod( 'shadow_site_title', false ) ? $glow_css : 'none'; ?>;
+			/* Advanced Effects */
+			<?php
+			$effects = ['menu_items', 'submenu_items', 'headers', 'post_titles', 'site_title'];
+			foreach ($effects as $e) {
+				$val = '';
+				if ($get_mod("shadow_{$e}", false)) $val .= $shadow_def;
+				if ($get_mod("glow_{$e}", false)) $val .= ($val ? ', ' : '') . $glow_def;
+				if (!$val) $val = 'none';
+				$var_name = str_replace('_', '-', $e);
+				echo "--ak-effect-{$var_name}: {$val};\n";
+			}
+			?>
 		}
 	</style>
 	<?php
@@ -420,14 +477,13 @@ add_action( 'wp_head', 'aspiring_knight_output_css_variables' );
  * Enqueue Google Fonts based on Customizer settings.
  */
 function aspiring_knight_enqueue_customizer_fonts() {
-	$body_font = get_theme_mod( 'body_font_family', 'Lora' );
-	$heading_font = get_theme_mod( 'headings_font_family', 'Cinzel' );
-
+	$typos = ['site_title', 'post_title', 'headings', 'body', 'menu'];
 	$fonts = array();
-	$fonts[] = $body_font . ':400,400i,700,700i';
-	if ( $heading_font !== $body_font ) {
-		$fonts[] = $heading_font . ':400,700,900';
+	foreach ($typos as $t) {
+		$font = get_theme_mod("{$t}_font_family", in_array($t, ['body', 'menu']) ? 'Lora' : 'Cinzel');
+		$fonts[] = $font . ':400,400i,700,700i,900';
 	}
+	$fonts = array_unique($fonts);
 
 	$fonts_url = add_query_arg( array(
 		'family' => implode( '|', $fonts ),

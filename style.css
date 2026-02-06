@@ -16,6 +16,7 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
 /* Navigation Styling */
 .main-navigation {
     background-color: var(--ak-menu-bg);
+    font-family: var(--ak-menu-font-family);
 }
 
 .main-navigation ul {
@@ -33,7 +34,7 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
     text-decoration: none;
     font-size: var(--ak-menu-font-size);
     color: var(--ak-menu-text-color);
-    text-shadow: var(--ak-shadow-menu);
+    text-shadow: var(--ak-effect-menu-items);
     transition: all 0.3s ease;
     padding: 0.5rem 0;
 }
@@ -42,23 +43,54 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
     color: var(--ak-menu-hover-color);
 }
 
-/* Global Link Underlining */
-a {
-    text-decoration: var(--ak-link-underline);
+/* Sub-menu styling */
+.main-navigation li ul {
+    background-color: var(--ak-submenu-bg) !important;
 }
 
-/* Effects for Titles and Headers */
+.main-navigation li ul li a {
+    color: var(--ak-submenu-text-color) !important;
+    text-shadow: var(--ak-effect-submenu-items) !important;
+}
+
+.main-navigation li ul li a:hover {
+    color: var(--ak-submenu-hover-color) !important;
+    background-color: rgba(255,255,255,0.05) !important;
+}
+
+/* Global Link Underlining */
+a {
+    text-decoration: var(--ak-link-underline) !important;
+}
+
+/* Effects & Typography for Titles and Headers */
 h1, h2, h3, h4, h5, h6 {
-    text-shadow: var(--ak-shadow-headers);
+    text-shadow: var(--ak-effect-headers);
+    font-family: var(--ak-headings-font-family);
+}
+
+.site-title {
+    font-family: var(--ak-site-title-font-family);
+    font-size: var(--ak-site-title-font-size);
 }
 
 .site-title a {
-    text-shadow: var(--ak-shadow-site-title);
-    text-decoration: none;
+    text-shadow: var(--ak-effect-site-title);
+    text-decoration: none !important;
+}
+
+.entry-title {
+    font-family: var(--ak-post-title-font-family);
+    font-size: var(--ak-post-title-font-size);
 }
 
 .entry-title a {
-    text-shadow: var(--ak-shadow-post-titles);
+    text-shadow: var(--ak-effect-post-titles);
+}
+
+body {
+    font-family: var(--ak-body-font-family);
+    font-size: var(--ak-body-font-size);
 }
 
 /* Horizontal spacing for desktop */
