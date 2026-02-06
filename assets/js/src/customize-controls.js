@@ -15,7 +15,7 @@
                     medieval: {
                         // Colors
                         'top_bar_bg_color': '#1a1a1a', 'top_bar_text_color': '#d4af37', 'accent_gold': '#d4af37', 
-                        'site_bg_color': '#0a0a0a', 'wrapper_bg_color': '#1a1a1a', 'article_bg_color': '#2a2a2a',
+                        'site_bg_color': '#0a0a0a', 'article_bg_color': '#2a2a2a',
                         'header_bg_color': '#1a1a1a', 'footer_bg_color': '#0a0a0a',
                         // Fonts
                         'site_title_font_family': 'Cinzel', 'site_tagline_font_family': 'Almendra', 'headings_font_family': 'Cinzel',
@@ -27,7 +27,7 @@
                     },
                     modern: {
                         'top_bar_bg_color': '#007aff', 'top_bar_text_color': '#ffffff', 'accent_gold': '#007aff', 
-                        'site_bg_color': '#f5f5f7', 'wrapper_bg_color': 'transparent', 'article_bg_color': '#ffffff',
+                        'site_bg_color': '#f5f5f7', 'article_bg_color': '#ffffff',
                         'header_bg_color': '#ffffff', 'footer_bg_color': '#f5f5f7',
                         'site_title_font_family': 'Montserrat', 'site_tagline_font_family': 'Open Sans', 'headings_font_family': 'Montserrat',
                         'body_font_family': 'Open Sans', 'menus_font_family': 'Montserrat',
@@ -83,7 +83,7 @@
             const id = 'custom_' + Date.now();
             const currentData = {};
             const settingsToCapture = [
-                'top_bar_bg_color', 'top_bar_text_color', 'accent_gold', 'site_bg_color', 'wrapper_bg_color', 'article_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color',
+                'top_bar_bg_color', 'top_bar_text_color', 'accent_gold', 'site_bg_color', 'article_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color',
                 'container_width', 'header_padding', 'menu_spacing', 'sidebar_padding'
             ];
             ['site_title', 'site_tagline', 'menus', 'submenus', 'blog_titles', 'headings', 'sidebars', 'footer', 'body'].forEach(cat => {

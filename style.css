@@ -21,9 +21,9 @@ body {
     color: var(--ak-body-color) !important;
 }
 
-/* Wrapper background (between site and content) */
+/* Wrapper background (always transparent to show Site BG) */
 .site-content-wrapper {
-    background-color: var(--ak-wrapper-bg) !important;
+    background-color: transparent !important;
 }
 
 /* Navigation Styling */

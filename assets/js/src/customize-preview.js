@@ -10,7 +10,7 @@
     // 1. Global Colors (BGs & Accents)
     const bgColors = [
         'top_bar_bg_color', 'top_bar_text_color', 'accent_gold', 
-        'site_bg_color', 'wrapper_bg_color', 'article_bg_color',
+        'site_bg_color', 'article_bg_color',
         'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 
         'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color'
     ];
