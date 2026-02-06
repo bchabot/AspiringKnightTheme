@@ -1,29 +1,22 @@
-# Implementation Plan - Design System UX Overhaul & Branding Fixes
+# Implementation Plan - Design System UX Overhaul & Branding Fixes [checkpoint: 0d88e99]
 
 ## Phase 1: Customizer UX Reconstruction
-- [ ] Task: Create Design System Panel
-    - Define the panel and move `colors_section` and `typography_section` into it.
-- [ ] Task: Expand to Dedicated Sections
-    - Create individual sections for Site Title, Tagline, Menus, Sub-menus, Page Titles, Headings, and Body.
-- [ ] Task: Remove Core Sections
-    - Add code to remove the default `colors` and `header_image` sections.
-- [ ] Task: Verification - Customizer UI is clean and organized.
+- [x] Task: Create Design System Panel
+- [x] Task: Expand to Dedicated Sections
+- [x] Task: Remove Core Sections
+- [x] Task: Verification - Customizer UI is clean and organized.
 
 ## Phase 2: Branding & Variable Debugging
-- [ ] Task: Fix Site Title & Tagline Selectors
-    - Update `style.css` to use more robust selectors.
-- [ ] Task: Refine Variable Persistence
-    - Audit `aspiring_knight_output_css_variables` to ensure all keys match exactly what's saved.
-- [ ] Task: Update `header.php`
-    - Simplify markup to ensure no inline styles or Tailwind classes block Customizer output.
-- [ ] Task: Verification - Branding elements reflect settings on reload.
+- [x] Task: Fix Site Title & Tagline Selectors
+- [x] Task: Refine Variable Persistence
+- [x] Task: Update `header.php`
+- [x] Task: Verification - Branding elements reflect settings on reload.
 
 ## Phase 3: Preview Script Sync
-- [ ] Task: Update `customize-preview.js`
-    - Sync handlers with the new section/setting names.
-- [ ] Task: Verification - Full instant preview functional across all new sections.
+- [x] Task: Update `customize-preview.js`
+- [x] Task: Verification - Full instant preview functional.
 
 ## Phase 4: Final Polish
-- [ ] Task: Global Styles Audit
-- [ ] Task: Final Build
-- [ ] Task: Verification - Complete manual audit.
+- [x] Task: Global Styles Audit
+- [x] Task: Final Build
+- [x] Task: Verification - Complete manual audit.
