@@ -1,35 +1,35 @@
 # Aspiring Knight
 
-**Contributors:** Brian Chabot
-**Tags:** one-column, two-columns, custom-header, custom-menu, custom-colors, custom-logo, featured-images, footer-widgets, full-width-template, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready
-**Requires at least:** 6.0
-**Tested up to:** 6.7
-**Requires PHP:** 7.4
-**Stable tag:** 0.1
-**License:** GPLv2 or later
-**License URI:** http://www.gnu.org/licenses/gpl-2.0.html
+**Aspiring Knight** is a premium, modern WordPress theme designed for armored combat enthusiasts, medieval history buffs, and personal growth seekers. It blends a refined medieval aesthetic with modern web performance and a world-class Design System.
 
-A premium, modern WordPress theme for armored combat enthusiasts and medieval history buffs, inspired by the best features of market leaders and infused with a refined medieval aesthetic.
+## ✨ High-End Features
 
-## Description
+- **Centralized Design System:** Control every aspect of your site's typography, colors, and effects from a single professional panel.
+- **✨ Instant Presets:** Apply complete visual styles (Medieval, Modern, Dark Mode, Monochrome) with one click.
+- **💾 Custom Preset Saving:** Capture your unique design and save it as a reusable preset.
+- **Categorical Typographic Hierarchy:** Granular control over Site Title, Menus, Blog Titles, Content Headers (H1-H6), and Body Text.
+- **Advanced Visual Effects:** Independent **Drop Shadows** and **Glows** for all major text elements with individual color pickers.
+- **Dynamic Layouts:** Toggle between **Tiled Grid** and **Excerpt List** for your blog and archives.
+- **Responsive Navigation:** Modern mobile overlay "Hamburger" menu with smooth animations.
+- **Tailwind CSS Powered:** Built with a utility-first approach and a dynamic CSS variable bridge for instant Customizer updates.
 
-Aspiring Knight is a theme built for those who appreciate the intersection of modern design and historical depth. It focuses on clarity, readability, and a strong visual identity.
+## 🚀 Installation
 
-## Installation
+1. Download the theme ZIP from the [GitHub Repository](https://github.com/bchabot/AspiringKnightTheme).
+2. In your WordPress dashboard, go to **Appearance > Themes** and click **Add New**.
+3. Click **Upload Theme** and select the ZIP file.
+4. **Install** and **Activate** the theme.
+5. (Optional) Install the recommended **Kirki** plugin if you want legacy support, though this theme is fully functional using native WordPress APIs.
 
-1. In your WordPress dashboard, go to Appearance > Themes and click the Add New button.
-2. Click Upload Theme and choose the aspiring-knight.zip file from your computer.
-3. Install and Activate the theme.
+## 📚 Documentation
 
-## Frequently Asked Questions
+For a detailed guide on how to master the Design System, see the [User Guide](./docs/user-guide.md).
 
-### Does this theme support the block editor?
+## 🛠️ Developer Info
 
-Yes, Aspiring Knight is fully compatible with the Gutenberg block editor.
+- **CSS:** Generated via Tailwind CSS. Pre-compiled asset: `assets/css/dist/main.css`.
+- **Customizer:** Located in `inc/customizer.php`.
+- **Live Preview:** Real-time bridge implemented in `assets/js/src/customize-preview.js`.
 
-## Changelog
-
-### 0.1
-* Initial release.
-* Refactored file structure for standard theme deployment.
-* Updated version to 0.1.
+---
+*Created with athletic grit and athletic precision by Brian Chabot.*
