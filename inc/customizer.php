@@ -34,6 +34,185 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		)
 	);
 
+	/**
+	 * Header Settings Section
+	 */
+	$wp_customize->add_section(
+		'header_section',
+		array(
+			'title'    => esc_html__( 'Header Settings', 'aspiring-knight' ),
+			'panel'    => 'global_styles_panel',
+			'priority' => 6,
+		)
+	);
+
+	/**
+	 * Footer Settings Section
+	 */
+	$wp_customize->add_section(
+		'footer_section',
+		array(
+			'title'    => esc_html__( 'Footer Settings', 'aspiring-knight' ),
+			'panel'    => 'global_styles_panel',
+			'priority' => 7,
+		)
+	);
+
+	// Footer Columns
+	$wp_customize->add_setting(
+		'footer_columns',
+		array(
+			'default'           => '3',
+			'sanitize_callback' => 'absint',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'footer_columns',
+		array(
+			'label'    => esc_html__( 'Footer Columns', 'aspiring-knight' ),
+			'section'  => 'footer_section',
+			'type'     => 'select',
+			'choices'  => array(
+				'1' => '1',
+				'2' => '2',
+				'3' => '3',
+				'4' => '4',
+			),
+		)
+	);
+
+	// Copyright Text
+	$wp_customize->add_setting(
+		'copyright_text',
+		array(
+			'default'           => esc_html__( 'Proudly powered by WordPress', 'aspiring-knight' ),
+			'sanitize_callback' => 'wp_kses_post',
+			'transport'         => 'postMessage',
+		)
+	);
+	$wp_customize->add_control(
+		'copyright_text',
+		array(
+			'label'    => esc_html__( 'Copyright Text', 'aspiring-knight' ),
+			'section'  => 'footer_section',
+			'type'     => 'textarea',
+		)
+	);
+
+	// Header Layout
+	$wp_customize->add_setting(
+		'header_layout',
+		array(
+			'default'           => 'logo-left',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'header_layout',
+		array(
+			'label'    => esc_html__( 'Header Layout', 'aspiring-knight' ),
+			'section'  => 'header_section',
+			'type'     => 'select',
+			'choices'  => array(
+				'logo-left'   => esc_html__( 'Logo Left / Menu Right', 'aspiring-knight' ),
+				'logo-center' => esc_html__( 'Logo Center / Menu Below', 'aspiring-knight' ),
+				'logo-right'  => esc_html__( 'Logo Right / Menu Left', 'aspiring-knight' ),
+			),
+		)
+	);
+
+	// Header Padding (Height)
+	$wp_customize->add_setting(
+		'header_padding',
+		array(
+			'default'           => '20px',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'postMessage',
+		)
+	);
+	$wp_customize->add_control(
+		'header_padding',
+		array(
+			'label'    => esc_html__( 'Header Vertical Padding', 'aspiring-knight' ),
+			'section'  => 'header_section',
+			'type'     => 'text',
+		)
+	);
+
+	// Menu Font Size
+	$wp_customize->add_setting(
+		'menu_font_size',
+		array(
+			'default'           => '16px',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'postMessage',
+		)
+	);
+	$wp_customize->add_control(
+		'menu_font_size',
+		array(
+			'label'    => esc_html__( 'Menu Font Size', 'aspiring-knight' ),
+			'section'  => 'header_section',
+			'type'     => 'text',
+		)
+	);
+
+	// Menu Spacing
+	$wp_customize->add_setting(
+		'menu_spacing',
+		array(
+			'default'           => '2rem',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'postMessage',
+		)
+	);
+	$wp_customize->add_control(
+		'menu_spacing',
+		array(
+			'label'    => esc_html__( 'Menu Item Spacing', 'aspiring-knight' ),
+			'section'  => 'header_section',
+			'type'     => 'text',
+		)
+	);
+
+	// Show Top Bar
+	$wp_customize->add_setting(
+		'show_top_bar',
+		array(
+			'default'           => false,
+			'sanitize_callback' => 'rest_sanitize_boolean',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'show_top_bar',
+		array(
+			'label'    => esc_html__( 'Show Top Bar', 'aspiring-knight' ),
+			'section'  => 'header_section',
+			'type'     => 'checkbox',
+		)
+	);
+
+	// Top Bar Text
+	$wp_customize->add_setting(
+		'top_bar_text',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'wp_kses_post',
+			'transport'         => 'postMessage',
+		)
+	);
+	$wp_customize->add_control(
+		'top_bar_text',
+		array(
+			'label'    => esc_html__( 'Top Bar Info', 'aspiring-knight' ),
+			'section'  => 'header_section',
+			'type'     => 'text',
+		)
+	);
+
 	// Global Layout
 	$wp_customize->add_setting(
 		'global_layout',
@@ -396,11 +575,16 @@ add_action( 'customize_register', 'aspiring_knight_customize_register' );
  */
 function aspiring_knight_get_font_choices() {
 	return array(
-		'Lora'          => 'Lora (Serif)',
-		'Cinzel'        => 'Cinzel (Medieval)',
-		'Open Sans'     => 'Open Sans (Sans-serif)',
-		'MedievalSharp' => 'MedievalSharp (Medieval)',
-		'Playfair Display' => 'Playfair Display (Serif)',
+		'Lora'             => 'Lora (Classic Serif)',
+		'Cinzel'           => 'Cinzel (Medieval Decorative)',
+		'MedievalSharp'    => 'MedievalSharp (Medieval Angular)',
+		'EB Garamond'      => 'EB Garamond (Elegant Serif)',
+		'Playfair Display' => 'Playfair Display (High-Contrast Serif)',
+		'Libre Baskerville' => 'Libre Baskerville (Traditional Serif)',
+		'Almendra'         => 'Almendra (Calligraphic Medieval)',
+		'Crimson Text'     => 'Crimson Text (Book Serif)',
+		'Montserrat'       => 'Montserrat (Modern Sans)',
+		'Open Sans'        => 'Open Sans (Clean Sans)',
 	);
 }
 
@@ -421,6 +605,9 @@ function aspiring_knight_output_css_variables() {
 	// Layout
 	$global_layout      = get_theme_mod( 'global_layout', 'sidebar-right' );
 	$container_width    = get_theme_mod( 'container_width', '1200px' );
+	$header_padding     = get_theme_mod( 'header_padding', '20px' );
+	$menu_font_size     = get_theme_mod( 'menu_font_size', '16px' );
+	$menu_spacing       = get_theme_mod( 'menu_spacing', '2rem' );
 
 	// Typography
 	$body_font_family   = get_theme_mod( 'body_font_family', 'Lora' );
@@ -445,6 +632,9 @@ function aspiring_knight_output_css_variables() {
 			/* Layout */
 			--ak-container-width: <?php echo esc_html( $container_width ); ?>;
 			--ak-sidebar-order: <?php echo 'sidebar-left' === $global_layout ? '-1' : '1'; ?>;
+			--ak-header-padding: <?php echo esc_html( $header_padding ); ?>;
+			--ak-menu-font-size: <?php echo esc_html( $menu_font_size ); ?>;
+			--ak-menu-spacing: <?php echo esc_html( $menu_spacing ); ?>;
 
 			/* Body Typography */
 			--ak-body-font-family: '<?php echo esc_html( $body_font_family ); ?>', serif;

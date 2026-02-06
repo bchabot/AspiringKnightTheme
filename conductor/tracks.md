@@ -10,8 +10,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 
 
-- [ ] **Track: Template Hierarchy & Layout Systems**
-
+- [x] **Track: Template Hierarchy & Layout Systems**
   *Link: [./tracks/layout_system_20260206/](./tracks/layout_system_20260206/)*
+
+- [ ] **Track: Header & Footer Component System**
+  *Link: [./tracks/header_footer_20260206/](./tracks/header_footer_20260206/)*
 
 

@@ -89,6 +89,20 @@ function aspiring_knight_widgets_init() {
 			'after_title'   => '</h2>',
 		)
 	);
+
+	for ( $i = 1; $i <= 4; $i++ ) {
+		register_sidebar(
+			array(
+				'name'          => sprintf( esc_html__( 'Footer %d', 'aspiring-knight' ), $i ),
+				'id'            => 'footer-' . $i,
+				'description'   => sprintf( esc_html__( 'Add widgets here for footer column %d.', 'aspiring-knight' ), $i ),
+				'before_widget' => '<section id="%1$s" class="widget %2$s mb-8">',
+				'after_widget'  => '</section>',
+				'before_title'  => '<h2 class="widget-title text-lg font-headings font-headings-bold mb-4">',
+				'after_title'   => '</h2>',
+			)
+		);
+	}
 }
 add_action( 'widgets_init', 'aspiring_knight_widgets_init' );
 
@@ -100,6 +114,9 @@ function aspiring_knight_scripts() {
 
 	// Enqueue Compiled Tailwind CSS.
 	wp_enqueue_style( 'aspiring-knight-tailwind', get_template_directory_uri() . '/assets/css/dist/main.css', array(), '0.1.0' );
+
+	// Navigation script.
+	wp_enqueue_script( 'aspiring-knight-navigation', get_template_directory_uri() . '/assets/js/src/navigation.js', array(), '0.1.0', true );
 }
 add_action( 'wp_enqueue_scripts', 'aspiring_knight_scripts' );
 
@@ -117,6 +134,14 @@ function aspiring_knight_body_classes( $classes ) {
 	return $classes;
 }
 add_filter( 'body_class', 'aspiring_knight_body_classes' );
+
+/**
+ * Enqueue JS for Customizer live preview.
+ */
+function aspiring_knight_customize_preview_js() {
+	wp_enqueue_script( 'aspiring-knight-customize-preview', get_template_directory_uri() . '/assets/js/src/customize-preview.js', array( 'customize-preview', 'jquery' ), '0.1.0', true );
+}
+add_action( 'customize_preview_init', 'aspiring_knight_customize_preview_js' );
 
 /**
  * TGM Plugin Activation.
