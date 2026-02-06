@@ -1,7 +1,5 @@
 /**
  * Customizer Live Preview scripts.
- * 
- * Bridges WordPress Customizer settings with CSS variables in real-time.
  */
 
 (function($) {
@@ -9,74 +7,73 @@
         document.documentElement.style.setProperty(name, value);
     };
 
-    // Colors
-    const colorSettings = [
-        'primary_color', 'accent_gold', 'site_bg_color', 'header_bg_color', 
-        'menu_bg_color', 'menu_text_color', 'menu_hover_color',
-        'submenu_bg_color', 'submenu_text_color', 'submenu_hover_color',
-        'footer_bg_color', 'shadow_color', 'glow_color',
-        'body_text_color', 'heading_text_color', 'link_color', 'link_hover_color'
-    ];
-
-    colorSettings.forEach(id => {
-        wp.customize(id, value => {
-            value.bind(to => updateCSSVar('--ak-' + id.replace(/_/g, '-'), to));
-        });
+    // 1. Global Colors (BGs & Accents)
+    const bgColors = ['primary_accent', 'accent_gold', 'site_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color'];
+    bgColors.forEach(id => {
+        wp.customize(id, value => value.bind(to => updateCSSVar('--ak-' + id.replace(/_/g, '-'), to)));
     });
 
-    // Link Underline
-    wp.customize('link_underline', value => {
-        value.bind(to => updateCSSVar('--ak-link-underline', to ? 'underline' : 'none'));
+    // 2. Underlining
+    const underlineAreas = ['titles', 'headers', 'menus', 'sidebars', 'body'];
+    underlineAreas.forEach(area => {
+        wp.customize('underline_' + area, value => value.bind(to => updateCSSVar('--ak-underline-' + area, to ? 'underline' : 'none')));
     });
 
-    // Layout
-    wp.customize('container_width', value => {
-        value.bind(to => updateCSSVar('--ak-container-width', to));
-    });
-    wp.customize('header_padding', value => {
-        value.bind(to => updateCSSVar('--ak-header-padding', to));
-    });
+    // 3. Layout & Spacing
+    wp.customize('container_width', value => value.bind(to => updateCSSVar('--ak-container-width', to)));
+    wp.customize('header_padding', value => value.bind(to => updateCSSVar('--ak-header-padding', to)));
+    wp.customize('menu_spacing', value => value.bind(to => updateCSSVar('--ak-menu-spacing', to)));
 
-    // Typography Groups
-    const typoGroups = ['site_title', 'post_title', 'headings', 'body', 'menu'];
-    typoGroups.forEach(group => {
-        wp.customize(group + '_font_family', value => {
-            value.bind(to => updateCSSVar('--ak-' + group.replace(/_/g, '-') + '-font-family', `'${to}', serif`));
-        });
-        wp.customize(group + '_font_size', value => {
-            value.bind(to => updateCSSVar('--ak-' + group.replace(/_/g, '-') + '-font-size', to));
-        });
-    });
-
-    // Effects logic (approximate preview)
-    const updateEffect = (element) => {
-        const shadowEnabled = wp.customize('shadow_' + element).get();
-        const glowEnabled = wp.customize('glow_' + element).get();
-        const shadowColor = wp.customize('shadow_color').get();
-        const glowColor = wp.customize('glow_color').get();
+    // 4. Categorical Typography & Effects
+    const categories = ['site_title', 'site_tagline', 'menus', 'submenus', 'page_titles', 'headings', 'body'];
+    
+    categories.forEach(cat => {
+        const varId = cat.replace(/_/g, '-');
         
-        let val = '';
-        if (shadowEnabled) val += `2px 2px 4px ${shadowColor}`;
-        if (glowEnabled) val += (val ? ', ' : '') + `0 0 10px ${glowColor}`;
-        if (!val) val = 'none';
+        // Font Family
+        wp.customize(cat + '_font_family', value => value.bind(to => updateCSSVar('--ak-' + varId + '-font-family', `'${to}', serif`)));
         
-        updateCSSVar('--ak-effect-' + element.replace(/_/g, '-'), val);
-    };
+        // Font Size
+        wp.customize(cat + '_font_size', value => value.bind(to => updateCSSVar('--ak-' + varId + '-font-size', to)));
+        
+        // Text Color
+        wp.customize(cat + '_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-color', to)));
+        
+        // Link Color
+        if (['body', 'menus', 'submenus'].includes(cat)) {
+            wp.customize(cat + '_link_color', value => value.bind(to => updateCSSVar('--ak-' + varId + '-link-color', to)));
+        }
 
-    const effectElements = ['menu_items', 'submenu_items', 'headers', 'post_titles', 'site_title'];
-    effectElements.forEach(el => {
-        wp.customize('shadow_' + el, value => value.bind(() => updateEffect(el)));
-        wp.customize('glow_' + el, value => value.bind(() => updateEffect(el)));
-    });
-    wp.customize('shadow_color', value => value.bind(() => effectElements.forEach(updateEffect)));
-    wp.customize('glow_color', value => value.bind(() => effectElements.forEach(updateEffect)));
+        // Advanced Effects Logic
+        const updateEffect = () => {
+            const shadowEnabled = wp.customize(cat + '_shadow_enable').get();
+            const glowEnabled = wp.customize(cat + '_glow_enable').get();
+            const shadowColor = wp.customize(cat + '_shadow_color').get();
+            const glowColor = wp.customize(cat + '_glow_color').get();
+            
+            let val = '';
+            if (shadowEnabled) val += `2px 2px 4px ${shadowColor}`;
+            if (glowEnabled) val += (val ? ', ' : '') + `0 0 10px ${glowColor}`;
+            if (!val) val = 'none';
+            
+            // Map the category name to the effect variable name used in CSS
+            let effId = varId;
+            if (cat === 'menus') effId = 'menu-items';
+            if (cat === 'submenus') effId = 'submenu-items';
+            if (cat === 'headings') effId = 'headers';
+            if (cat === 'page_titles') effId = 'post-titles';
+            
+            updateCSSVar('--ak-effect-' + effId, val);
+        };
 
-    // Other handlers
-    wp.customize('copyright_text', value => {
-        value.bind(to => $('.copyright-content').html(to.replace('[year]', new Date().getFullYear())));
+        wp.customize(cat + '_shadow_enable', value => value.bind(updateEffect));
+        wp.customize(cat + '_glow_enable', value => value.bind(updateEffect));
+        wp.customize(cat + '_shadow_color', value => value.bind(updateEffect));
+        wp.customize(cat + '_glow_color', value => value.bind(updateEffect));
     });
-    wp.customize('top_bar_text', value => {
-        value.bind(to => $('.top-bar-info').html(to));
-    });
+
+    // Footer/Header dynamic text
+    wp.customize('copyright_text', value => value.bind(to => $('.copyright-content').html(to.replace('[year]', new Date().getFullYear()))));
+    wp.customize('top_bar_text', value => value.bind(to => $('.top-bar-info').html(to)));
 
 })(jQuery);
