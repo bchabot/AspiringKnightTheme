@@ -17,7 +17,8 @@ if ( 'list' === $archive_layout ) {
 	$grid_class = 'flex flex-col gap-8';
 }
 ?>
-	<div class="container mx-auto flex flex-col lg:flex-row gap-12 py-12 px-4" style="max-width: var(--ak-container-width);">
+	<div class="site-content-wrapper">
+		<div class="container mx-auto flex flex-col lg:flex-row gap-12 py-12 px-4" style="max-width: var(--ak-container-width);">
 		<main id="primary" class="site-main flex-grow min-w-0">
 
 			<?php if ( have_posts() ) : ?>
@@ -59,6 +60,7 @@ if ( 'list' === $archive_layout ) {
 		</main><!-- #primary -->
 
 		<?php get_sidebar(); ?>
+	</div>
 	</div>
 
 <?php

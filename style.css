@@ -13,6 +13,19 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
 
 /* This file is primarily for WordPress metadata. Styles are generated via Tailwind CSS. */
 
+/* Global Site Background */
+body {
+    background-color: var(--ak-site-bg) !important;
+    font-family: var(--ak-body-font-family) !important;
+    font-size: var(--ak-body-font-size) !important;
+    color: var(--ak-body-color) !important;
+}
+
+/* Wrapper background (between site and content) */
+.site-content-wrapper {
+    background-color: var(--ak-wrapper-bg) !important;
+}
+
 /* Navigation Styling */
 .main-navigation {
     background-color: var(--ak-menu-bg) !important;
@@ -66,6 +79,10 @@ a {
     text-decoration: var(--ak-underline-body) !important;
 }
 
+body a {
+    color: var(--ak-body-link-color) !important;
+}
+
 /* Sidebar Styling */
 .widget-area section.widget {
     background-color: var(--ak-sidebar-bg) !important;
@@ -117,7 +134,7 @@ a {
     padding-left: 0.5rem !important;
 }
 
-/* Blog / Post Titles (The main entry-title on both index and single) */
+/* Blog / Post Titles */
 .entry-title,
 .entry-title a {
     font-family: var(--ak-blog-titles-font-family) !important;
@@ -131,6 +148,7 @@ a {
     color: var(--ak-blog-titles-link-color) !important;
 }
 
+/* Site Branding */
 .site-title {
     font-family: var(--ak-site-title-font-family) !important;
     font-size: var(--ak-site-title-font-size) !important;
@@ -152,20 +170,10 @@ a {
     margin-top: 0.5rem;
 }
 
-body {
-    background-color: var(--ak-site-bg) !important;
-    font-family: var(--ak-body-font-family) !important;
-    font-size: var(--ak-body-font-size) !important;
-    color: var(--ak-body-color) !important;
-}
-
-body a {
-    color: var(--ak-body-link-color) !important;
-}
-
+/* The actual white box background for text */
 .site-main {
-    background-color: var(--ak-content-bg) !important;
-    background-image: var(--ak-content-bg-image) !important;
+    background-color: var(--ak-article-bg) !important;
+    background-image: var(--ak-article-bg-image) !important;
     background-size: cover;
     background-position: center;
     padding: 3rem !important;
@@ -201,12 +209,8 @@ body a {
 
 /* Top Bar Styling */
 .top-bar {
-    background-color: var(--ak-primary-accent) !important;
-}
-
-/* Knight Iron Accent use cases */
-.btn-primary, .button-primary {
-    background-color: var(--ak-primary-accent) !important;
+    background-color: var(--ak-top-bar-bg) !important;
+    color: var(--ak-top-bar-text) !important;
 }
 
 /* Horizontal spacing for desktop */

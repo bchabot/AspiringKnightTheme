@@ -8,14 +8,19 @@
     };
 
     // 1. Global Colors (BGs & Accents)
-    const bgColors = ['primary_accent', 'accent_gold', 'site_bg_color', 'content_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color'];
+    const bgColors = [
+        'top_bar_bg_color', 'top_bar_text_color', 'accent_gold', 
+        'site_bg_color', 'wrapper_bg_color', 'article_bg_color',
+        'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 
+        'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color'
+    ];
     bgColors.forEach(id => {
         wp.customize(id, value => value.bind(to => updateCSSVar('--ak-' + id.replace(/_/g, '-'), to)));
     });
 
     // Images
     wp.customize('background_image', value => value.bind(to => updateCSSVar('--ak-site-bg-image', to ? `url(${to})` : 'none')));
-    wp.customize('content_bg_image', value => value.bind(to => updateCSSVar('--ak-content-bg-image', to ? `url(${to})` : 'none')));
+    wp.customize('article_bg_image', value => value.bind(to => updateCSSVar('--ak-article-bg-image', to ? `url(${to})` : 'none')));
 
     // 2. Layout & Spacing
     wp.customize('container_width', value => value.bind(to => updateCSSVar('--ak-container-width', to)));

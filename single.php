@@ -10,7 +10,8 @@
 get_header();
 ?>
 
-	<div class="container mx-auto flex flex-col lg:flex-row gap-12 py-12 px-4" style="max-width: var(--ak-container-width);">
+	<div class="site-content-wrapper">
+		<div class="container mx-auto flex flex-col lg:flex-row gap-12 py-12 px-4" style="max-width: var(--ak-container-width);">
 		<main id="primary" class="site-main flex-grow min-w-0">
 
 			<?php
@@ -37,6 +38,7 @@ get_header();
 		</main><!-- #primary -->
 
 		<?php get_sidebar(); ?>
+	</div>
 	</div>
 
 <?php

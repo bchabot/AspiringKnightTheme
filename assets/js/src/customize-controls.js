@@ -13,39 +13,40 @@
 
                 const presets = {
                     medieval: {
-                        'primary_accent': '#3a3a3a', 'accent_gold': '#d4af37', 'site_bg_color': '#1a1a1a', 
-                        'content_bg_color': '#2a2a2a', 'header_bg_color': '#3a3a3a', 'footer_bg_color': '#1a1a1a',
+                        // Colors
+                        'top_bar_bg_color': '#1a1a1a', 'top_bar_text_color': '#d4af37', 'accent_gold': '#d4af37', 
+                        'site_bg_color': '#0a0a0a', 'wrapper_bg_color': '#1a1a1a', 'article_bg_color': '#2a2a2a',
+                        'header_bg_color': '#1a1a1a', 'footer_bg_color': '#0a0a0a',
+                        // Fonts
                         'site_title_font_family': 'Cinzel', 'site_tagline_font_family': 'Almendra', 'headings_font_family': 'Cinzel',
                         'body_font_family': 'Lora', 'menus_font_family': 'Cinzel', 'blog_titles_font_family': 'Almendra',
-                        'site_title_font_size': '4rem', 'h1_font_size': '72px', 'h2_font_size': '54px',
-                        'site_title_glow_enable': true, 'site_title_glow_color': '#d4af37', 'site_title_color': '#ffffff',
-                        'blog_titles_color': '#d4af37', 'headings_color': '#ffffff', 'body_color': '#cccccc',
-                        'link_underline': false
+                        // Sizes & Effects
+                        'site_title_font_size': '4rem', 'h1_font_size': '72px', 'site_title_glow_enable': true,
+                        'site_title_glow_color': '#d4af37', 'site_title_color': '#ffffff', 'headings_color': '#ffffff',
+                        'body_color': '#cccccc', 'link_underline': false
                     },
                     modern: {
-                        'primary_accent': '#007aff', 'accent_gold': '#007aff', 'site_bg_color': '#f5f5f7', 
-                        'content_bg_color': '#ffffff', 'header_bg_color': '#ffffff', 'footer_bg_color': '#f5f5f7',
+                        'top_bar_bg_color': '#007aff', 'top_bar_text_color': '#ffffff', 'accent_gold': '#007aff', 
+                        'site_bg_color': '#f5f5f7', 'wrapper_bg_color': 'transparent', 'article_bg_color': '#ffffff',
+                        'header_bg_color': '#ffffff', 'footer_bg_color': '#f5f5f7',
                         'site_title_font_family': 'Montserrat', 'site_tagline_font_family': 'Open Sans', 'headings_font_family': 'Montserrat',
                         'body_font_family': 'Open Sans', 'menus_font_family': 'Montserrat',
                         'site_title_font_size': '2rem', 'site_title_color': '#000000', 'body_color': '#333333',
-                        'site_title_shadow_enable': false, 'site_title_glow_enable': false,
-                        'link_underline': true
+                        'site_title_shadow_enable': false, 'site_title_glow_enable': false
                     },
                     dark: {
-                        'primary_accent': '#d4af37', 'accent_gold': '#d4af37', 'site_bg_color': '#000000', 
-                        'content_bg_color': '#111111', 'header_bg_color': '#000000', 'footer_bg_color': '#000000',
-                        'body_color': '#aaaaaa', 'headings_color': '#ffffff', 'site_title_color': '#d4af37',
-                        'blog_titles_color': '#ffffff', 'menus_color': '#ffffff', 'sidebar_bg_color': '#111111'
+                        'top_bar_bg_color': '#000000', 'top_bar_text_color': '#d4af37', 'accent_gold': '#d4af37', 
+                        'site_bg_color': '#000000', 'wrapper_bg_color': '#111111', 'article_bg_color': '#1a1a1a',
+                        'body_color': '#aaaaaa', 'headings_color': '#ffffff', 'site_title_color': '#d4af37'
                     },
                     monochrome: {
-                        'primary_accent': '#333333', 'accent_gold': '#666666', 'site_bg_color': '#ffffff', 
-                        'content_bg_color': '#f9f9f9', 'header_bg_color': '#333333', 'footer_bg_color': '#333333',
-                        'site_title_color': '#ffffff', 'body_color': '#333333', 'headings_color': '#000000',
-                        'site_title_font_family': 'Lora', 'headings_font_family': 'Lora'
+                        'top_bar_bg_color': '#333333', 'top_bar_text_color': '#ffffff', 'accent_gold': '#666666', 
+                        'site_bg_color': '#ffffff', 'wrapper_bg_color': '#f9f9f9', 'article_bg_color': '#ffffff',
+                        'site_title_color': '#000000', 'body_color': '#333333', 'headings_color': '#000000'
                     },
                     high_contrast: {
-                        'primary_accent': '#ffff00', 'accent_gold': '#ffff00', 'site_bg_color': '#000000', 
-                        'content_bg_color': '#000000', 'header_bg_color': '#000000', 'footer_bg_color': '#000000',
+                        'top_bar_bg_color': '#ffff00', 'top_bar_text_color': '#000000', 'accent_gold': '#ffff00', 
+                        'site_bg_color': '#000000', 'wrapper_bg_color': '#000000', 'article_bg_color': '#000000',
                         'body_color': '#ffffff', 'headings_color': '#ffffff', 'link_color': '#ffff00', 
                         'site_title_color': '#ffffff', 'body_font_size': '22px'
                     }
@@ -82,13 +83,13 @@
             const id = 'custom_' + Date.now();
             const currentData = {};
             const settingsToCapture = [
-                'primary_accent', 'accent_gold', 'site_bg_color', 'content_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color',
+                'top_bar_bg_color', 'top_bar_text_color', 'accent_gold', 'site_bg_color', 'wrapper_bg_color', 'article_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color',
                 'container_width', 'header_padding', 'menu_spacing', 'sidebar_padding'
             ];
             ['site_title', 'site_tagline', 'menus', 'submenus', 'blog_titles', 'headings', 'sidebars', 'footer', 'body'].forEach(cat => {
                 settingsToCapture.push(`${cat}_font_family`, `${cat}_font_size`, `${cat}_color`, `${cat}_link_color`, `${cat}_underline`, `${cat}_shadow_enable`, `${cat}_shadow_color`, `${cat}_glow_enable`, `${cat}_glow_color`);
             });
-            for(let i=1; i<=6; i++) settingsToCapture.push(`h${i}_font_size`);
+            for(let i=1; i<=6; i++) settingsToCapture.push(`h{$i}_font_size`);
             settingsToCapture.forEach(key => { if (wp.customize(key)) currentData[key] = wp.customize(key).get(); });
             currentData.name = name;
             const customPresets = JSON.parse(wp.customize('custom_presets_data').get() || '{}');
