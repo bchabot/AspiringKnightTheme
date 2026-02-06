@@ -271,7 +271,7 @@ function aspiring_knight_output_css_variables() {
 				echo "--ak-underline-{$var_id}: " . ($get_mod("{$cat}_underline", in_array($cat, ['body', 'article_text'])) ? 'underline' : 'none') . ";\n";
 				$val = '';
 				if ($get_mod("{$cat}_shadow_enable", false)) $val .= "2px 2px 4px " . $get_mod("{$cat}_shadow_color", '#000000');
-				if ($get_mod("{$cat}_glow_enable", false)) $val .= ($val ? ', ' : '') . "0 0 10px " . $get_mod("{$cat}_glow_color", '#d4af37');
+				if ($get_mod("{$cat}_glow_enable", false)) val .= ($val ? ', ' : '') . "0 0 10px " . $get_mod("{$cat}_glow_color", '#d4af37');
 				echo "--ak-effect-{$var_id}: " . ($val ?: 'none') . ";\n";
 			}
 			?>

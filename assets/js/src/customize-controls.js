@@ -11,16 +11,14 @@
             value.bind(function(newval) {
                 if (newval === 'default') return;
 
+                // Built-in Presets
                 const presets = {
                     medieval: {
-                        // Colors
                         'top_bar_bg_color': '#1a1a1a', 'top_bar_text_color': '#d4af37', 'accent_gold': '#d4af37', 
                         'site_bg_color': '#0a0a0a', 'article_bg_color': '#2a2a2a',
                         'header_bg_color': '#1a1a1a', 'footer_bg_color': '#0a0a0a',
-                        // Fonts
                         'site_title_font_family': 'Cinzel', 'site_tagline_font_family': 'Almendra', 'headings_font_family': 'Cinzel',
                         'body_font_family': 'Lora', 'menus_font_family': 'Cinzel', 'blog_titles_font_family': 'Almendra',
-                        // Sizes & Effects
                         'site_title_font_size': '4rem', 'h1_font_size': '72px', 'site_title_glow_enable': true,
                         'site_title_glow_color': '#d4af37', 'site_title_color': '#ffffff', 'headings_color': '#ffffff',
                         'body_color': '#cccccc', 'link_underline': false
@@ -36,17 +34,16 @@
                     },
                     dark: {
                         'top_bar_bg_color': '#000000', 'top_bar_text_color': '#d4af37', 'accent_gold': '#d4af37', 
-                        'site_bg_color': '#000000', 'wrapper_bg_color': '#111111', 'article_bg_color': '#1a1a1a',
+                        'site_bg_color': '#000000', 'header_bg_color': '#000000', 'footer_bg_color': '#000000',
                         'body_color': '#aaaaaa', 'headings_color': '#ffffff', 'site_title_color': '#d4af37'
                     },
                     monochrome: {
                         'top_bar_bg_color': '#333333', 'top_bar_text_color': '#ffffff', 'accent_gold': '#666666', 
-                        'site_bg_color': '#ffffff', 'wrapper_bg_color': '#f9f9f9', 'article_bg_color': '#ffffff',
-                        'site_title_color': '#000000', 'body_color': '#333333', 'headings_color': '#000000'
+                        'site_bg_color': '#ffffff', 'site_title_color': '#000000', 'body_color': '#333333', 'headings_color': '#000000'
                     },
                     high_contrast: {
                         'top_bar_bg_color': '#ffff00', 'top_bar_text_color': '#000000', 'accent_gold': '#ffff00', 
-                        'site_bg_color': '#000000', 'wrapper_bg_color': '#000000', 'article_bg_color': '#000000',
+                        'site_bg_color': '#000000', 'header_bg_color': '#000000', 'footer_bg_color': '#000000',
                         'body_color': '#ffffff', 'headings_color': '#ffffff', 'link_color': '#ffff00', 
                         'site_title_color': '#ffffff', 'body_font_size': '22px'
                     }
@@ -65,7 +62,7 @@
             });
         });
 
-        // 2. Save/Delete UI
+        // 2. Inject Save/Delete Buttons
         const $container = $('#customize-control-new_preset_name');
         if ($container.length) {
             $container.append(`

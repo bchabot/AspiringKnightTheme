@@ -21,9 +21,9 @@ body {
     color: var(--ak-body-color) !important;
 }
 
-/* Wrapper background (between site and content) */
+/* Wrapper background (always transparent to show Site BG) */
 .site-content-wrapper {
-    background-color: var(--ak-wrapper-bg) !important;
+    background-color: transparent !important;
 }
 
 /* Navigation Styling */
@@ -149,16 +149,16 @@ body a {
 }
 
 /* Article Area Text (The specific paragraph text inside the post box) */
-.entry-content p, .entry-content div, .entry-content section {
+.entry-content, .entry-content p, .entry-content div, .entry-content section, .entry-content li, .entry-content blockquote {
     font-family: var(--ak-article-text-font-family) !important;
     font-size: var(--ak-article-text-font-size) !important;
     color: var(--ak-article-text-color) !important;
     text-shadow: var(--ak-effect-article-text) !important;
-    text-decoration: var(--ak-underline-article-text) !important;
 }
 
 .entry-content a {
     color: var(--ak-article-text-link-color) !important;
+    text-decoration: var(--ak-underline-article-text) !important;
 }
 
 /* Site Branding */
@@ -184,7 +184,7 @@ body a {
 }
 
 /* The actual white box background for text */
-.site-main {
+article {
     background-color: var(--ak-article-bg) !important;
     background-image: var(--ak-article-bg-image) !important;
     background-size: cover;
@@ -195,15 +195,16 @@ body a {
 }
 
 /* Drop Cap Logic */
-.medieval-dropcap:first-letter {
-    display: var(--ak-dropcap-display, block);
-    float: left;
-    font-family: var(--ak-dropcap-font-family, serif);
-    font-size: var(--ak-dropcap-font-size, 4rem);
-    line-height: 1;
-    margin: 0.1em 0.1em 0 0;
-    color: var(--ak-dropcap-color, var(--ak-accent-gold));
-    font-weight: bold;
+.medieval-dropcap:first-letter,
+.entry-content p:first-of-type::first-letter {
+    display: var(--ak-dropcap-display, block) !important;
+    float: left !important;
+    font-family: var(--ak-dropcap-font-family, serif) !important;
+    font-size: var(--ak-dropcap-font-size, 4rem) !important;
+    line-height: 1 !important;
+    margin: 0.1em 0.1em 0 0 !important;
+    color: var(--ak-dropcap-color, var(--ak-accent-gold)) !important;
+    font-weight: bold !important;
 }
 
 /* Footer Styling */
