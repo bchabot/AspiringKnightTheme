@@ -5,6 +5,20 @@
  * @package Aspiring_Knight
  */
 
+// Custom Section class to support nested sections inside other sections
+if ( class_exists( 'WP_Customize_Section' ) ) {
+	class Aspiring_Knight_Nested_Section extends WP_Customize_Section {
+		public $type = 'aspiring_knight_nested_section';
+		public $section = '';
+
+		public function json() {
+			$array = parent::json();
+			$array['section'] = $this->section;
+			return $array;
+		}
+	}
+}
+
 /**
  * Register Customizer settings.
  */
@@ -106,9 +120,77 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	) ) );
 
 	/**
-	 * CATEGORICAL SECTIONS CONFIGURATION
+	 * CATEGORICAL SECTIONS CONFIGURATION (with nested Section Hierarchy)
 	 */
-	$wp_customize->add_section( 'ds_typography_section', array( 'title' => esc_html__( 'Typography', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 20 ) );
+	$wp_customize->register_section_type( 'Aspiring_Knight_Nested_Section' );
+
+	// Typography Main Section (Parent Category inside Design System)
+	$wp_customize->add_section( 'ds_typography_section', array(
+		'title'    => esc_html__( 'Typography', 'aspiring-knight' ),
+		'panel'    => 'design_system_panel',
+		'priority' => 20,
+	) );
+
+	// Typography Sub-Sections (First Nesting Level under ds_typography_section)
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_header_section', array(
+		'title'    => esc_html__( 'Header', 'aspiring-knight' ),
+		'section'  => 'ds_typography_section',
+		'priority' => 10,
+	) ) );
+
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_blog_title_section', array(
+		'title'    => esc_html__( 'Blog Post Titles (Single)', 'aspiring-knight' ),
+		'section'  => 'ds_typography_section',
+		'priority' => 20,
+	) ) );
+
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_page_title_section', array(
+		'title'    => esc_html__( 'Page Titles (Single)', 'aspiring-knight' ),
+		'section'  => 'ds_typography_section',
+		'priority' => 30,
+	) ) );
+
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_headings_section', array(
+		'title'    => esc_html__( 'Content Headers (H1-H6)', 'aspiring-knight' ),
+		'section'  => 'ds_typography_section',
+		'priority' => 40,
+	) ) );
+
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_body_text_section', array(
+		'title'    => esc_html__( 'Body Text', 'aspiring-knight' ),
+		'section'  => 'ds_typography_section',
+		'priority' => 50,
+	) ) );
+
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_body_links_section', array(
+		'title'    => esc_html__( 'Body Text Links', 'aspiring-knight' ),
+		'section'  => 'ds_typography_section',
+		'priority' => 60,
+	) ) );
+
+	// Grandchild Sections (Second Nesting Level under ds_header_section)
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_site_title_section', array(
+		'title'    => esc_html__( 'Title', 'aspiring-knight' ),
+		'section'  => 'ds_header_section',
+		'priority' => 10,
+	) ) );
+
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_site_tagline_section', array(
+		'title'    => esc_html__( 'Tagline', 'aspiring-knight' ),
+		'section'  => 'ds_header_section',
+		'priority' => 20,
+	) ) );
+
+	// Grandchild Sections (Second Nesting Level under ds_headings_section)
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, "ds_h{$i}_section", array(
+			'title'    => sprintf( esc_html__( 'H%d', 'aspiring-knight' ), $i ),
+			'section'  => 'ds_headings_section',
+			'priority' => $i * 10,
+		) ) );
+	}
+
+	// Other sections (Standard direct sections under panel)
 	$wp_customize->add_section( 'ds_navigation_menus_section', array( 'title' => esc_html__( 'Navigation Menus', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 30 ) );
 	$wp_customize->add_section( 'ds_sidebars_section', array( 'title' => esc_html__( 'Sidebars', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 50 ) );
 	$wp_customize->add_section( 'ds_footer_section', array( 'title' => esc_html__( 'Footer Area', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 55 ) );
@@ -132,19 +214,19 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	) ) );
 
 	$categories_config = array(
-		'site_title'   => array( 'label' => __( 'Header - Title', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '2.5rem', 'default_color' => '#ffffff' ),
-		'site_tagline' => array( 'label' => __( 'Header - Tagline', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff' ),
-		'blog_title'   => array( 'label' => __( 'Blog Post Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333' ),
-		'page_title'   => array( 'label' => __( 'Page Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333' ),
-		'headings'     => array( 'label' => __( 'Content Headers (H1-H6) Fallback', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333' ),
-		'h1'           => array( 'label' => __( 'H1 Header', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '48px', 'default_color' => '#333333' ),
-		'h2'           => array( 'label' => __( 'H2 Header', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '36px', 'default_color' => '#333333' ),
-		'h3'           => array( 'label' => __( 'H3 Header', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333' ),
-		'h4'           => array( 'label' => __( 'H4 Header', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '24px', 'default_color' => '#333333' ),
-		'h5'           => array( 'label' => __( 'H5 Header', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '20px', 'default_color' => '#333333' ),
-		'h6'           => array( 'label' => __( 'H6 Header', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#333333' ),
-		'body_text'    => array( 'label' => __( 'Body Text', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#333333' ),
-		'body_links'   => array( 'label' => __( 'Body Text Links', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#d4af37' ),
+		'site_title'   => array( 'label' => __( 'Title', 'aspiring-knight' ), 'section' => 'ds_site_title_section', 'default_font' => 'Cinzel', 'default_size' => '2.5rem', 'default_color' => '#ffffff' ),
+		'site_tagline' => array( 'label' => __( 'Tagline', 'aspiring-knight' ), 'section' => 'ds_site_tagline_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff' ),
+		'blog_title'   => array( 'label' => __( 'Blog Post Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_blog_title_section', 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333' ),
+		'page_title'   => array( 'label' => __( 'Page Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_page_title_section', 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333' ),
+		'headings'     => array( 'label' => __( 'Content Headers Fallback', 'aspiring-knight' ), 'section' => 'ds_headings_section', 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333' ),
+		'h1'           => array( 'label' => __( 'H1', 'aspiring-knight' ), 'section' => 'ds_h1_section', 'default_font' => 'Cinzel', 'default_size' => '48px', 'default_color' => '#333333' ),
+		'h2'           => array( 'label' => __( 'H2', 'aspiring-knight' ), 'section' => 'ds_h2_section', 'default_font' => 'Cinzel', 'default_size' => '36px', 'default_color' => '#333333' ),
+		'h3'           => array( 'label' => __( 'H3', 'aspiring-knight' ), 'section' => 'ds_h3_section', 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333' ),
+		'h4'           => array( 'label' => __( 'H4', 'aspiring-knight' ), 'section' => 'ds_h4_section', 'default_font' => 'Cinzel', 'default_size' => '24px', 'default_color' => '#333333' ),
+		'h5'           => array( 'label' => __( 'H5', 'aspiring-knight' ), 'section' => 'ds_h5_section', 'default_font' => 'Cinzel', 'default_size' => '20px', 'default_color' => '#333333' ),
+		'h6'           => array( 'label' => __( 'H6', 'aspiring-knight' ), 'section' => 'ds_h6_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#333333' ),
+		'body_text'    => array( 'label' => __( 'Body Text', 'aspiring-knight' ), 'section' => 'ds_body_text_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#333333' ),
+		'body_links'   => array( 'label' => __( 'Body Text Links', 'aspiring-knight' ), 'section' => 'ds_body_links_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#d4af37' ),
 		
 		'menus'        => array( 'label' => __( 'Main Menu Links', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff' ),
 		'submenus'     => array( 'label' => __( 'Sub-Menu Links', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#ffffff' ),
@@ -543,3 +625,22 @@ function aspiring_knight_enqueue_customizer_fonts() {
 	wp_enqueue_style( 'aspiring-knight-customizer-fonts', $fonts_url, array(), '1.0.0' );
 }
 add_action( 'wp_enqueue_scripts', 'aspiring_knight_enqueue_customizer_fonts' );
+
+/**
+ * Enqueue Customizer admin controls styles for nested sections animation.
+ */
+function aspiring_knight_customize_controls_styles() {
+	?>
+	<style>
+		/* Customizer Nested Sections Animations & Fixes */
+		#customize-theme-controls .customize-pane-child.current-section-parent {
+			transform: translateX(-100%) !important;
+			display: block !important;
+		}
+		.in-sub-section #customize-controls .wp-full-overlay-sidebar-content {
+			overflow: visible !important;
+		}
+	</style>
+	<?php
+}
+add_action( 'customize_controls_print_styles', 'aspiring_knight_customize_controls_styles' );

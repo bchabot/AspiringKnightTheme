@@ -2,13 +2,38 @@
  * Customizer Controls scripts.
  * 
  * Handles logic for Theme Presets, including Saving and Deleting custom presets,
- * and forcing the visual update of standard color picker inputs when presets are applied.
+ * forcing the visual update of standard color picker inputs when presets are applied,
+ * and performing nested customizer sections reflowing.
  */
 
 (function($) {
+    // 1. Nested Sections Reflow Logic
+    if (typeof wp !== 'undefined' && wp.customize) {
+        wp.customize.bind('pane-contents-reflowed', function() {
+            var nestedSections = [];
+
+            // Find all sections of our custom type
+            wp.customize.section.each(function(section) {
+                if (section.params.type === 'aspiring_knight_nested_section' && section.params.section) {
+                    nestedSections.push(section);
+                }
+            });
+
+            // Sort and move them into their parent sections
+            nestedSections.sort(wp.customize.utils.prioritySort).reverse();
+
+            $.each(nestedSections, function(i, section) {
+                var parentContainer = $('#sub-accordion-section-' + section.params.section);
+                if (parentContainer.length) {
+                    parentContainer.children('.section-meta').after(section.headContainer);
+                }
+            });
+        });
+    }
+
     wp.customize.bind('ready', function() {
         
-        // 1. Preset Application Logic
+        // 2. Preset Application Logic
         wp.customize('theme_preset', function(value) {
             value.bind(function(newval) {
                 if (newval === 'default') return;
@@ -88,7 +113,7 @@
             });
         });
 
-        // 2. Inject Save/Delete Buttons
+        // 3. Inject Save/Delete Buttons
         const $container = $('#customize-control-new_preset_name');
         if ($container.length) {
             $container.append(`
@@ -99,7 +124,7 @@
             `);
         }
 
-        // 3. Save Logic
+        // 4. Save Logic
         $(document).on('click', '#ak-save-preset', function() {
             if (typeof wp === 'undefined' || !wp.customize) return;
             const name = wp.customize('new_preset_name').get();
@@ -131,7 +156,7 @@
             location.reload(); 
         });
 
-        // 4. Delete Logic
+        // 5. Delete Logic
         $(document).on('click', '#ak-delete-preset', function() {
             if (typeof wp === 'undefined' || !wp.customize) return;
             const selected = wp.customize('theme_preset').get();
