@@ -47,67 +47,50 @@
         const varId = cat.replace(/_/g, '-');
 
         const updateAllVars = () => {
-            const customType = wp.customize(cat + '_custom_type').get();
+            const font = wp.customize(cat + '_font_family').get();
+            const size = wp.customize(cat + '_font_size').get();
+            const weight = wp.customize(cat + '_font_weight').get();
+            const italic = wp.customize(cat + '_italic').get();
+            const color = wp.customize(cat + '_color').get();
+            const underline = wp.customize(cat + '_underline').get() ? 'underline' : 'none';
 
-            if (customType === 'custom') {
-                const font = wp.customize(cat + '_font_family').get();
-                const size = wp.customize(cat + '_font_size').get();
-                const weight = wp.customize(cat + '_font_weight').get();
-                const italic = wp.customize(cat + '_italic').get();
-                const color = wp.customize(cat + '_color').get();
-                const underline = wp.customize(cat + '_underline').get() ? 'underline' : 'none';
+            updateCSSVar('--ak-' + varId + '-font-family', `'${font}', serif`);
+            updateCSSVar('--ak-' + varId + '-font-size', size);
+            updateCSSVar('--ak-' + varId + '-font-weight', weight);
+            updateCSSVar('--ak-' + varId + '-font-style', italic ? 'italic' : 'normal');
+            updateCSSVar('--ak-' + varId + '-color', color);
 
-                updateCSSVar('--ak-' + varId + '-font-family', `'${font}', serif`);
-                updateCSSVar('--ak-' + varId + '-font-size', size);
-                updateCSSVar('--ak-' + varId + '-font-weight', weight);
-                updateCSSVar('--ak-' + varId + '-font-style', italic ? 'italic' : 'normal');
-                updateCSSVar('--ak-' + varId + '-color', color);
-
-                if (wp.customize(cat + '_link_color')) {
-                    updateCSSVar('--ak-' + varId + '-link-color', wp.customize(cat + '_link_color').get());
-                }
-
-                updateCSSVar('--ak-underline-' + varId, underline);
-
-                // Effects
-                const shadowEnabled = wp.customize(cat + '_shadow_enable').get();
-                const shadowColor = wp.customize(cat + '_shadow_color').get();
-                const shadowSize = wp.customize(cat + '_shadow_size').get();
-                const glowEnabled = wp.customize(cat + '_glow_enable').get();
-                const glowColor = wp.customize(cat + '_glow_color').get();
-                const glowSize = wp.customize(cat + '_glow_size').get();
-
-                let val = '';
-                if (shadowEnabled) val += `${shadowSize} ${shadowColor}`;
-                if (glowEnabled) val += (val ? ', ' : '') + `0 0 ${glowSize} ${glowColor}`;
-                updateCSSVar('--ak-effect-' + varId, val || 'none');
-
-                // Drop Caps
-                const dropEnabled = wp.customize(cat + '_dropcaps_enable').get();
-                const dropColor = wp.customize(cat + '_dropcaps_color').get();
-                const dropSize = wp.customize(cat + '_dropcaps_size').get();
-                updateCSSVar('--ak-dropcap-display-' + varId, dropEnabled ? 'block' : 'none');
-                updateCSSVar('--ak-dropcap-color-' + varId, dropColor);
-                updateCSSVar('--ak-dropcap-font-size-' + varId, dropSize);
-            } else {
-                // Inherit modes
-                updateCSSVar('--ak-' + varId + '-font-family', 'inherit');
-                updateCSSVar('--ak-' + varId + '-font-size', 'inherit');
-                updateCSSVar('--ak-' + varId + '-font-weight', 'inherit');
-                updateCSSVar('--ak-' + varId + '-font-style', 'inherit');
-                updateCSSVar('--ak-' + varId + '-color', 'inherit');
-                updateCSSVar('--ak-' + varId + '-link-color', 'inherit');
-                updateCSSVar('--ak-underline-' + varId, 'inherit');
-                updateCSSVar('--ak-effect-' + varId, 'none');
-                updateCSSVar('--ak-dropcap-display-' + varId, 'none');
-                updateCSSVar('--ak-dropcap-color-' + varId, 'inherit');
-                updateCSSVar('--ak-dropcap-font-size-' + varId, 'inherit');
+            if (wp.customize(cat + '_link_color')) {
+                updateCSSVar('--ak-' + varId + '-link-color', wp.customize(cat + '_link_color').get());
             }
+
+            updateCSSVar('--ak-underline-' + varId, underline);
+
+            // Effects
+            const shadowEnabled = wp.customize(cat + '_shadow_enable').get();
+            const shadowColor = wp.customize(cat + '_shadow_color').get();
+            const shadowSize = wp.customize(cat + '_shadow_size').get();
+            const glowEnabled = wp.customize(cat + '_glow_enable').get();
+            const glowColor = wp.customize(cat + '_glow_color').get();
+            const glowSize = wp.customize(cat + '_glow_size').get();
+
+            let val = '';
+            if (shadowEnabled) val += `${shadowSize} ${shadowColor}`;
+            if (glowEnabled) val += (val ? ', ' : '') + `0 0 ${glowSize} ${glowColor}`;
+            updateCSSVar('--ak-effect-' + varId, val || 'none');
+
+            // Drop Caps
+            const dropEnabled = wp.customize(cat + '_dropcaps_enable').get();
+            const dropColor = wp.customize(cat + '_dropcaps_color').get();
+            const dropSize = wp.customize(cat + '_dropcaps_size').get();
+            updateCSSVar('--ak-dropcap-display-' + varId, dropEnabled ? 'block' : 'none');
+            updateCSSVar('--ak-dropcap-color-' + varId, dropColor);
+            updateCSSVar('--ak-dropcap-font-size-' + varId, dropSize);
         };
 
         // Bind all settings to updateAllVars
         const settingsToBind = [
-            '_custom_type', '_font_family', '_font_size', '_font_weight', '_italic', '_underline', '_color',
+            '_font_family', '_font_size', '_font_weight', '_italic', '_underline', '_color',
             '_shadow_enable', '_shadow_color', '_shadow_size', '_glow_enable', '_glow_color', '_glow_size',
             '_dropcaps_enable', '_dropcaps_color', '_dropcaps_size'
         ];
