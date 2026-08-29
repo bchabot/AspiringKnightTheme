@@ -7,22 +7,18 @@
 function esc_html( $text ) { return $text; }
 function get_theme_mods() {
     return [
-        'primary_color' => '#123456',
-        'accent_gold'   => '#abcdef',
-        'site_bg_color' => '#f0f0f0',
-        'header_bg_color' => '#ffffff',
-        'footer_bg_color' => '#222222',
-        'body_text_color' => '#333333',
-        'heading_text_color' => '#000000',
-        'link_color' => '#0000ee',
-        'link_hover_color' => '#ee0000',
-        'body_font_family' => 'Open Sans',
-        'body_font_size'   => '16px',
-        'body_line_height' => '1.5',
-        'headings_font_family' => 'Cinzel',
-        'headings_font_weight' => '700',
-        'global_layout' => 'sidebar-left',
-        'container_width' => '1400px',
+        'accent_gold'             => '#abcdef',
+        'site_bg_color'           => '#f0f0f0',
+        'header_bg_color'         => '#ffffff',
+        'footer_bg_color'         => '#222222',
+        'container_width'         => '1400px',
+        'body_text_custom_type'   => 'custom',
+        'body_text_font_family'   => 'Open Sans',
+        'body_text_font_size'     => '16px',
+        'body_text_color'         => '#333333',
+        'headings_custom_type'    => 'custom',
+        'headings_font_family'    => 'Cinzel',
+        'dropcap_enable'          => true,
     ];
 }
 function get_theme_mod( $name, $default = false ) {
@@ -49,9 +45,9 @@ function test_css_variables_output() {
         '--ak-header-bg: #ffffff;',
         '--ak-footer-bg: #222222;',
         '--ak-container-width: 1400px;',
-        "--ak-body-font-family: 'Open Sans', serif;",
-        '--ak-body-font-size: 16px;',
-        '--ak-body-color: #333333;',
+        "--ak-body-text-font-family: 'Open Sans', serif;",
+        '--ak-body-text-font-size: 16px;',
+        '--ak-body-text-color: #333333;',
         "--ak-headings-font-family: 'Cinzel', serif;",
         '--ak-dropcap-display: block;',
     ];

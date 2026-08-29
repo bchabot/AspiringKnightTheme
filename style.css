@@ -75,11 +75,11 @@ body {
 }
 
 /* Global Links */
-a {
+a:not(#wpadminbar *) {
     text-decoration: var(--ak-underline-body) !important;
 }
 
-body a {
+body a:not(#wpadminbar *) {
     color: var(--ak-body-link-color) !important;
 }
 
@@ -101,20 +101,64 @@ body a {
 
 /* Content Headers (H1-H6 inside entry-content) */
 .entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .entry-content h5, .entry-content h6 {
-    text-shadow: var(--ak-effect-headings);
-    font-family: var(--ak-headings-font-family) !important;
-    text-decoration: var(--ak-underline-headers) !important;
-    color: var(--ak-headings-color) !important;
     margin-top: 1.5em;
     margin-bottom: 1em;
 }
 
-.entry-content h1 { font-size: var(--ak-h1-font-size) !important; }
-.entry-content h2 { font-size: var(--ak-h2-font-size) !important; }
-.entry-content h3 { font-size: var(--ak-h3-font-size) !important; }
-.entry-content h4 { font-size: var(--ak-h4-font-size) !important; }
-.entry-content h5 { font-size: var(--ak-h5-font-size) !important; }
-.entry-content h6 { font-size: var(--ak-h6-font-size) !important; }
+.entry-content h1 {
+    font-family: var(--ak-h1-font-family, var(--ak-headings-font-family)) !important;
+    font-size: var(--ak-h1-font-size) !important;
+    font-weight: var(--ak-h1-font-weight, var(--ak-headings-font-weight)) !important;
+    font-style: var(--ak-h1-font-style, var(--ak-headings-font-style)) !important;
+    color: var(--ak-h1-color, var(--ak-headings-color)) !important;
+    text-shadow: var(--ak-effect-h1, var(--ak-effect-headings)) !important;
+    text-decoration: var(--ak-underline-h1, var(--ak-underline-headings)) !important;
+}
+.entry-content h2 {
+    font-family: var(--ak-h2-font-family, var(--ak-headings-font-family)) !important;
+    font-size: var(--ak-h2-font-size) !important;
+    font-weight: var(--ak-h2-font-weight, var(--ak-headings-font-weight)) !important;
+    font-style: var(--ak-h2-font-style, var(--ak-headings-font-style)) !important;
+    color: var(--ak-h2-color, var(--ak-headings-color)) !important;
+    text-shadow: var(--ak-effect-h2, var(--ak-effect-headings)) !important;
+    text-decoration: var(--ak-underline-h2, var(--ak-underline-headings)) !important;
+}
+.entry-content h3 {
+    font-family: var(--ak-h3-font-family, var(--ak-headings-font-family)) !important;
+    font-size: var(--ak-h3-font-size) !important;
+    font-weight: var(--ak-h3-font-weight, var(--ak-headings-font-weight)) !important;
+    font-style: var(--ak-h3-font-style, var(--ak-headings-font-style)) !important;
+    color: var(--ak-h3-color, var(--ak-headings-color)) !important;
+    text-shadow: var(--ak-effect-h3, var(--ak-effect-headings)) !important;
+    text-decoration: var(--ak-underline-h3, var(--ak-underline-headings)) !important;
+}
+.entry-content h4 {
+    font-family: var(--ak-h4-font-family, var(--ak-headings-font-family)) !important;
+    font-size: var(--ak-h4-font-size) !important;
+    font-weight: var(--ak-h4-font-weight, var(--ak-headings-font-weight)) !important;
+    font-style: var(--ak-h4-font-style, var(--ak-headings-font-style)) !important;
+    color: var(--ak-h4-color, var(--ak-headings-color)) !important;
+    text-shadow: var(--ak-effect-h4, var(--ak-effect-headings)) !important;
+    text-decoration: var(--ak-underline-h4, var(--ak-underline-headings)) !important;
+}
+.entry-content h5 {
+    font-family: var(--ak-h5-font-family, var(--ak-headings-font-family)) !important;
+    font-size: var(--ak-h5-font-size) !important;
+    font-weight: var(--ak-h5-font-weight, var(--ak-headings-font-weight)) !important;
+    font-style: var(--ak-h5-font-style, var(--ak-headings-font-style)) !important;
+    color: var(--ak-h5-color, var(--ak-headings-color)) !important;
+    text-shadow: var(--ak-effect-h5, var(--ak-effect-headings)) !important;
+    text-decoration: var(--ak-underline-h5, var(--ak-underline-headings)) !important;
+}
+.entry-content h6 {
+    font-family: var(--ak-h6-font-family, var(--ak-headings-font-family)) !important;
+    font-size: var(--ak-h6-font-size) !important;
+    font-weight: var(--ak-h6-font-weight, var(--ak-headings-font-weight)) !important;
+    font-style: var(--ak-h6-font-style, var(--ak-headings-font-style)) !important;
+    color: var(--ak-h6-color, var(--ak-headings-color)) !important;
+    text-shadow: var(--ak-effect-h6, var(--ak-effect-headings)) !important;
+    text-decoration: var(--ak-underline-h6, var(--ak-underline-headings)) !important;
+}
 
 /* Lists Styling */
 .entry-content ul {
@@ -134,31 +178,72 @@ body a {
     padding-left: 0.5rem !important;
 }
 
-/* Blog / Post Titles */
+/* Blog & Page Titles */
 .entry-title,
 .entry-title a {
-    font-family: var(--ak-blog-titles-font-family) !important;
-    font-size: var(--ak-blog-titles-font-size) !important;
-    color: var(--ak-blog-titles-color) !important;
-    text-shadow: var(--ak-effect-blog-titles) !important;
-    text-decoration: var(--ak-underline-blog-titles) !important;
+    font-family: var(--ak-blog-title-font-family) !important;
+    font-size: var(--ak-blog-title-font-size) !important;
+    font-weight: var(--ak-blog-title-font-weight, bold) !important;
+    font-style: var(--ak-blog-title-font-style, normal) !important;
+    color: var(--ak-blog-title-color) !important;
+    text-shadow: var(--ak-effect-blog-title) !important;
+    text-decoration: var(--ak-underline-blog-title) !important;
 }
 
 .entry-title a:hover {
-    color: var(--ak-blog-titles-link-color) !important;
+    color: var(--ak-blog-title-link-color) !important;
+}
+
+/* Single Blog Post Titles */
+.single-post .entry-title,
+.single-post .entry-title a {
+    font-family: var(--ak-blog-title-font-family) !important;
+    font-size: var(--ak-blog-title-font-size) !important;
+    font-weight: var(--ak-blog-title-font-weight, bold) !important;
+    font-style: var(--ak-blog-title-font-style, normal) !important;
+    color: var(--ak-blog-title-color) !important;
+    text-shadow: var(--ak-effect-blog-title) !important;
+    text-decoration: var(--ak-underline-blog-title) !important;
+}
+
+.single-post .entry-title a:hover {
+    color: var(--ak-blog-title-link-color) !important;
+}
+
+/* Single Page Titles */
+.page .entry-title,
+.page .entry-title a {
+    font-family: var(--ak-page-title-font-family) !important;
+    font-size: var(--ak-page-title-font-size) !important;
+    font-weight: var(--ak-page-title-font-weight, bold) !important;
+    font-style: var(--ak-page-title-font-style, normal) !important;
+    color: var(--ak-page-title-color) !important;
+    text-shadow: var(--ak-effect-page-title) !important;
+    text-decoration: var(--ak-underline-page-title) !important;
+}
+
+.page .entry-title a:hover {
+    color: var(--ak-page-title-link-color) !important;
 }
 
 /* Article Area Text (The specific paragraph text inside the post box) */
 .entry-content, .entry-content p, .entry-content div, .entry-content section, .entry-content li, .entry-content blockquote {
-    font-family: var(--ak-article-text-font-family) !important;
-    font-size: var(--ak-article-text-font-size) !important;
-    color: var(--ak-article-text-color) !important;
-    text-shadow: var(--ak-effect-article-text) !important;
+    font-family: var(--ak-body-text-font-family) !important;
+    font-size: var(--ak-body-text-font-size) !important;
+    font-weight: var(--ak-body-text-font-weight, inherit) !important;
+    font-style: var(--ak-body-text-font-style, inherit) !important;
+    color: var(--ak-body-text-color) !important;
+    text-shadow: var(--ak-effect-body-text) !important;
 }
 
 .entry-content a {
-    color: var(--ak-article-text-link-color) !important;
-    text-decoration: var(--ak-underline-article-text) !important;
+    font-family: var(--ak-body-links-font-family) !important;
+    font-size: var(--ak-body-links-font-size) !important;
+    font-weight: var(--ak-body-links-font-weight, inherit) !important;
+    font-style: var(--ak-body-links-font-style, inherit) !important;
+    color: var(--ak-body-links-color) !important;
+    text-shadow: var(--ak-effect-body-links) !important;
+    text-decoration: var(--ak-underline-body-links) !important;
 }
 
 /* Site Branding */
@@ -197,14 +282,14 @@ article {
 /* Drop Cap Logic */
 .medieval-dropcap:first-letter,
 .entry-content p:first-of-type::first-letter {
-    display: var(--ak-dropcap-display, block) !important;
-    float: left !important;
-    font-family: var(--ak-dropcap-font-family, serif) !important;
-    font-size: var(--ak-dropcap-font-size, 4rem) !important;
-    line-height: 1 !important;
-    margin: 0.1em 0.1em 0 0 !important;
-    color: var(--ak-dropcap-color, var(--ak-accent-gold)) !important;
-    font-weight: bold !important;
+    display: var(--ak-dropcap-display-body-text, var(--ak-dropcap-display, block)) !important;
+    float: var(--ak-dropcap-float, left) !important;
+    font-family: var(--ak-dropcap-font-family-body-text, var(--ak-dropcap-font-family, serif)) !important;
+    font-size: var(--ak-dropcap-font-size-body-text, var(--ak-dropcap-font-size, 4rem)) !important;
+    line-height: var(--ak-dropcap-line-height, 1) !important;
+    margin: var(--ak-dropcap-margin, 0.1em 0.1em 0 0) !important;
+    color: var(--ak-dropcap-color-body-text, var(--ak-dropcap-color, var(--ak-accent-gold))) !important;
+    font-weight: var(--ak-dropcap-font-weight, bold) !important;
 }
 
 /* Footer Styling */
