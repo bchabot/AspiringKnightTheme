@@ -15,6 +15,6 @@
 - [x] Task: Verification - Metadata matches current theme state.
 
 ## Phase 3: Final Packaging Audit
-- [~] Task: Final Build & Lint
+- [x] Task: Final Build & Lint
     - Run `npm run build` and `php -l`.
-- [ ] Task: Verification - Zip download works on fresh WP without build.
+- [x] Task: Verification - Zip download works on fresh WP without build.

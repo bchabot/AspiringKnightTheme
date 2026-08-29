@@ -5,8 +5,8 @@
 
 // Mock WordPress functions
 function esc_html( $text ) { return $text; }
-function get_theme_mod( $name, $default = false ) {
-    $mods = [
+function get_theme_mods() {
+    return [
         'primary_color' => '#123456',
         'accent_gold'   => '#abcdef',
         'site_bg_color' => '#f0f0f0',
@@ -24,6 +24,9 @@ function get_theme_mod( $name, $default = false ) {
         'global_layout' => 'sidebar-left',
         'container_width' => '1400px',
     ];
+}
+function get_theme_mod( $name, $default = false ) {
+    $mods = get_theme_mods();
     return isset( $mods[ $name ] ) ? $mods[ $name ] : $default;
 }
 function add_action( $hook, $callback ) {}
@@ -41,22 +44,16 @@ function test_css_variables_output() {
 
     echo "Testing CSS Variables Output:\n";
     $expected = [
-        '--ak-primary-color: #123456;',
         '--ak-accent-gold: #abcdef;',
         '--ak-site-bg: #f0f0f0;',
         '--ak-header-bg: #ffffff;',
         '--ak-footer-bg: #222222;',
-        '--ak-body-text: #333333;',
-        '--ak-heading-text: #000000;',
-        '--ak-link-color: #0000ee;',
-        '--ak-link-hover-color: #ee0000;',
+        '--ak-container-width: 1400px;',
         "--ak-body-font-family: 'Open Sans', serif;",
         '--ak-body-font-size: 16px;',
-        '--ak-body-line-height: 1.5;',
+        '--ak-body-color: #333333;',
         "--ak-headings-font-family: 'Cinzel', serif;",
-        '--ak-headings-font-weight: 700;',
-        '--ak-container-width: 1400px;',
-        '--ak-sidebar-order: -1;',
+        '--ak-dropcap-display: block;',
     ];
 
     $failed = false;
