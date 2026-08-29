@@ -84,14 +84,26 @@ function aspiring_knight_customize_register( $wp_customize ) {
 
 	foreach ( $bg_colors as $id => $data ) {
 		$wp_customize->add_setting( $id, array( 'default' => $data['default'], 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $id, array( 'label' => $data['label'], 'section' => 'site_colors_section' ) ) );
+		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $id, array(
+			'label'    => $data['label'],
+			'section'  => 'site_colors_section',
+			'settings' => $id,
+		) ) );
 	}
 
 	$wp_customize->add_setting( 'background_image', array( 'transport' => 'refresh', 'sanitize_callback' => 'esc_url_raw' ) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'background_image', array( 'label' => __( 'Global Background Image', 'aspiring-knight' ), 'section' => 'site_colors_section' ) ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'background_image', array(
+		'label'    => __( 'Global Background Image', 'aspiring-knight' ),
+		'section'  => 'site_colors_section',
+		'settings' => 'background_image',
+	) ) );
 
 	$wp_customize->add_setting( 'article_bg_image', array( 'transport' => 'refresh', 'sanitize_callback' => 'esc_url_raw' ) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'article_bg_image', array( 'label' => __( 'Article Box Background Image', 'aspiring-knight' ), 'section' => 'site_colors_section' ) ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'article_bg_image', array(
+		'label'    => __( 'Article Box Background Image', 'aspiring-knight' ),
+		'section'  => 'site_colors_section',
+		'settings' => 'article_bg_image',
+	) ) );
 
 	/**
 	 * CATEGORICAL SECTIONS CONFIGURATION
@@ -106,10 +118,18 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	$wp_customize->add_control( 'menu_spacing', array( 'label' => __( 'Menu Item Spacing', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'type' => 'text', 'description' => __( 'Horizontal space between menu items (e.g. 2rem or 24px).', 'aspiring-knight' ) ) );
 
 	$wp_customize->add_setting( 'menu_bg_color', array( 'default' => 'transparent', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'menu_bg_color', array( 'label' => __( 'Menu Background Color', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section' ) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'menu_bg_color', array(
+		'label'    => __( 'Menu Background Color', 'aspiring-knight' ),
+		'section'  => 'ds_navigation_menus_section',
+		'settings' => 'menu_bg_color',
+	) ) );
 
 	$wp_customize->add_setting( 'submenu_bg_color', array( 'default' => '#3a3a3a', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'submenu_bg_color', array( 'label' => __( 'Sub-Menu Background Color', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section' ) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'submenu_bg_color', array(
+		'label'    => __( 'Sub-Menu Background Color', 'aspiring-knight' ),
+		'section'  => 'ds_navigation_menus_section',
+		'settings' => 'submenu_bg_color',
+	) ) );
 
 	$categories_config = array(
 		'site_title'   => array( 'label' => __( 'Header - Title', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'default_font' => 'Cinzel', 'default_size' => '2.5rem', 'default_color' => '#ffffff' ),
@@ -216,6 +236,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_color", array(
 			'label'           => sprintf( __( '%s Text Color', 'aspiring-knight' ), $cat['label'] ),
 			'section'         => $section_id,
+			'settings'        => "{$id}_color",
 			'active_callback' => $is_custom_callback,
 		) ) );
 
@@ -225,6 +246,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_link_color", array(
 				'label'           => sprintf( __( '%s Link Color', 'aspiring-knight' ), $cat['label'] ),
 				'section'         => $section_id,
+				'settings'        => "{$id}_link_color",
 				'active_callback' => $is_custom_callback,
 			) ) );
 		}
@@ -247,6 +269,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_glow_color", array(
 			'label'           => __( 'Glow Color', 'aspiring-knight' ),
 			'section'         => $section_id,
+			'settings'        => "{$id}_glow_color",
 			'active_callback' => $is_glow_callback,
 		) ) );
 
@@ -277,6 +300,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_shadow_color", array(
 			'label'           => __( 'Shadow Color', 'aspiring-knight' ),
 			'section'         => $section_id,
+			'settings'        => "{$id}_shadow_color",
 			'active_callback' => $is_shadow_callback,
 		) ) );
 
@@ -307,6 +331,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_dropcaps_color", array(
 			'label'           => __( 'Drop Caps Color', 'aspiring-knight' ),
 			'section'         => $section_id,
+			'settings'        => "{$id}_dropcaps_color",
 			'active_callback' => $is_dropcaps_callback,
 		) ) );
 
@@ -328,13 +353,25 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	$wp_customize->add_setting( 'dropcap_font_size', array( 'default' => '4rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( 'dropcap_font_size', array( 'label' => __( 'Legacy Drop Cap Size', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'type' => 'text' ) );
 	$wp_customize->add_setting( 'dropcap_color', array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'dropcap_color', array( 'label' => __( 'Legacy Drop Cap Color', 'aspiring-knight' ), 'section' => 'ds_typography_section' ) ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'dropcap_color', array(
+		'label'    => __( 'Legacy Drop Cap Color', 'aspiring-knight' ),
+		'section'  => 'ds_typography_section',
+		'settings' => 'dropcap_color',
+	) ) );
 
 	$wp_customize->add_section( 'branding_assets_section', array( 'title' => esc_html__( 'Header & Branding Assets', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 100 ) );
 	$wp_customize->add_setting( 'site_title_banner', array( 'default' => '', 'sanitize_callback' => 'esc_url_raw', 'transport' => 'refresh' ) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'site_title_banner', array( 'label' => __( 'Banner Image', 'aspiring-knight' ), 'section' => 'branding_assets_section' ) ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'site_title_banner', array(
+		'label'    => __( 'Banner Image', 'aspiring-knight' ),
+		'section'  => 'branding_assets_section',
+		'settings' => 'site_title_banner',
+	) ) );
 	$wp_customize->add_setting( 'header_bg_image', array( 'default' => '', 'sanitize_callback' => 'esc_url_raw', 'transport' => 'refresh' ) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'header_bg_image', array( 'label' => __( 'Header Background Image', 'aspiring-knight' ), 'section' => 'branding_assets_section' ) ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'header_bg_image', array(
+		'label'    => __( 'Header Background Image', 'aspiring-knight' ),
+		'section'  => 'branding_assets_section',
+		'settings' => 'header_bg_image',
+	) ) );
 
 	$branding_toggles = array( 'show_site_title' => __( 'Show Site Title', 'aspiring-knight' ), 'show_site_tagline' => __( 'Show Site Tagline', 'aspiring-knight' ), 'show_banner_image' => __( 'Show Banner Image', 'aspiring-knight' ), 'show_top_bar' => __( 'Show Top Bar', 'aspiring-knight' ) );
 	foreach ( $branding_toggles as $id => $label ) {
@@ -357,7 +394,11 @@ function aspiring_knight_customize_register( $wp_customize ) {
 
 	$wp_customize->add_section( 'ds_footer_layout_section', array( 'title' => esc_html__( 'Footer Layout', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 120 ) );
 	$wp_customize->add_setting( 'footer_bg_image', array( 'default' => '', 'sanitize_callback' => 'esc_url_raw', 'transport' => 'refresh' ) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'footer_bg_image', array( 'label' => __( 'Footer Background Image', 'aspiring-knight' ), 'section' => 'ds_footer_layout_section' ) ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'footer_bg_image', array(
+		'label'    => __( 'Footer Background Image', 'aspiring-knight' ),
+		'section'  => 'ds_footer_layout_section',
+		'settings' => 'footer_bg_image',
+	) ) );
 	$wp_customize->add_setting( 'footer_columns', array( 'default' => '3', 'sanitize_callback' => 'absint', 'transport' => 'refresh' ) );
 	$wp_customize->add_control( 'footer_columns', array( 'label' => __( 'Footer Columns', 'aspiring-knight' ), 'section' => 'ds_footer_layout_section', 'type' => 'select', 'choices' => array( '1'=>'1','2'=>'2','3'=>'3','4'=>'4' ) ) );
 	$wp_customize->add_setting( 'copyright_text', array( 'default' => __( 'Proudly powered by WordPress', 'aspiring-knight' ), 'sanitize_callback' => 'wp_kses_post', 'transport' => 'postMessage' ) );

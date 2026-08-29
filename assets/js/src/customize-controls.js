@@ -6,8 +6,96 @@
  */
 
 (function($) {
-    $(function() {
-        // 1. Preset Application Logic
+    wp.customize.bind('ready', function() {
+        
+        // 1. Instant Dynamic Show/Hide for Typography Sections
+        const categories = [
+            'site_title', 'site_tagline', 'blog_title', 'page_title', 'headings',
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'body_text', 'body_links',
+            'menus', 'submenus', 'sidebars', 'footer'
+        ];
+
+        categories.forEach(cat => {
+            const settingName = cat + '_custom_type';
+            
+            // Function to toggle sub-settings based on custom_type selection
+            const toggleControls = function(value) {
+                const isCustom = value === 'custom';
+                const suffixList = [
+                    '_font_family', '_font_size', '_font_weight', '_italic', '_underline', '_color', '_link_color',
+                    '_shadow_enable', '_shadow_color', '_shadow_size',
+                    '_glow_enable', '_glow_color', '_glow_size',
+                    '_dropcaps_enable', '_dropcaps_color', '_dropcaps_size'
+                ];
+
+                suffixList.forEach(suffix => {
+                    const control = wp.customize.control(cat + suffix);
+                    if (control) {
+                        if (isCustom) {
+                            // Sub-level visibility check for nested items
+                            if (suffix === '_glow_color' || suffix === '_glow_size') {
+                                const glowEnableSetting = wp.customize(cat + '_glow_enable');
+                                if (glowEnableSetting && glowEnableSetting.get()) {
+                                    control.show();
+                                } else {
+                                    control.hide();
+                                }
+                            } else if (suffix === '_shadow_color' || suffix === '_shadow_size') {
+                                const shadowEnableSetting = wp.customize(cat + '_shadow_enable');
+                                if (shadowEnableSetting && shadowEnableSetting.get()) {
+                                    control.show();
+                                } else {
+                                    control.hide();
+                                }
+                            } else if (suffix === '_dropcaps_color' || suffix === '_dropcaps_size') {
+                                const dropcapsEnableSetting = wp.customize(cat + '_dropcaps_enable');
+                                if (dropcapsEnableSetting && dropcapsEnableSetting.get()) {
+                                    control.show();
+                                } else {
+                                    control.hide();
+                                }
+                            } else {
+                                control.show();
+                            }
+                        } else {
+                            control.hide();
+                        }
+                    }
+                });
+            };
+
+            // Run on load and bind to changes
+            const setting = wp.customize(settingName);
+            if (setting) {
+                toggleControls(setting.get());
+                setting.bind(toggleControls);
+            }
+
+            // Real-time listener for Glow, Shadow, and Dropcaps checkboxes
+            ['_glow_enable', '_shadow_enable', '_dropcaps_enable'].forEach(toggleSuffix => {
+                const toggleSetting = wp.customize(cat + toggleSuffix);
+                if (toggleSetting) {
+                    toggleSetting.bind(function(enabled) {
+                        const customType = wp.customize(cat + '_custom_type').get();
+                        if (customType !== 'custom') return; // let parent handle it
+
+                        let subSuffixes = [];
+                        if (toggleSuffix === '_glow_enable') subSuffixes = ['_glow_color', '_glow_size'];
+                        if (toggleSuffix === '_shadow_enable') subSuffixes = ['_shadow_color', '_shadow_size'];
+                        if (toggleSuffix === '_dropcaps_enable') subSuffixes = ['_dropcaps_color', '_dropcaps_size'];
+
+                        subSuffixes.forEach(sub => {
+                            const ctrl = wp.customize.control(cat + sub);
+                            if (ctrl) {
+                                if (enabled) ctrl.show(); else ctrl.hide();
+                            }
+                        });
+                    });
+                }
+            });
+        });
+
+        // 2. Preset Application Logic
         wp.customize('theme_preset', function(value) {
             value.bind(function(newval) {
                 if (newval === 'default') return;
@@ -87,7 +175,7 @@
             });
         });
 
-        // 2. Inject Save/Delete Buttons
+        // 3. Inject Save/Delete Buttons
         const $container = $('#customize-control-new_preset_name');
         if ($container.length) {
             $container.append(`
@@ -98,7 +186,7 @@
             `);
         }
 
-        // 3. Save Logic
+        // 4. Save Logic
         $(document).on('click', '#ak-save-preset', function() {
             const name = wp.customize('new_preset_name').get();
             if (!name) { alert('Please enter a name.'); return; }
@@ -107,11 +195,6 @@
             const settingsToCapture = [
                 'top_bar_bg_color', 'top_bar_text_color', 'accent_gold', 'site_bg_color', 'article_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color',
                 'container_width', 'header_padding', 'menu_spacing', 'sidebar_padding'
-            ];
-            const categories = [
-                'site_title', 'site_tagline', 'blog_title', 'page_title', 'headings',
-                'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'body_text', 'body_links',
-                'menus', 'submenus', 'sidebars', 'footer'
             ];
             categories.forEach(cat => {
                 settingsToCapture.push(
@@ -129,7 +212,7 @@
             location.reload(); 
         });
 
-        // 4. Delete Logic
+        // 5. Delete Logic
         $(document).on('click', '#ak-delete-preset', function() {
             const selected = wp.customize('theme_preset').get();
             if (!selected.startsWith('custom_')) { alert('Select a custom preset to delete.'); return; }
