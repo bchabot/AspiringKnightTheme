@@ -12,11 +12,9 @@ function get_theme_mods() {
         'header_bg_color'         => '#ffffff',
         'footer_bg_color'         => '#222222',
         'container_width'         => '1400px',
-        'body_text_custom_type'   => 'custom',
         'body_text_font_family'   => 'Open Sans',
         'body_text_font_size'     => '16px',
         'body_text_color'         => '#333333',
-        'headings_custom_type'    => 'custom',
         'headings_font_family'    => 'Cinzel',
         'dropcap_enable'          => true,
     ];

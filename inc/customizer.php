@@ -156,24 +156,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	foreach ( $categories_config as $id => $cat ) {
 		$section_id = $cat['section'];
 
-		// Customize Mode (Default vs Custom)
-		$wp_customize->add_setting( "{$id}_custom_type", array( 'default' => 'default', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
-		$wp_customize->add_control( "{$id}_custom_type", array(
-			'label'       => sprintf( __( '%s Customizer Mode', 'aspiring-knight' ), $cat['label'] ),
-			'section'     => $section_id,
-			'type'        => 'radio',
-			'choices'     => array(
-				'default' => __( 'Default (Undefined / Inherit)', 'aspiring-knight' ),
-				'custom'  => __( 'Custom Design', 'aspiring-knight' ),
-			),
-			'description' => sprintf( __( 'Select "Custom Design" to style %s, or "Default" to inherit layouts.', 'aspiring-knight' ), $cat['label'] ),
-		) );
-
-		// Customizer active callback for settings of this category
-		$is_custom_callback = function( $control ) use ( $id ) {
-			return $control->manager->get_setting( "{$id}_custom_type" )->value() === 'custom';
-		};
-
 		// Font Family
 		$wp_customize->add_setting( "{$id}_font_family", array( 'default' => $cat['default_font'], 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
 		$wp_customize->add_control( "{$id}_font_family", array(
@@ -181,7 +163,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'section'         => $section_id,
 			'type'            => 'select',
 			'choices'         => aspiring_knight_get_font_choices(),
-			'active_callback' => $is_custom_callback,
 		) );
 
 		// Font Size
@@ -191,7 +172,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'section'         => $section_id,
 			'type'            => 'text',
 			'description'     => __( 'Example: 16px, 1.5rem, or 2vw.', 'aspiring-knight' ),
-			'active_callback' => $is_custom_callback,
 		) );
 
 		// Font Weight
@@ -210,7 +190,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 				'800'     => __( 'Extra-Bold (800)', 'aspiring-knight' ),
 				'900'     => __( 'Black (900)', 'aspiring-knight' ),
 			),
-			'active_callback' => $is_custom_callback,
 		) );
 
 		// Em/Italic
@@ -219,7 +198,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'label'           => __( 'Make text Em/Italic?', 'aspiring-knight' ),
 			'section'         => $section_id,
 			'type'            => 'checkbox',
-			'active_callback' => $is_custom_callback,
 		) );
 
 		// Underline
@@ -228,7 +206,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'label'           => __( 'Enable Underlining?', 'aspiring-knight' ),
 			'section'         => $section_id,
 			'type'            => 'checkbox',
-			'active_callback' => $is_custom_callback,
 		) );
 
 		// Text Color
@@ -237,7 +214,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'label'           => sprintf( __( '%s Text Color', 'aspiring-knight' ), $cat['label'] ),
 			'section'         => $section_id,
 			'settings'        => "{$id}_color",
-			'active_callback' => $is_custom_callback,
 		) ) );
 
 		// Link Color
@@ -247,7 +223,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 				'label'           => sprintf( __( '%s Link Color', 'aspiring-knight' ), $cat['label'] ),
 				'section'         => $section_id,
 				'settings'        => "{$id}_link_color",
-				'active_callback' => $is_custom_callback,
 			) ) );
 		}
 
@@ -257,20 +232,13 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'label'           => __( 'Enable Glow Effect?', 'aspiring-knight' ),
 			'section'         => $section_id,
 			'type'            => 'checkbox',
-			'active_callback' => $is_custom_callback,
 		) );
-
-		$is_glow_callback = function( $control ) use ( $id ) {
-			$mgr = $control->manager;
-			return $mgr->get_setting( "{$id}_custom_type" )->value() === 'custom' && $mgr->get_setting( "{$id}_glow_enable" )->value();
-		};
 
 		$wp_customize->add_setting( "{$id}_glow_color", array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_glow_color", array(
 			'label'           => __( 'Glow Color', 'aspiring-knight' ),
 			'section'         => $section_id,
 			'settings'        => "{$id}_glow_color",
-			'active_callback' => $is_glow_callback,
 		) ) );
 
 		$wp_customize->add_setting( "{$id}_glow_size", array( 'default' => '10px', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
@@ -279,7 +247,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'section'         => $section_id,
 			'type'            => 'text',
 			'description'     => __( 'Example: 8px, 15px, or 1.2rem.', 'aspiring-knight' ),
-			'active_callback' => $is_glow_callback,
 		) );
 
 		// Dropshadow Control
@@ -288,20 +255,13 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'label'           => __( 'Enable Dropshadow?', 'aspiring-knight' ),
 			'section'         => $section_id,
 			'type'            => 'checkbox',
-			'active_callback' => $is_custom_callback,
 		) );
-
-		$is_shadow_callback = function( $control ) use ( $id ) {
-			$mgr = $control->manager;
-			return $mgr->get_setting( "{$id}_custom_type" )->value() === 'custom' && $mgr->get_setting( "{$id}_shadow_enable" )->value();
-		};
 
 		$wp_customize->add_setting( "{$id}_shadow_color", array( 'default' => '#000000', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_shadow_color", array(
 			'label'           => __( 'Shadow Color', 'aspiring-knight' ),
 			'section'         => $section_id,
 			'settings'        => "{$id}_shadow_color",
-			'active_callback' => $is_shadow_callback,
 		) ) );
 
 		$wp_customize->add_setting( "{$id}_shadow_size", array( 'default' => '2px 2px 4px', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
@@ -310,7 +270,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'section'         => $section_id,
 			'type'            => 'text',
 			'description'     => __( 'Format: h-offset v-offset blur-radius (e.g. 2px 2px 4px).', 'aspiring-knight' ),
-			'active_callback' => $is_shadow_callback,
 		) );
 
 		// Drop Caps (Nested decoration settings per category)
@@ -319,20 +278,13 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'label'           => __( 'Enable Drop Caps?', 'aspiring-knight' ),
 			'section'         => $section_id,
 			'type'            => 'checkbox',
-			'active_callback' => $is_custom_callback,
 		) );
-
-		$is_dropcaps_callback = function( $control ) use ( $id ) {
-			$mgr = $control->manager;
-			return $mgr->get_setting( "{$id}_custom_type" )->value() === 'custom' && $mgr->get_setting( "{$id}_dropcaps_enable" )->value();
-		};
 
 		$wp_customize->add_setting( "{$id}_dropcaps_color", array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_dropcaps_color", array(
 			'label'           => __( 'Drop Caps Color', 'aspiring-knight' ),
 			'section'         => $section_id,
 			'settings'        => "{$id}_dropcaps_color",
-			'active_callback' => $is_dropcaps_callback,
 		) ) );
 
 		$wp_customize->add_setting( "{$id}_dropcaps_size", array( 'default' => '4rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
@@ -341,7 +293,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'section'         => $section_id,
 			'type'            => 'text',
 			'description'     => __( 'Example: 4rem, 64px, or 5em.', 'aspiring-knight' ),
-			'active_callback' => $is_dropcaps_callback,
 		) );
 	}
 
@@ -506,48 +457,32 @@ function aspiring_knight_output_css_variables() {
 
 			foreach ($categories_config as $id => $cat) {
 				$var_id = str_replace('_', '-', $id);
-				$custom_type = $get_mod("{$id}_custom_type", 'default');
 
-				if ($custom_type === 'custom') {
-					$font = $get_mod("{$id}_font_family", $cat['default_font']);
-					if ($use_custom_headings && $custom_font_file && in_array($id, array('site_title', 'site_tagline', 'blog_title', 'page_title', 'headings', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'))) {
-						$font = $custom_font_name;
-					}
-					$size = $get_mod("{$id}_font_size", $cat['default_size']);
-					$weight = $get_mod("{$id}_font_weight", 'inherit');
-					$style = $get_mod("{$id}_italic", false) ? 'italic' : 'normal';
-					$color = $get_mod("{$id}_color", $cat['default_color']);
-					$link_color = isset($cat['default_color']) ? $get_mod("{$id}_link_color", '#d4af37') : 'inherit';
-					$underline = $get_mod("{$id}_underline", false) ? 'underline' : 'none';
-
-					// Effects
-					$val = '';
-					if ($get_mod("{$id}_shadow_enable", false)) {
-						$val .= $get_mod("{$id}_shadow_size", '2px 2px 4px') . ' ' . $get_mod("{$id}_shadow_color", '#000000');
-					}
-					if ($get_mod("{$id}_glow_enable", false)) {
-						$val .= ($val ? ', ' : '') . '0 0 ' . $get_mod("{$id}_glow_size", '10px') . ' ' . $get_mod("{$id}_glow_color", '#d4af37');
-					}
-					$effect = $val ?: 'none';
-
-					// Drop Caps
-					$drop_display = $get_mod("{$id}_dropcaps_enable", false) ? 'block' : 'none';
-					$drop_color = $get_mod("{$id}_dropcaps_color", '#d4af37');
-					$drop_size = $get_mod("{$id}_dropcaps_size", '4rem');
-				} else {
-					// Fallbacks when leaving on Default (Inherit)
-					$font = 'inherit';
-					$size = 'inherit';
-					$weight = 'inherit';
-					$style = 'inherit';
-					$color = 'inherit';
-					$link_color = 'inherit';
-					$underline = 'inherit';
-					$effect = 'none';
-					$drop_display = 'none';
-					$drop_color = 'inherit';
-					$drop_size = 'inherit';
+				$font = $get_mod("{$id}_font_family", $cat['default_font']);
+				if ($use_custom_headings && $custom_font_file && in_array($id, array('site_title', 'site_tagline', 'blog_title', 'page_title', 'headings', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'))) {
+					$font = $custom_font_name;
 				}
+				$size = $get_mod("{$id}_font_size", $cat['default_size']);
+				$weight = $get_mod("{$id}_font_weight", 'inherit');
+				$style = $get_mod("{$id}_italic", false) ? 'italic' : 'normal';
+				$color = $get_mod("{$id}_color", $cat['default_color']);
+				$link_color = isset($cat['default_color']) ? $get_mod("{$id}_link_color", '#d4af37') : 'inherit';
+				$underline = $get_mod("{$id}_underline", false) ? 'underline' : 'none';
+
+				// Effects
+				$val = '';
+				if ($get_mod("{$id}_shadow_enable", false)) {
+					$val .= $get_mod("{$id}_shadow_size", '2px 2px 4px') . ' ' . $get_mod("{$id}_shadow_color", '#000000');
+				}
+				if ($get_mod("{$id}_glow_enable", false)) {
+					$val .= ($val ? ', ' : '') . '0 0 ' . $get_mod("{$id}_glow_size", '10px') . ' ' . $get_mod("{$id}_glow_color", '#d4af37');
+				}
+				$effect = $val ?: 'none';
+
+				// Drop Caps
+				$drop_display = $get_mod("{$id}_dropcaps_enable", false) ? 'block' : 'none';
+				$drop_color = $get_mod("{$id}_dropcaps_color", '#d4af37');
+				$drop_size = $get_mod("{$id}_dropcaps_size", '4rem');
 
 				echo "--ak-{$var_id}-font-family: '" . esc_html($font) . "', serif;\n";
 				echo "--ak-{$var_id}-font-size: " . esc_html($size) . ";\n";
@@ -596,11 +531,8 @@ function aspiring_knight_enqueue_customizer_fonts() {
 	$typos = array('site_title', 'site_tagline', 'blog_title', 'page_title', 'headings', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'body_text', 'body_links', 'menus', 'submenus', 'sidebars', 'footer');
 	$fonts = array();
 	foreach ($typos as $t) {
-		$custom_type = get_theme_mod("{$t}_custom_type", 'default');
-		if ($custom_type === 'custom') {
-			$font = get_theme_mod("{$t}_font_family", in_array($t, array('body_text', 'body_links', 'menus', 'submenus', 'sidebars', 'footer')) ? 'Lora' : 'Cinzel');
-			$fonts[] = $font . ':300,400,400i,500,600,700,700i,800,900';
-		}
+		$font = get_theme_mod("{$t}_font_family", in_array($t, array('body_text', 'body_links', 'menus', 'submenus', 'sidebars', 'footer')) ? 'Lora' : 'Cinzel');
+		$fonts[] = $font . ':300,400,400i,500,600,700,700i,800,900';
 	}
 	// Fallback/Default core theme fonts are always loaded
 	$fonts[] = 'Cinzel:400,700,900';
