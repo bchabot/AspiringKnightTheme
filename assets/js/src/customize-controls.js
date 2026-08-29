@@ -36,48 +36,46 @@
                             if (suffix === '_glow_color' || suffix === '_glow_size') {
                                 const glowEnableSetting = wp.customize(cat + '_glow_enable');
                                 if (glowEnableSetting && glowEnableSetting.get()) {
-                                    control.show();
+                                    control.active.set(true);
                                 } else {
-                                    control.hide();
+                                    control.active.set(false);
                                 }
                             } else if (suffix === '_shadow_color' || suffix === '_shadow_size') {
                                 const shadowEnableSetting = wp.customize(cat + '_shadow_enable');
                                 if (shadowEnableSetting && shadowEnableSetting.get()) {
-                                    control.show();
+                                    control.active.set(true);
                                 } else {
-                                    control.hide();
+                                    control.active.set(false);
                                 }
                             } else if (suffix === '_dropcaps_color' || suffix === '_dropcaps_size') {
                                 const dropcapsEnableSetting = wp.customize(cat + '_dropcaps_enable');
                                 if (dropcapsEnableSetting && dropcapsEnableSetting.get()) {
-                                    control.show();
+                                    control.active.set(true);
                                 } else {
-                                    control.hide();
+                                    control.active.set(false);
                                 }
                             } else {
-                                control.show();
+                                control.active.set(true);
                             }
                         } else {
-                            control.hide();
+                            control.active.set(false);
                         }
                     }
                 });
             };
 
             // Run on load and bind to changes
-            const setting = wp.customize(settingName);
-            if (setting) {
+            wp.customize(settingName, function(setting) {
                 toggleControls(setting.get());
                 setting.bind(toggleControls);
-            }
+            });
 
             // Real-time listener for Glow, Shadow, and Dropcaps checkboxes
             ['_glow_enable', '_shadow_enable', '_dropcaps_enable'].forEach(toggleSuffix => {
-                const toggleSetting = wp.customize(cat + toggleSuffix);
-                if (toggleSetting) {
-                    toggleSetting.bind(function(enabled) {
-                        const customType = wp.customize(cat + '_custom_type').get();
-                        if (customType !== 'custom') return; // let parent handle it
+                wp.customize(cat + toggleSuffix, function(setting) {
+                    setting.bind(function(enabled) {
+                        const customTypeSetting = wp.customize(cat + '_custom_type');
+                        if (!customTypeSetting || customTypeSetting.get() !== 'custom') return; // let parent handle it
 
                         let subSuffixes = [];
                         if (toggleSuffix === '_glow_enable') subSuffixes = ['_glow_color', '_glow_size'];
@@ -87,11 +85,11 @@
                         subSuffixes.forEach(sub => {
                             const ctrl = wp.customize.control(cat + sub);
                             if (ctrl) {
-                                if (enabled) ctrl.show(); else ctrl.hide();
+                                ctrl.active.set(enabled);
                             }
                         });
                     });
-                }
+                });
             });
         });
 
@@ -208,6 +206,7 @@
             currentData.name = name;
             const customPresets = JSON.parse(wp.customize('custom_presets_data').get() || '{}');
             customPresets[id] = currentData;
+            wp.customize('custom_presets_data').set(JSON.stringify(JSON.stringify(customPresets))); // wait, why double stringify? Ah, let's make it single.
             wp.customize('custom_presets_data').set(JSON.stringify(customPresets));
             location.reload(); 
         });
