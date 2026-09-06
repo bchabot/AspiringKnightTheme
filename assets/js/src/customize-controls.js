@@ -195,6 +195,9 @@ var akRestoreFontsNonce = '';
                         }
                     }
                 });
+
+                // Reset the preset selector to default so the same preset can be reapplied
+                wp.customize('theme_preset').set('default');
             });
         });
 

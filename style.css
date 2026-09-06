@@ -16,6 +16,9 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
 /* Global Site Background */
 body {
     background-color: var(--ak-site-bg) !important;
+    background-image: var(--ak-site-bg-image, none) !important;
+    background-size: cover;
+    background-position: center;
     font-family: var(--ak-body-text-font-family) !important;
     font-size: var(--ak-body-text-font-size) !important;
     color: var(--ak-body-text-color) !important;
