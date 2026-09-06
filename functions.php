@@ -188,7 +188,7 @@ add_filter( 'upload_mimes', 'aspiring_knight_mime_types' );
 /**
  * Allow font files in customizer font upload.
  */
-function aspiring_knight_check_font_mime( $check, $file ) {
+function aspiring_knight_check_font_mime( $file ) {
 	if ( ! empty( $file['type'] ) ) {
 		$allowed_font_types = array(
 			'application/x-font-ttf',
@@ -201,9 +201,9 @@ function aspiring_knight_check_font_mime( $check, $file ) {
 			'application/octet-stream',
 		);
 		if ( in_array( $file['type'], $allowed_font_types, true ) ) {
-			return true;
+			return $file;
 		}
 	}
-	return $check;
+	return $file;
 }
 add_filter( 'wp_handle_upload_prefilter', 'aspiring_knight_check_font_mime' );
