@@ -172,3 +172,15 @@ require get_template_directory() . '/inc/tgmpa.php';
  * Customizer additions.
  */
 require get_template_directory() . '/inc/customizer.php';
+
+/**
+ * Allow font file uploads in WordPress.
+ */
+function aspiring_knight_mime_types( $mimes ) {
+	$mimes['ttf']  = 'application/x-font-ttf';
+	$mimes['otf']  = 'application/x-font-opentype';
+	$mimes['woff'] = 'application/font-woff';
+	$mimes['woff2'] = 'application/font-woff2';
+	return $mimes;
+}
+add_filter( 'upload_mimes', 'aspiring_knight_mime_types' );
