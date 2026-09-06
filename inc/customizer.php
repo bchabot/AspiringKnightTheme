@@ -526,16 +526,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'label'       => __( 'Upload Custom Font', 'aspiring-knight' ),
 		'section'     => 'ds_custom_fonts_section',
 		'description' => __( 'Upload a TTF, OTF, WOFF, or WOFF2 font file. This font will be added to all font family dropdowns.', 'aspiring-knight' ),
-		'mime_type'   => array(
-			'font/ttf',
-			'font/otf',
-			'font/woff',
-			'font/woff2',
-			'application/x-font-ttf',
-			'application/x-font-otf',
-			'application/font-woff',
-			'application/font-woff2',
-		),
 	) ) );
 
 	// Use custom font for headings toggle
