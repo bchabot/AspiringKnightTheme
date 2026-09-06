@@ -177,10 +177,33 @@ require get_template_directory() . '/inc/customizer.php';
  * Allow font file uploads in WordPress.
  */
 function aspiring_knight_mime_types( $mimes ) {
-	$mimes['ttf']  = 'application/x-font-ttf';
-	$mimes['otf']  = 'application/x-font-opentype';
-	$mimes['woff'] = 'application/font-woff';
-	$mimes['woff2'] = 'application/font-woff2';
+	$mimes['ttf']   = 'application/x-font-ttf';
+	$mimes['otf']   = 'application/x-font-opentype';
+	$mimes['woff']  = 'application/font-woff';
+	$mimes['woff2'] = 'font/woff2';
 	return $mimes;
 }
 add_filter( 'upload_mimes', 'aspiring_knight_mime_types' );
+
+/**
+ * Allow font files in customizer font upload.
+ */
+function aspiring_knight_check_font_mime( $check, $file ) {
+	if ( ! empty( $file['type'] ) ) {
+		$allowed_font_types = array(
+			'application/x-font-ttf',
+			'application/x-font-opentype',
+			'application/font-woff',
+			'font/woff2',
+			'font/ttf',
+			'font/otf',
+			'font/woff',
+			'application/octet-stream',
+		);
+		if ( in_array( $file['type'], $allowed_font_types, true ) ) {
+			return true;
+		}
+	}
+	return $check;
+}
+add_filter( 'wp_handle_upload_prefilter', 'aspiring_knight_check_font_mime' );
