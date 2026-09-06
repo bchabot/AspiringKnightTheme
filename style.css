@@ -16,9 +16,9 @@ Tags: one-column, two-columns, custom-header, custom-menu, custom-colors, custom
 /* Global Site Background */
 body {
     background-color: var(--ak-site-bg) !important;
-    font-family: var(--ak-body-font-family) !important;
-    font-size: var(--ak-body-font-size) !important;
-    color: var(--ak-body-color) !important;
+    font-family: var(--ak-body-text-font-family) !important;
+    font-size: var(--ak-body-text-font-size) !important;
+    color: var(--ak-body-text-color) !important;
 }
 
 /* Wrapper background (always transparent to show Site BG) */
@@ -76,11 +76,11 @@ body {
 
 /* Global Links */
 a:not(#wpadminbar *) {
-    text-decoration: var(--ak-underline-body) !important;
+    text-decoration: var(--ak-underline-body-links) !important;
 }
 
 body a:not(#wpadminbar *) {
-    color: var(--ak-body-link-color) !important;
+    color: var(--ak-body-links-color) !important;
 }
 
 /* Sidebar Styling */

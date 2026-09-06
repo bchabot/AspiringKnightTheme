@@ -6,6 +6,9 @@
  * and performing nested customizer sections reflowing.
  */
 
+// Global nonce for restore fonts AJAX
+var akRestoreFontsNonce = '';
+
 (function($) {
     // 1. Nested Sections Reflow Logic
     if (typeof wp !== 'undefined' && wp.customize) {
@@ -59,6 +62,12 @@
             'ds_body_links_section'
         ];
 
+        // Map parent sections to their child/grandchild sections
+        const sectionHierarchy = {
+            'ds_header_section': ['ds_site_title_section', 'ds_site_tagline_section'],
+            'ds_headings_section': ['ds_h1_section', 'ds_h2_section', 'ds_h3_section', 'ds_h4_section', 'ds_h5_section', 'ds_h6_section']
+        };
+
         function toggleTypoSectionControls(sectionId) {
             const modeSetting = sectionId + '_mode';
             if (!wp.customize(modeSetting)) return;
@@ -80,6 +89,18 @@
                     $control.show();
                 }
             });
+
+            // Handle child/grandchild sections
+            if (sectionHierarchy[sectionId]) {
+                sectionHierarchy[sectionId].forEach(function(childSectionId) {
+                    const $childSection = $('#sub-accordion-section-' + childSectionId);
+                    if (mode === 'default') {
+                        $childSection.hide();
+                    } else {
+                        $childSection.show();
+                    }
+                });
+            }
         }
 
         // Initialize toggle state for all typo sections
@@ -241,6 +262,30 @@
             wp.customize('custom_presets_data').set(JSON.stringify(customPresets));
             wp.customize('theme_preset').set('default');
             location.reload();
+        });
+
+        // 6. Restore Default Fonts Logic
+        $(document).on('change', '#customize-control-restore_default_fonts input[type="checkbox"]', function() {
+            if ($(this).is(':checked')) {
+                if (confirm('This will reset ALL font settings to defaults. Are you sure?')) {
+                    // Send AJAX request to reset fonts
+                    $.ajax({
+                        url: '/wp-admin/admin-ajax.php',
+                        type: 'POST',
+                        data: {
+                            action: 'ak_restore_fonts',
+                            ak_restore_fonts_nonce: typeof akRestoreFontsNonce !== 'undefined' ? akRestoreFontsNonce : ''
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                location.reload();
+                            }
+                        }
+                    });
+                } else {
+                    $(this).prop('checked', false);
+                }
+            }
         });
     });
 })(jQuery);

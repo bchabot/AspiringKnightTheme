@@ -121,6 +121,5 @@
 
     // Branding text
     wp.customize('copyright_text', value => value.bind(to => $('.copyright-content').html(to.replace('[year]', new Date().getFullYear()))));
-    wp.customize('top_bar_text', value => value.bind(to => $('.top-bar-info').html(to)));
 
 })(jQuery);

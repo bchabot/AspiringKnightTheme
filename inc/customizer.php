@@ -19,6 +19,25 @@ if ( class_exists( 'WP_Customize_Section' ) ) {
 	}
 }
 
+// Custom Control for Restore Default Fonts button
+if ( class_exists( 'WP_Customize_Control' ) ) {
+	class Aspiring_Knight_Restore_Fonts_Control extends WP_Customize_Control {
+		public $type = 'ak_restore_fonts';
+
+		public function render_content() {
+			?>
+			<label>
+				<input type="checkbox" value="" <?php checked( $this->value(), '' ); ?> />
+				<?php echo esc_html( $this->label ); ?>
+			</label>
+			<?php if ( $this->description ) : ?>
+				<span class="description"><?php echo esc_html( $this->description ); ?></span>
+			<?php endif; ?>
+			<?php
+		}
+	}
+}
+
 /**
  * Register Customizer settings.
  */
@@ -496,7 +515,16 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'label'       => __( 'Upload Custom Font', 'aspiring-knight' ),
 		'section'     => 'ds_custom_fonts_section',
 		'description' => __( 'Upload a TTF, OTF, WOFF, or WOFF2 font file. This font will be added to all font family dropdowns.', 'aspiring-knight' ),
-		'mime_type'   => 'font',
+		'mime_type'   => array(
+			'font/ttf',
+			'font/otf',
+			'font/woff',
+			'font/woff2',
+			'application/x-font-ttf',
+			'application/x-font-otf',
+			'application/font-woff',
+			'application/font-woff2',
+		),
 	) ) );
 
 	// Use custom font for headings toggle
@@ -512,18 +540,17 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'description' => __( 'When enabled, your custom font will be automatically applied to all heading elements (site title, tagline, content headers).', 'aspiring-knight' ),
 	) );
 
-	// Restore Default Fonts button
+	// Restore Default Fonts button (using a custom control for button behavior)
 	$wp_customize->add_setting( 'restore_default_fonts', array(
 		'default'           => false,
-		'sanitize_callback' => 'rest_sanitize_boolean',
+		'sanitize_callback' => 'sanitize_text_field',
 		'transport'         => 'refresh',
 	) );
-	$wp_customize->add_control( 'restore_default_fonts', array(
+	$wp_customize->add_control( new Aspiring_Knight_Restore_Fonts_Control( $wp_customize, 'restore_default_fonts', array(
 		'label'       => __( 'Restore Default Fonts', 'aspiring-knight' ),
 		'section'     => 'ds_custom_fonts_section',
-		'type'        => 'checkbox',
-		'description' => __( 'Check this box and save to reset all font selections to their default values.', 'aspiring-knight' ),
-	) );
+		'description' => __( 'Click to reset all font selections to their default values.', 'aspiring-knight' ),
+	) ) );
 
 	$wp_customize->add_section( 'branding_assets_section', array( 'title' => esc_html__( 'Header & Branding Assets', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 100 ) );
 	$wp_customize->add_setting( 'site_title_banner', array( 'default' => '', 'sanitize_callback' => 'esc_url_raw', 'transport' => 'refresh' ) );
@@ -642,7 +669,6 @@ function aspiring_knight_get_google_font_choices() {
 		'Montserrat'        => 'Montserrat',
 		'Open Sans'         => 'Open Sans',
 		'Roboto'            => 'Roboto',
-		'Open Sans'         => 'Open Sans',
 		'Lato'              => 'Lato',
 		'Raleway'           => 'Raleway',
 		'Poppins'           => 'Poppins',
@@ -652,7 +678,6 @@ function aspiring_knight_get_google_font_choices() {
 		'Merriweather'      => 'Merriweather',
 		'PT Serif'          => 'PT Serif',
 		'Oswald'            => 'Oswald',
-		'Raleway'           => 'Raleway',
 		'Muli'              => 'Muli',
 		'Noto Sans'         => 'Noto Sans',
 		'Noto Serif'        => 'Noto Serif',
@@ -666,11 +691,9 @@ function aspiring_knight_get_google_font_choices() {
 		'Old Standard TT'   => 'Old Standard TT',
 		'Spectral'          => 'Spectral',
 		'Cormorant Garamond'=> 'Cormorant Garamond',
-		'EB Garamond'       => 'EB Garamond',
 		'Libre Caslon Text' => 'Libre Caslon Text',
 		'Bitter'            => 'Bitter',
 		'Arvo'              => 'Arvo',
-		'Lora'              => 'Lora',
 	);
 }
 
@@ -854,6 +877,61 @@ function aspiring_knight_enqueue_customizer_fonts() {
 	wp_enqueue_style( 'aspiring-knight-customizer-fonts', $fonts_url, array(), '1.0.0' );
 }
 add_action( 'wp_enqueue_scripts', 'aspiring_knight_enqueue_customizer_fonts' );
+
+/**
+ * Handle Restore Default Fonts AJAX request.
+ */
+function aspiring_knight_restore_default_fonts() {
+	if ( ! isset( $_POST['ak_restore_fonts_nonce'] ) || ! wp_verify_nonce( $_POST['ak_restore_fonts_nonce'], 'ak_restore_fonts' ) ) {
+		return;
+	}
+
+	// Reset all font-related theme_mods to defaults
+	$font_settings = array(
+		'custom_google_font'   => '',
+		'custom_font_name'     => 'CustomFont',
+		'custom_font_file'     => '',
+		'use_custom_font_headings' => false,
+	);
+
+	// Reset typography section modes
+	$typo_sections = array(
+		'ds_header_section_mode',
+		'ds_blog_title_section_mode',
+		'ds_page_title_section_mode',
+		'ds_headings_section_mode',
+		'ds_body_text_section_mode',
+		'ds_body_links_section_mode',
+	);
+
+	// Reset font family settings for all categories
+	$categories = array(
+		'site_title', 'site_tagline', 'blog_title', 'page_title', 'headings',
+		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'body_text', 'body_links',
+		'menus', 'submenus', 'sidebars', 'footer'
+	);
+
+	$default_fonts = array(
+		'body_text' => 'Lora',
+		'body_links' => 'Lora',
+		'menus' => 'Cinzel',
+		'submenus' => 'Lora',
+		'sidebars' => 'Lora',
+		'footer' => 'Lora',
+	);
+
+	foreach ( $categories as $cat ) {
+		$font_settings["{$cat}_font_family"] = isset( $default_fonts[ $cat ] ) ? $default_fonts[ $cat ] : 'Cinzel';
+	}
+
+	// Apply all resets
+	foreach ( array_merge( $font_settings, array_flip( $typo_sections ) ) as $key => $value ) {
+		set_theme_mod( $key, $value );
+	}
+
+	wp_send_json_success( array( 'message' => __( 'Font settings have been reset to defaults.', 'aspiring-knight' ) ) );
+}
+add_action( 'wp_ajax_ak_restore_fonts', 'aspiring_knight_restore_default_fonts' );
 
 /**
  * Enqueue Customizer admin controls styles for nested sections animation.

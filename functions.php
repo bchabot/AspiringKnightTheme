@@ -159,6 +159,7 @@ add_action( 'customize_preview_init', 'aspiring_knight_customize_preview_js' );
  */
 function aspiring_knight_customize_controls_js() {
 	wp_enqueue_script( 'aspiring-knight-customize-controls', get_template_directory_uri() . '/assets/js/src/customize-controls.js', array( 'customize-controls', 'jquery' ), '0.1.0', true );
+	wp_localize_script( 'aspiring-knight-customize-controls', 'akRestoreFontsNonce', wp_create_nonce( 'ak_restore_fonts' ) );
 }
 add_action( 'customize_controls_enqueue_scripts', 'aspiring_knight_customize_controls_js' );
 
