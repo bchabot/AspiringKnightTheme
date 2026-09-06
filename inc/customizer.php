@@ -39,6 +39,17 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
 }
 
 /**
+ * Sanitize JSON data for custom presets.
+ */
+function aspiring_knight_sanitize_json( $value ) {
+	$decoded = json_decode( $value, true );
+	if ( is_array( $decoded ) || $value === '{}' ) {
+		return wp_json_encode( $decoded ? $decoded : array() );
+	}
+	return '{}';
+}
+
+/**
  * Register Customizer settings.
  */
 function aspiring_knight_customize_register( $wp_customize ) {
@@ -73,14 +84,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		)
 	);
 
-	$wp_customize->add_setting( 'custom_presets_data', array(
-		'default'           => '{}',
-		'sanitize_callback' => function( $value ) {
-			$decoded = json_decode( $value, true );
-			return is_array( $decoded ) || $value === '{}' ? wp_json_encode( $decoded ? $decoded : new \stdClass() ) : '{}';
-		},
-		'transport'         => 'postMessage',
-	) );
+	$wp_customize->add_setting( 'custom_presets_data', array( 'default' => '{}', 'sanitize_callback' => 'aspiring_knight_sanitize_json', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( 'custom_presets_data', array( 'type' => 'hidden', 'section' => 'ds_presets_section' ) );
 
 	$wp_customize->add_setting( 'theme_preset', array( 'default' => 'default', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
