@@ -121,13 +121,13 @@ add_action( 'widgets_init', 'aspiring_knight_widgets_init' );
  * Enqueue scripts and styles.
  */
 function aspiring_knight_scripts() {
-	wp_enqueue_style( 'aspiring-knight-style', get_stylesheet_uri(), array(), '0.1.0' );
+	wp_enqueue_style( 'aspiring-knight-style', get_stylesheet_uri(), array(), '0.2.0' );
 
 	// Enqueue Compiled Tailwind CSS.
-	wp_enqueue_style( 'aspiring-knight-tailwind', get_template_directory_uri() . '/assets/css/dist/main.css', array(), '0.1.0' );
+	wp_enqueue_style( 'aspiring-knight-tailwind', get_template_directory_uri() . '/assets/css/dist/main.css', array(), '0.2.0' );
 
 	// Navigation script.
-	wp_enqueue_script( 'aspiring-knight-navigation', get_template_directory_uri() . '/assets/js/src/navigation.js', array(), '0.1.0', true );
+	wp_enqueue_script( 'aspiring-knight-navigation', get_template_directory_uri() . '/assets/js/src/navigation.js', array(), '0.2.0', true );
 }
 add_action( 'wp_enqueue_scripts', 'aspiring_knight_scripts' );
 
@@ -150,7 +150,7 @@ add_filter( 'body_class', 'aspiring_knight_body_classes' );
  * Enqueue JS for Customizer live preview.
  */
 function aspiring_knight_customize_preview_js() {
-	wp_enqueue_script( 'aspiring-knight-customize-preview', get_template_directory_uri() . '/assets/js/src/customize-preview.js', array( 'customize-preview', 'jquery' ), '0.1.0', true );
+	wp_enqueue_script( 'aspiring-knight-customize-preview', get_template_directory_uri() . '/assets/js/src/customize-preview.js', array( 'customize-preview', 'jquery' ), '0.2.0', true );
 }
 add_action( 'customize_preview_init', 'aspiring_knight_customize_preview_js' );
 
@@ -158,7 +158,7 @@ add_action( 'customize_preview_init', 'aspiring_knight_customize_preview_js' );
  * Enqueue JS for Customizer controls (Presets).
  */
 function aspiring_knight_customize_controls_js() {
-	wp_enqueue_script( 'aspiring-knight-customize-controls', get_template_directory_uri() . '/assets/js/src/customize-controls.js', array( 'customize-controls', 'jquery' ), '0.1.0', true );
+	wp_enqueue_script( 'aspiring-knight-customize-controls', get_template_directory_uri() . '/assets/js/src/customize-controls.js', array( 'customize-controls', 'jquery' ), '0.2.0', true );
 	wp_localize_script( 'aspiring-knight-customize-controls', 'akRestoreFontsNonce', wp_create_nonce( 'ak_restore_fonts' ) );
 }
 add_action( 'customize_controls_enqueue_scripts', 'aspiring_knight_customize_controls_js' );
