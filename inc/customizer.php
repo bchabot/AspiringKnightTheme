@@ -47,9 +47,10 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	$wp_customize->add_section(
 		'ds_presets_section',
 		array(
-			'title'    => esc_html__( '✨ Theme Presets', 'aspiring-knight' ),
-			'panel'    => 'design_system_panel',
-			'priority' => 5,
+			'title'       => esc_html__( '✨ Theme Presets', 'aspiring-knight' ),
+			'panel'       => 'design_system_panel',
+			'priority'    => 5,
+			'description' => esc_html__( 'Apply a complete design preset to instantly change your site\'s appearance. You can also save your current settings as a custom preset.', 'aspiring-knight' ),
 		)
 	);
 
@@ -78,9 +79,10 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	$wp_customize->add_section(
 		'site_colors_section',
 		array(
-			'title'    => esc_html__( 'Site Colors & Backgrounds', 'aspiring-knight' ),
-			'panel'    => 'design_system_panel',
-			'priority' => 10,
+			'title'       => esc_html__( 'Site Colors & Backgrounds', 'aspiring-knight' ),
+			'panel'       => 'design_system_panel',
+			'priority'    => 10,
+			'description' => esc_html__( 'Control the color scheme and background images for different areas of your site.', 'aspiring-knight' ),
 		)
 	);
 
@@ -126,74 +128,128 @@ function aspiring_knight_customize_register( $wp_customize ) {
 
 	// Typography Main Section (Parent Category inside Design System)
 	$wp_customize->add_section( 'ds_typography_section', array(
-		'title'    => esc_html__( 'Typography', 'aspiring-knight' ),
-		'panel'    => 'design_system_panel',
-		'priority' => 20,
+		'title'       => esc_html__( 'Typography', 'aspiring-knight' ),
+		'panel'       => 'design_system_panel',
+		'priority'    => 20,
+		'description' => esc_html__( 'Control the typography for all elements on your site. Each section below allows you to override default styles with custom typography settings.', 'aspiring-knight' ),
 	) );
 
 	// Typography Sub-Sections (First Nesting Level under ds_typography_section)
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_header_section', array(
-		'title'    => esc_html__( 'Header', 'aspiring-knight' ),
-		'section'  => 'ds_typography_section',
-		'priority' => 10,
+		'title'       => esc_html__( 'Header', 'aspiring-knight' ),
+		'section'     => 'ds_typography_section',
+		'priority'    => 10,
+		'description' => esc_html__( 'Configure typography for your site header, including the title and tagline.', 'aspiring-knight' ),
 	) ) );
 
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_blog_title_section', array(
-		'title'    => esc_html__( 'Blog Post Titles (Single)', 'aspiring-knight' ),
-		'section'  => 'ds_typography_section',
-		'priority' => 20,
+		'title'       => esc_html__( 'Blog Post Titles (Single)', 'aspiring-knight' ),
+		'section'     => 'ds_typography_section',
+		'priority'    => 20,
+		'description' => esc_html__( 'Configure typography for individual blog post titles.', 'aspiring-knight' ),
 	) ) );
 
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_page_title_section', array(
-		'title'    => esc_html__( 'Page Titles (Single)', 'aspiring-knight' ),
-		'section'  => 'ds_typography_section',
-		'priority' => 30,
+		'title'       => esc_html__( 'Page Titles (Single)', 'aspiring-knight' ),
+		'section'     => 'ds_typography_section',
+		'priority'    => 30,
+		'description' => esc_html__( 'Configure typography for individual page titles.', 'aspiring-knight' ),
 	) ) );
 
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_headings_section', array(
-		'title'    => esc_html__( 'Content Headers (H1-H6)', 'aspiring-knight' ),
-		'section'  => 'ds_typography_section',
-		'priority' => 40,
+		'title'       => esc_html__( 'Content Headers (H1-H6)', 'aspiring-knight' ),
+		'section'     => 'ds_typography_section',
+		'priority'    => 40,
+		'description' => esc_html__( 'Configure typography for content headings (H1-H6). You can set individual styles for each heading level, or use the fallback settings for all.', 'aspiring-knight' ),
 	) ) );
 
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_body_text_section', array(
-		'title'    => esc_html__( 'Body Text', 'aspiring-knight' ),
-		'section'  => 'ds_typography_section',
-		'priority' => 50,
+		'title'       => esc_html__( 'Body Text', 'aspiring-knight' ),
+		'section'     => 'ds_typography_section',
+		'priority'    => 50,
+		'description' => esc_html__( 'Configure typography for the main body text content.', 'aspiring-knight' ),
 	) ) );
 
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_body_links_section', array(
-		'title'    => esc_html__( 'Body Text Links', 'aspiring-knight' ),
-		'section'  => 'ds_typography_section',
-		'priority' => 60,
+		'title'       => esc_html__( 'Body Text Links', 'aspiring-knight' ),
+		'section'     => 'ds_typography_section',
+		'priority'    => 60,
+		'description' => esc_html__( 'Configure typography for links within body text content.', 'aspiring-knight' ),
 	) ) );
+
+	// Default/Custom Radio Buttons for each typography section
+	$typo_sections = array(
+		'ds_header_section'     => array( 'label' => __( 'Header', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default header typography.', 'aspiring-knight' ) ),
+		'ds_blog_title_section' => array( 'label' => __( 'Blog Post Titles', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default blog post title typography.', 'aspiring-knight' ) ),
+		'ds_page_title_section' => array( 'label' => __( 'Page Titles', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default page title typography.', 'aspiring-knight' ) ),
+		'ds_headings_section'   => array( 'label' => __( 'Content Headers', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default content header typography.', 'aspiring-knight' ) ),
+		'ds_body_text_section'  => array( 'label' => __( 'Body Text', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default body text typography.', 'aspiring-knight' ) ),
+		'ds_body_links_section' => array( 'label' => __( 'Body Text Links', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default body link typography.', 'aspiring-knight' ) ),
+	);
+
+	foreach ( $typo_sections as $section_id => $config ) {
+		$setting_id = $section_id . '_mode';
+		$wp_customize->add_setting( $setting_id, array(
+			'default'           => 'default',
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'postMessage',
+		) );
+		$wp_customize->add_control( $setting_id, array(
+			'label'       => $config['label'] . ' ' . __( 'Mode', 'aspiring-knight' ),
+			'section'     => $section_id,
+			'type'        => 'radio',
+			'description' => $config['desc'],
+			'choices'     => array(
+				'default' => __( 'Default (Inherit)', 'aspiring-knight' ),
+				'custom'  => __( 'Custom', 'aspiring-knight' ),
+			),
+		) );
+	}
 
 	// Grandchild Sections (Second Nesting Level under ds_header_section)
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_site_title_section', array(
-		'title'    => esc_html__( 'Title', 'aspiring-knight' ),
-		'section'  => 'ds_header_section',
-		'priority' => 10,
+		'title'       => esc_html__( 'Title', 'aspiring-knight' ),
+		'section'     => 'ds_header_section',
+		'priority'    => 10,
+		'description' => esc_html__( 'Configure the typography for your site title (e.g., "My Website").', 'aspiring-knight' ),
 	) ) );
 
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_site_tagline_section', array(
-		'title'    => esc_html__( 'Tagline', 'aspiring-knight' ),
-		'section'  => 'ds_header_section',
-		'priority' => 20,
+		'title'       => esc_html__( 'Tagline', 'aspiring-knight' ),
+		'section'     => 'ds_header_section',
+		'priority'    => 20,
+		'description' => esc_html__( 'Configure the typography for your site tagline (e.g., "A medieval adventure").', 'aspiring-knight' ),
 	) ) );
 
 	// Grandchild Sections (Second Nesting Level under ds_headings_section)
 	for ( $i = 1; $i <= 6; $i++ ) {
 		$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, "ds_h{$i}_section", array(
-			'title'    => sprintf( esc_html__( 'H%d', 'aspiring-knight' ), $i ),
-			'section'  => 'ds_headings_section',
-			'priority' => $i * 10,
+			'title'       => sprintf( esc_html__( 'H%d', 'aspiring-knight' ), $i ),
+			'section'     => 'ds_headings_section',
+			'priority'    => $i * 10,
+			'description' => sprintf( esc_html__( 'Configure typography for H%d content headers.', 'aspiring-knight' ), $i ),
 		) ) );
 	}
 
 	// Other sections (Standard direct sections under panel)
-	$wp_customize->add_section( 'ds_navigation_menus_section', array( 'title' => esc_html__( 'Navigation Menus', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 30 ) );
-	$wp_customize->add_section( 'ds_sidebars_section', array( 'title' => esc_html__( 'Sidebars', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 50 ) );
-	$wp_customize->add_section( 'ds_footer_section', array( 'title' => esc_html__( 'Footer Area', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 55 ) );
+	$wp_customize->add_section( 'ds_navigation_menus_section', array(
+		'title'       => esc_html__( 'Navigation Menus', 'aspiring-knight' ),
+		'panel'       => 'design_system_panel',
+		'priority'    => 30,
+		'description' => esc_html__( 'Configure typography and styling for your navigation menus and sub-menus.', 'aspiring-knight' ),
+	) );
+	$wp_customize->add_section( 'ds_sidebars_section', array(
+		'title'       => esc_html__( 'Sidebars', 'aspiring-knight' ),
+		'panel'       => 'design_system_panel',
+		'priority'    => 50,
+		'description' => esc_html__( 'Configure typography and styling for sidebar widgets.', 'aspiring-knight' ),
+	) );
+	$wp_customize->add_section( 'ds_footer_section', array(
+		'title'       => esc_html__( 'Footer Area', 'aspiring-knight' ),
+		'panel'       => 'design_system_panel',
+		'priority'    => 55,
+		'description' => esc_html__( 'Configure typography and styling for the footer area.', 'aspiring-knight' ),
+	) );
 
 	// Navigation menu structural settings inside ds_navigation_menus_section
 	$wp_customize->add_setting( 'menu_spacing', array( 'default' => '2rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
@@ -214,25 +270,25 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	) ) );
 
 	$categories_config = array(
-		'site_title'   => array( 'label' => __( 'Title', 'aspiring-knight' ), 'section' => 'ds_site_title_section', 'default_font' => 'Cinzel', 'default_size' => '2.5rem', 'default_color' => '#ffffff' ),
-		'site_tagline' => array( 'label' => __( 'Tagline', 'aspiring-knight' ), 'section' => 'ds_site_tagline_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff' ),
-		'blog_title'   => array( 'label' => __( 'Blog Post Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_blog_title_section', 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333' ),
-		'page_title'   => array( 'label' => __( 'Page Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_page_title_section', 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333' ),
-		'headings'     => array( 'label' => __( 'Content Headers Fallback', 'aspiring-knight' ), 'section' => 'ds_headings_section', 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333' ),
-		'h1'           => array( 'label' => __( 'H1', 'aspiring-knight' ), 'section' => 'ds_h1_section', 'default_font' => 'Cinzel', 'default_size' => '48px', 'default_color' => '#333333' ),
-		'h2'           => array( 'label' => __( 'H2', 'aspiring-knight' ), 'section' => 'ds_h2_section', 'default_font' => 'Cinzel', 'default_size' => '36px', 'default_color' => '#333333' ),
-		'h3'           => array( 'label' => __( 'H3', 'aspiring-knight' ), 'section' => 'ds_h3_section', 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333' ),
-		'h4'           => array( 'label' => __( 'H4', 'aspiring-knight' ), 'section' => 'ds_h4_section', 'default_font' => 'Cinzel', 'default_size' => '24px', 'default_color' => '#333333' ),
-		'h5'           => array( 'label' => __( 'H5', 'aspiring-knight' ), 'section' => 'ds_h5_section', 'default_font' => 'Cinzel', 'default_size' => '20px', 'default_color' => '#333333' ),
-		'h6'           => array( 'label' => __( 'H6', 'aspiring-knight' ), 'section' => 'ds_h6_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#333333' ),
-		'body_text'    => array( 'label' => __( 'Body Text', 'aspiring-knight' ), 'section' => 'ds_body_text_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#333333' ),
-		'body_links'   => array( 'label' => __( 'Body Text Links', 'aspiring-knight' ), 'section' => 'ds_body_links_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#d4af37' ),
+		'site_title'   => array( 'label' => __( 'Title', 'aspiring-knight' ), 'section' => 'ds_site_title_section', 'default_font' => 'Cinzel', 'default_size' => '2.5rem', 'default_color' => '#ffffff', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'site_tagline' => array( 'label' => __( 'Tagline', 'aspiring-knight' ), 'section' => 'ds_site_tagline_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'blog_title'   => array( 'label' => __( 'Blog Post Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_blog_title_section', 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'page_title'   => array( 'label' => __( 'Page Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_page_title_section', 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'headings'     => array( 'label' => __( 'Content Headers Fallback', 'aspiring-knight' ), 'section' => 'ds_headings_section', 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h1'           => array( 'label' => __( 'H1', 'aspiring-knight' ), 'section' => 'ds_h1_section', 'default_font' => 'Cinzel', 'default_size' => '48px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h2'           => array( 'label' => __( 'H2', 'aspiring-knight' ), 'section' => 'ds_h2_section', 'default_font' => 'Cinzel', 'default_size' => '36px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h3'           => array( 'label' => __( 'H3', 'aspiring-knight' ), 'section' => 'ds_h3_section', 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h4'           => array( 'label' => __( 'H4', 'aspiring-knight' ), 'section' => 'ds_h4_section', 'default_font' => 'Cinzel', 'default_size' => '24px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h5'           => array( 'label' => __( 'H5', 'aspiring-knight' ), 'section' => 'ds_h5_section', 'default_font' => 'Cinzel', 'default_size' => '20px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h6'           => array( 'label' => __( 'H6', 'aspiring-knight' ), 'section' => 'ds_h6_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'body_text'    => array( 'label' => __( 'Body Text', 'aspiring-knight' ), 'section' => 'ds_body_text_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#333333', 'has_dropcaps' => true, 'has_link_color' => false ),
+		'body_links'   => array( 'label' => __( 'Body Text Links', 'aspiring-knight' ), 'section' => 'ds_body_links_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#d4af37', 'has_dropcaps' => false, 'has_link_color' => false ),
 		
-		'menus'        => array( 'label' => __( 'Main Menu Links', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff' ),
-		'submenus'     => array( 'label' => __( 'Sub-Menu Links', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#ffffff' ),
+		'menus'        => array( 'label' => __( 'Main Menu Links', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff', 'has_dropcaps' => false, 'has_link_color' => true ),
+		'submenus'     => array( 'label' => __( 'Sub-Menu Links', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#ffffff', 'has_dropcaps' => false, 'has_link_color' => true ),
 		
-		'sidebars'     => array( 'label' => __( 'Sidebar Text', 'aspiring-knight' ), 'section' => 'ds_sidebars_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#333333' ),
-		'footer'       => array( 'label' => __( 'Footer Text', 'aspiring-knight' ), 'section' => 'ds_footer_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#ffffff' ),
+		'sidebars'     => array( 'label' => __( 'Sidebar Text', 'aspiring-knight' ), 'section' => 'ds_sidebars_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => true ),
+		'footer'       => array( 'label' => __( 'Footer Text', 'aspiring-knight' ), 'section' => 'ds_footer_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#ffffff', 'has_dropcaps' => false, 'has_link_color' => true ),
 	);
 
 	foreach ( $categories_config as $id => $cat ) {
@@ -299,7 +355,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		) ) );
 
 		// Link Color
-		if ( in_array( $id, array( 'body_text', 'menus', 'submenus', 'sidebars', 'footer', 'blog_title', 'page_title' ) ) ) {
+		if ( ! empty( $cat['has_link_color'] ) ) {
 			$wp_customize->add_setting( "{$id}_link_color", array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 			$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_link_color", array(
 				'label'           => sprintf( __( '%s Link Color', 'aspiring-knight' ), $cat['label'] ),
@@ -354,28 +410,31 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'description'     => __( 'Format: h-offset v-offset blur-radius (e.g. 2px 2px 4px).', 'aspiring-knight' ),
 		) );
 
-		// Drop Caps (Nested decoration settings per category)
-		$wp_customize->add_setting( "{$id}_dropcaps_enable", array( 'default' => false, 'sanitize_callback' => 'rest_sanitize_boolean', 'transport' => 'postMessage' ) );
-		$wp_customize->add_control( "{$id}_dropcaps_enable", array(
-			'label'           => __( 'Enable Drop Caps?', 'aspiring-knight' ),
-			'section'         => $section_id,
-			'type'            => 'checkbox',
-		) );
+		// Drop Caps (Only for categories that make sense)
+		if ( ! empty( $cat['has_dropcaps'] ) ) {
+			$wp_customize->add_setting( "{$id}_dropcaps_enable", array( 'default' => false, 'sanitize_callback' => 'rest_sanitize_boolean', 'transport' => 'postMessage' ) );
+			$wp_customize->add_control( "{$id}_dropcaps_enable", array(
+				'label'           => __( 'Enable Drop Caps?', 'aspiring-knight' ),
+				'section'         => $section_id,
+				'type'            => 'checkbox',
+				'description'     => __( 'Display a large decorative first letter at the start of paragraphs.', 'aspiring-knight' ),
+			) );
 
-		$wp_customize->add_setting( "{$id}_dropcaps_color", array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_dropcaps_color", array(
-			'label'           => __( 'Drop Caps Color', 'aspiring-knight' ),
-			'section'         => $section_id,
-			'settings'        => "{$id}_dropcaps_color",
-		) ) );
+			$wp_customize->add_setting( "{$id}_dropcaps_color", array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+			$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_dropcaps_color", array(
+				'label'           => __( 'Drop Caps Color', 'aspiring-knight' ),
+				'section'         => $section_id,
+				'settings'        => "{$id}_dropcaps_color",
+			) ) );
 
-		$wp_customize->add_setting( "{$id}_dropcaps_size", array( 'default' => '4rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
-		$wp_customize->add_control( "{$id}_dropcaps_size", array(
-			'label'           => __( 'Drop Caps Size', 'aspiring-knight' ),
-			'section'         => $section_id,
-			'type'            => 'text',
-			'description'     => __( 'Example: 4rem, 64px, or 5em.', 'aspiring-knight' ),
-		) );
+			$wp_customize->add_setting( "{$id}_dropcaps_size", array( 'default' => '4rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
+			$wp_customize->add_control( "{$id}_dropcaps_size", array(
+				'label'           => __( 'Drop Caps Size', 'aspiring-knight' ),
+				'section'         => $section_id,
+				'type'            => 'text',
+				'description'     => __( 'Example: 4rem, 64px, or 5em.', 'aspiring-knight' ),
+			) );
+		}
 	}
 
 	// Legacy global dropcap controls override body_text if present (for backward compatibility)
@@ -391,6 +450,80 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'section'  => 'ds_typography_section',
 		'settings' => 'dropcap_color',
 	) ) );
+
+	// Custom Fonts Section
+	$wp_customize->add_section( 'ds_custom_fonts_section', array(
+		'title'       => esc_html__( 'Custom Fonts', 'aspiring-knight' ),
+		'panel'       => 'design_system_panel',
+		'priority'    => 25,
+		'description' => esc_html__( 'Specify which fonts are available for use throughout the theme. Choose from Google Fonts or upload your own font files.', 'aspiring-knight' ),
+	) );
+
+	// Custom Font Selection (Google Fonts)
+	$wp_customize->add_setting( 'custom_google_font', array(
+		'default'           => '',
+		'sanitize_callback' => 'sanitize_text_field',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( 'custom_google_font', array(
+		'label'       => __( 'Google Font', 'aspiring-knight' ),
+		'section'     => 'ds_custom_fonts_section',
+		'type'        => 'select',
+		'description' => __( 'Select a Google Font to use across your site. This will be available in all font family dropdowns.', 'aspiring-knight' ),
+		'choices'     => array_merge( array( '' => __( '-- None --', 'aspiring-knight' ) ), aspiring_knight_get_google_font_choices() ),
+	) );
+
+	// Custom Font Name (for uploaded fonts)
+	$wp_customize->add_setting( 'custom_font_name', array(
+		'default'           => 'CustomFont',
+		'sanitize_callback' => 'sanitize_text_field',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( 'custom_font_name', array(
+		'label'       => __( 'Custom Font Name', 'aspiring-knight' ),
+		'section'     => 'ds_custom_fonts_section',
+		'type'        => 'text',
+		'description' => __( 'Enter a name for your custom font (e.g., "MyFont"). This name will appear in font family dropdowns.', 'aspiring-knight' ),
+	) );
+
+	// Custom Font File Upload
+	$wp_customize->add_setting( 'custom_font_file', array(
+		'default'           => '',
+		'sanitize_callback' => 'esc_url_raw',
+		'transport'         => 'refresh',
+	) );
+	$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'custom_font_file', array(
+		'label'       => __( 'Upload Custom Font', 'aspiring-knight' ),
+		'section'     => 'ds_custom_fonts_section',
+		'description' => __( 'Upload a TTF, OTF, WOFF, or WOFF2 font file. This font will be added to all font family dropdowns.', 'aspiring-knight' ),
+		'mime_type'   => 'font',
+	) ) );
+
+	// Use custom font for headings toggle
+	$wp_customize->add_setting( 'use_custom_font_headings', array(
+		'default'           => false,
+		'sanitize_callback' => 'rest_sanitize_boolean',
+		'transport'         => 'postMessage',
+	) );
+	$wp_customize->add_control( 'use_custom_font_headings', array(
+		'label'       => __( 'Use Custom Font for Headings', 'aspiring-knight' ),
+		'section'     => 'ds_custom_fonts_section',
+		'type'        => 'checkbox',
+		'description' => __( 'When enabled, your custom font will be automatically applied to all heading elements (site title, tagline, content headers).', 'aspiring-knight' ),
+	) );
+
+	// Restore Default Fonts button
+	$wp_customize->add_setting( 'restore_default_fonts', array(
+		'default'           => false,
+		'sanitize_callback' => 'rest_sanitize_boolean',
+		'transport'         => 'refresh',
+	) );
+	$wp_customize->add_control( 'restore_default_fonts', array(
+		'label'       => __( 'Restore Default Fonts', 'aspiring-knight' ),
+		'section'     => 'ds_custom_fonts_section',
+		'type'        => 'checkbox',
+		'description' => __( 'Check this box and save to reset all font selections to their default values.', 'aspiring-knight' ),
+	) );
 
 	$wp_customize->add_section( 'branding_assets_section', array( 'title' => esc_html__( 'Header & Branding Assets', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 100 ) );
 	$wp_customize->add_setting( 'site_title_banner', array( 'default' => '', 'sanitize_callback' => 'esc_url_raw', 'transport' => 'refresh' ) );
@@ -464,7 +597,7 @@ function aspiring_knight_get_preset_choices() {
  * Get font choices for Customizer.
  */
 function aspiring_knight_get_font_choices() {
-	return array(
+	$fonts = array(
 		'Lora'             => 'Lora (Classic Serif)',
 		'Cinzel'           => 'Cinzel (Medieval Decorative)',
 		'MedievalSharp'    => 'MedievalSharp (Medieval Angular)',
@@ -476,6 +609,69 @@ function aspiring_knight_get_font_choices() {
 		'Montserrat'       => 'Montserrat (Modern Sans)',
 		'Open Sans'        => 'Open Sans (Clean Sans)'
 	);
+
+	// Add custom Google Font if selected
+	$custom_google_font = get_theme_mod( 'custom_google_font', '' );
+	if ( ! empty( $custom_google_font ) && ! isset( $fonts[ $custom_google_font ] ) ) {
+		$fonts[ $custom_google_font ] = $custom_google_font . ' (Google Font)';
+	}
+
+	// Add custom uploaded font if present
+	$custom_font_name = get_theme_mod( 'custom_font_name', 'CustomFont' );
+	$custom_font_file = get_theme_mod( 'custom_font_file', '' );
+	if ( ! empty( $custom_font_file ) && ! empty( $custom_font_name ) && ! isset( $fonts[ $custom_font_name ] ) ) {
+		$fonts[ $custom_font_name ] = $custom_font_name . ' (Custom Upload)';
+	}
+
+	return $fonts;
+}
+
+/**
+ * Get Google Font choices for the font selection dropdown.
+ */
+function aspiring_knight_get_google_font_choices() {
+	return array(
+		'Lora'              => 'Lora',
+		'Cinzel'            => 'Cinzel',
+		'MedievalSharp'     => 'MedievalSharp',
+		'EB Garamond'       => 'EB Garamond',
+		'Playfair Display'  => 'Playfair Display',
+		'Libre Baskerville' => 'Libre Baskerville',
+		'Almendra'          => 'Almendra',
+		'Crimson Text'      => 'Crimson Text',
+		'Montserrat'        => 'Montserrat',
+		'Open Sans'         => 'Open Sans',
+		'Roboto'            => 'Roboto',
+		'Open Sans'         => 'Open Sans',
+		'Lato'              => 'Lato',
+		'Raleway'           => 'Raleway',
+		'Poppins'           => 'Poppins',
+		'Nunito'            => 'Nunito',
+		'Source Sans Pro'   => 'Source Sans Pro',
+		'Ubuntu'            => 'Ubuntu',
+		'Merriweather'      => 'Merriweather',
+		'PT Serif'          => 'PT Serif',
+		'Oswald'            => 'Oswald',
+		'Raleway'           => 'Raleway',
+		'Muli'              => 'Muli',
+		'Noto Sans'         => 'Noto Sans',
+		'Noto Serif'        => 'Noto Serif',
+		'Rubik'             => 'Rubik',
+		'Work Sans'         => 'Work Sans',
+		'Josefin Sans'      => 'Josefin Sans',
+		'Quicksand'         => 'Quicksand',
+		'Pathway Gothic One'=> 'Pathway Gothic One',
+		'IM Fell English'   => 'IM Fell English',
+		'Cardo'             => 'Cardo',
+		'Old Standard TT'   => 'Old Standard TT',
+		'Spectral'          => 'Spectral',
+		'Cormorant Garamond'=> 'Cormorant Garamond',
+		'EB Garamond'       => 'EB Garamond',
+		'Libre Caslon Text' => 'Libre Caslon Text',
+		'Bitter'            => 'Bitter',
+		'Arvo'              => 'Arvo',
+		'Lora'              => 'Lora',
+	);
 }
 
 /**
@@ -486,12 +682,38 @@ function aspiring_knight_output_css_variables() {
 	$get_mod = function( $name, $default ) use ( $mods ) { return isset($mods[ $name ]) ? $mods[ $name ] : $default; };
 	$custom_font_file = $get_mod( 'custom_font_file', '' );
 	$custom_font_name = $get_mod( 'custom_font_name', 'CustomFont' );
+	$custom_google_font = $get_mod( 'custom_google_font', '' );
 	$use_custom_headings = $get_mod( 'use_custom_font_headings', false );
 	$article_bg_image = $get_mod( 'article_bg_image', '' );
+	$restore_default_fonts = $get_mod( 'restore_default_fonts', false );
+
+	// If restore default fonts is checked, clear custom font settings
+	if ( $restore_default_fonts ) {
+		$custom_font_file = '';
+		$custom_font_name = 'CustomFont';
+		$custom_google_font = '';
+	}
 	?>
 	<style id="aspiring-knight-customizer-variables">
-		<?php if ( $custom_font_file ) : ?>
-		@font-face { font-family: '<?php echo esc_html( $custom_font_name ); ?>'; src: url('<?php echo esc_url( $custom_font_file ); ?>'); font-display: swap; }
+		<?php if ( $custom_font_file ) :
+			// Detect font format from file extension
+			$font_ext = pathinfo( $custom_font_file, PATHINFO_EXTENSION );
+			$font_format = 'truetype';
+			if ( in_array( strtolower( $font_ext ), array( 'woff2' ) ) ) {
+				$font_format = 'woff2';
+			} elseif ( in_array( strtolower( $font_ext ), array( 'woff' ) ) ) {
+				$font_format = 'woff';
+			} elseif ( in_array( strtolower( $font_ext ), array( 'otf', 'otc' ) ) ) {
+				$font_format = 'opentype';
+			} elseif ( in_array( strtolower( $font_ext ), array( 'ttf', 'ttc' ) ) ) {
+				$font_format = 'truetype';
+			}
+		?>
+		@font-face {
+			font-family: '<?php echo esc_html( $custom_font_name ); ?>';
+			src: url('<?php echo esc_url( $custom_font_file ); ?>') format('<?php echo esc_html( $font_format ); ?>');
+			font-display: swap;
+		}
 		<?php endif; ?>
 
 		:root {
@@ -616,6 +838,13 @@ function aspiring_knight_enqueue_customizer_fonts() {
 		$font = get_theme_mod("{$t}_font_family", in_array($t, array('body_text', 'body_links', 'menus', 'submenus', 'sidebars', 'footer')) ? 'Lora' : 'Cinzel');
 		$fonts[] = $font . ':300,400,400i,500,600,700,700i,800,900';
 	}
+
+	// Add custom Google Font if selected
+	$custom_google_font = get_theme_mod( 'custom_google_font', '' );
+	if ( ! empty( $custom_google_font ) ) {
+		$fonts[] = $custom_google_font . ':300,400,400i,500,600,700,700i,800,900';
+	}
+
 	// Fallback/Default core theme fonts are always loaded
 	$fonts[] = 'Cinzel:400,700,900';
 	$fonts[] = 'Lora:400,400i,700,700i';
@@ -639,6 +868,16 @@ function aspiring_knight_customize_controls_styles() {
 		}
 		.in-sub-section #customize-controls .wp-full-overlay-sidebar-content {
 			overflow: visible !important;
+		}
+		/* Ensure color pickers display current values */
+		.wp-color-picker {
+			width: 100% !important;
+			max-width: 200px;
+		}
+		.wp-picker-container .wp-color-result {
+			width: 30px;
+			height: 30px;
+			margin: 0;
 		}
 	</style>
 	<?php

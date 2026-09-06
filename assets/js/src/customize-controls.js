@@ -32,7 +32,71 @@
     }
 
     wp.customize.bind('ready', function() {
-        
+
+        // 1b. Initialize all color pickers with their current saved values
+        wp.customize.control.each(function(control) {
+            if (control.setting && control.setting.id && control.container) {
+                const $input = control.container.find('.wp-color-picker');
+                if ($input.length) {
+                    const currentVal = control.setting.get();
+                    if (currentVal) {
+                        $input.val(currentVal).trigger('change');
+                        if ($.fn.wpColorPicker) {
+                            $input.wpColorPicker('color', currentVal);
+                        }
+                    }
+                }
+            }
+        });
+
+        // 1c. Default/Custom Mode Toggle Logic
+        const typoModeSections = [
+            'ds_header_section',
+            'ds_blog_title_section',
+            'ds_page_title_section',
+            'ds_headings_section',
+            'ds_body_text_section',
+            'ds_body_links_section'
+        ];
+
+        function toggleTypoSectionControls(sectionId) {
+            const modeSetting = sectionId + '_mode';
+            if (!wp.customize(modeSetting)) return;
+
+            const mode = wp.customize(modeSetting).get();
+            const $section = $('#sub-accordion-section-' + sectionId);
+
+            // Find all controls in this section (excluding the mode radio itself)
+            $section.find('.customize-control').each(function() {
+                const $control = $(this);
+                const controlSetting = $control.find('[data-customize-setting-link]').attr('data-customize-setting-link');
+
+                // Skip the mode radio control
+                if (controlSetting === modeSetting) return;
+
+                if (mode === 'default') {
+                    $control.hide();
+                } else {
+                    $control.show();
+                }
+            });
+        }
+
+        // Initialize toggle state for all typo sections
+        typoModeSections.forEach(function(sectionId) {
+            toggleTypoSectionControls(sectionId);
+
+            // Bind to mode changes
+            const modeSetting = sectionId + '_mode';
+            if (wp.customize(modeSetting)) {
+                wp.customize(modeSetting, function(value) {
+                    value.bind(function() {
+                        toggleTypoSectionControls(sectionId);
+                    });
+                });
+            }
+        });
+
         // 2. Preset Application Logic
         wp.customize('theme_preset', function(value) {
             value.bind(function(newval) {
@@ -133,13 +197,23 @@
             const currentData = {};
             const settingsToCapture = [
                 'top_bar_bg_color', 'top_bar_text_color', 'accent_gold', 'site_bg_color', 'article_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color',
-                'container_width', 'header_padding', 'menu_spacing', 'sidebar_padding'
+                'container_width', 'header_padding', 'menu_spacing', 'sidebar_padding',
+                'custom_google_font', 'custom_font_name', 'custom_font_file', 'use_custom_font_headings'
             ];
             const categories = [
                 'site_title', 'site_tagline', 'blog_title', 'page_title', 'headings',
                 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'body_text', 'body_links',
                 'menus', 'submenus', 'sidebars', 'footer'
             ];
+
+            // Add typography section mode settings
+            const typoSections = [
+                'ds_header_section', 'ds_blog_title_section', 'ds_page_title_section',
+                'ds_headings_section', 'ds_body_text_section', 'ds_body_links_section'
+            ];
+            typoSections.forEach(section => {
+                settingsToCapture.push(section + '_mode');
+            });
             categories.forEach(cat => {
                 settingsToCapture.push(
                     `${cat}_font_family`, `${cat}_font_size`, `${cat}_font_weight`, `${cat}_italic`, `${cat}_underline`, `${cat}_color`, `${cat}_link_color`,
