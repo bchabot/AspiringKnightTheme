@@ -177,12 +177,12 @@ require get_template_directory() . '/inc/customizer.php';
  * Allow font file uploads in WordPress.
  */
 function aspiring_knight_mime_types( $mimes ) {
-	error_log( 'AK DEBUG upload_mimes input: ' . print_r( $mimes, true ) );
 	$mimes['ttf']   = 'application/x-font-ttf';
 	$mimes['otf']   = 'application/x-font-opentype';
 	$mimes['woff']  = 'application/font-woff';
 	$mimes['woff2'] = 'font/woff2';
-	error_log( 'AK DEBUG upload_mimes output: ' . print_r( $mimes, true ) );
+	error_log( 'AK DEBUG ttf in mimes: ' . ( isset( $mimes['ttf'] ) ? 'YES (' . $mimes['ttf'] . ')' : 'NO' ) );
+	error_log( 'AK DEBUG otf in mimes: ' . ( isset( $mimes['otf'] ) ? 'YES (' . $mimes['otf'] . ')' : 'NO' ) );
 	return $mimes;
 }
 add_filter( 'upload_mimes', 'aspiring_knight_mime_types' );
@@ -206,3 +206,19 @@ function aspiring_knight_enable_font_uploads() {
 }
 add_action( 'init', 'aspiring_knight_enable_font_uploads' );
 add_action( 'after_switch_theme', 'aspiring_knight_enable_font_uploads' );
+
+/**
+ * Debug: Log wp_handle_upload_prefilter to find what's blocking font uploads.
+ */
+function aspiring_knight_debug_prefilter( $file ) {
+	$ext = isset( $file['name'] ) ? pathinfo( $file['name'], PATHINFO_EXTENSION ) : '';
+	$font_exts = array( 'ttf', 'otf', 'woff', 'woff2' );
+	if ( in_array( strtolower( $ext ), $font_exts, true ) ) {
+		error_log( 'AK DEBUG prefilter for font (ext=' . $ext . '): name=' . $file['name'] . ' type=' . ( $file['type'] ?? 'none' ) . ' error=' . ( $file['error'] ?? 'none' ) );
+	}
+	if ( ! empty( $file['error'] ) && in_array( strtolower( $ext ), $font_exts, true ) ) {
+		error_log( 'AK DEBUG prefilter BLOCKED font: ' . $file['error'] );
+	}
+	return $file;
+}
+add_filter( 'wp_handle_upload_prefilter', 'aspiring_knight_debug_prefilter', 1 );
