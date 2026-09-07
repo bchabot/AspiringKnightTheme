@@ -186,24 +186,16 @@ function aspiring_knight_mime_types( $mimes ) {
 add_filter( 'upload_mimes', 'aspiring_knight_mime_types' );
 
 /**
- * Allow font files in customizer font upload.
+ * Add font extensions to Multisite allowed file types.
  */
-function aspiring_knight_check_font_mime( $file ) {
-	if ( ! empty( $file['type'] ) ) {
-		$allowed_font_types = array(
-			'application/x-font-ttf',
-			'application/x-font-opentype',
-			'application/font-woff',
-			'font/woff2',
-			'font/ttf',
-			'font/otf',
-			'font/woff',
-			'application/octet-stream',
-		);
-		if ( in_array( $file['type'], $allowed_font_types, true ) ) {
-			return $file;
-		}
+function aspiring_knight_enable_font_uploads() {
+	if ( is_multisite() && ! get_option( 'ak_font_exts_added' ) ) {
+		$allowed = get_site_option( 'upload_filetypes', array() );
+		$font_exts = array( 'ttf', 'otf', 'woff', 'woff2' );
+		$allowed = array_unique( array_merge( $allowed, $font_exts ) );
+		update_site_option( 'upload_filetypes', $allowed );
+		update_option( 'ak_font_exts_added', true );
 	}
-	return $file;
 }
-add_filter( 'wp_handle_upload_prefilter', 'aspiring_knight_check_font_mime' );
+add_action( 'init', 'aspiring_knight_enable_font_uploads' );
+add_action( 'after_switch_theme', 'aspiring_knight_enable_font_uploads' );
