@@ -192,13 +192,14 @@ add_filter( 'upload_mimes', 'aspiring_knight_mime_types' );
  */
 function aspiring_knight_enable_font_uploads() {
 	if ( is_multisite() ) {
-		$site_upload_filetypes = get_site_option( 'upload_filetypes', array() );
-		error_log( 'AK DEBUG multisite upload_filetypes: ' . print_r( $site_upload_filetypes, true ) );
+		$raw = get_site_option( 'upload_filetypes', '' );
+		$site_types = is_array( $raw ) ? $raw : explode( ' ', $raw );
+		error_log( 'AK DEBUG multisite upload_filetypes: ' . print_r( $site_types, true ) );
 		$font_exts = array( 'ttf', 'otf', 'woff', 'woff2' );
-		$missing = array_diff( $font_exts, $site_upload_filetypes );
+		$missing = array_diff( $font_exts, $site_types );
 		if ( ! empty( $missing ) ) {
-			$site_upload_filetypes = array_unique( array_merge( $site_upload_filetypes, $font_exts ) );
-			update_site_option( 'upload_filetypes', $site_upload_filetypes );
+			$site_types = array_unique( array_merge( $site_types, $font_exts ) );
+			update_site_option( 'upload_filetypes', $site_types );
 			error_log( 'AK DEBUG added missing font exts to upload_filetypes: ' . print_r( $missing, true ) );
 		}
 	}
