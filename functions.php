@@ -177,10 +177,12 @@ require get_template_directory() . '/inc/customizer.php';
  * Allow font file uploads in WordPress.
  */
 function aspiring_knight_mime_types( $mimes ) {
+	error_log( 'AK DEBUG upload_mimes input: ' . print_r( $mimes, true ) );
 	$mimes['ttf']   = 'application/x-font-ttf';
 	$mimes['otf']   = 'application/x-font-opentype';
 	$mimes['woff']  = 'application/font-woff';
 	$mimes['woff2'] = 'font/woff2';
+	error_log( 'AK DEBUG upload_mimes output: ' . print_r( $mimes, true ) );
 	return $mimes;
 }
 add_filter( 'upload_mimes', 'aspiring_knight_mime_types' );
@@ -189,12 +191,16 @@ add_filter( 'upload_mimes', 'aspiring_knight_mime_types' );
  * Add font extensions to Multisite allowed file types.
  */
 function aspiring_knight_enable_font_uploads() {
-	if ( is_multisite() && ! get_option( 'ak_font_exts_added' ) ) {
-		$allowed = get_site_option( 'upload_filetypes', array() );
+	if ( is_multisite() ) {
+		$site_upload_filetypes = get_site_option( 'upload_filetypes', array() );
+		error_log( 'AK DEBUG multisite upload_filetypes: ' . print_r( $site_upload_filetypes, true ) );
 		$font_exts = array( 'ttf', 'otf', 'woff', 'woff2' );
-		$allowed = array_unique( array_merge( $allowed, $font_exts ) );
-		update_site_option( 'upload_filetypes', $allowed );
-		update_option( 'ak_font_exts_added', true );
+		$missing = array_diff( $font_exts, $site_upload_filetypes );
+		if ( ! empty( $missing ) ) {
+			$site_upload_filetypes = array_unique( array_merge( $site_upload_filetypes, $font_exts ) );
+			update_site_option( 'upload_filetypes', $site_upload_filetypes );
+			error_log( 'AK DEBUG added missing font exts to upload_filetypes: ' . print_r( $missing, true ) );
+		}
 	}
 }
 add_action( 'init', 'aspiring_knight_enable_font_uploads' );
