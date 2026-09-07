@@ -1,119 +1,88 @@
 <?php
 /**
- * Aspiring Knight theme functions and definitions
+ * Aspiring Knight Theme functions and definitions.
  *
  * @link https://developer.wordpress.org/themes/basics/theme-functions/
  *
- * @package Aspiring_Knight
+ * @package Aspiring Knight
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit;
 }
+
+define( 'ASPIRING_KNIGHT_VERSION', '0.2b1' );
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  */
 function aspiring_knight_setup() {
-	// Add default posts and comments RSS feed links to head.
+	load_theme_textdomain( 'aspiring-knight', get_template_directory() . '/languages' );
+
 	add_theme_support( 'automatic-feed-links' );
-
-	/*
-	 * Let WordPress manage the document title.
-	 */
 	add_theme_support( 'title-tag' );
-
-	/*
-	 * Enable support for Post Thumbnails on posts and pages.
-	 */
 	add_theme_support( 'post-thumbnails' );
-
-	// This theme uses wp_nav_menu() in one location.
-	register_nav_menus(
-		array(
-			'menu-1' => esc_html__( 'Primary', 'aspiring-knight' ),
-		)
-	);
-
-	/*
-	 * Switch default core markup for search form, comment form, and comments
-	 * to output valid HTML5.
-	 */
-	add_theme_support(
-		'html5',
-		array(
-			'search-form',
-			'comment-form',
-			'comment-list',
-			'gallery',
-			'caption',
-			'style',
-			'script',
-		)
-	);
-
-	// Add theme support for selective refresh for widgets.
+	add_theme_support( 'html5', array(
+		'search-form',
+		'comment-form',
+		'comment-list',
+		'gallery',
+		'caption',
+		'style',
+		'script',
+	) );
 	add_theme_support( 'customize-selective-refresh-widgets' );
+	add_theme_support( 'custom-logo', array(
+		'height'      => 250,
+		'width'       => 250,
+		'flex-height' => true,
+		'flex-width'  => true,
+	) );
+	add_theme_support( 'custom-background', apply_filters( 'aspiring_knight_custom_background_args', array(
+		'default-color' => 'ffffff',
+		'default-image' => '',
+	) ) );
+	add_theme_support( 'wp-block-styles' );
+	add_theme_support( 'editor-styles' );
+	add_theme_support( 'responsive-embeds' );
 
-	/**
-	 * Add support for custom background.
-	 */
-	add_theme_support(
-		'custom-background',
-		array(
-			'default-color' => 'f4f4f4',
-			'default-image' => '',
-		)
-	);
-
-	/**
-	 * Add support for core custom logo.
-	 *
-	 * @link https://codex.wordpress.org/Theme_Logo
-	 */
-	add_theme_support(
-		'custom-logo',
-		array(
-			'height'      => 250,
-			'width'       => 250,
-			'flex-width'  => true,
-			'flex-height' => true,
-		)
-	);
+	register_nav_menus( array(
+		'primary' => esc_html__( 'Primary Menu', 'aspiring-knight' ),
+	) );
 }
 add_action( 'after_setup_theme', 'aspiring_knight_setup' );
 
 /**
+ * Set the content width in pixels.
+ */
+function aspiring_knight_content_width() {
+	$GLOBALS['content_width'] = apply_filters( 'aspiring_knight_content_width', 640 );
+}
+add_action( 'after_setup_theme', 'aspiring_knight_content_width', 0 );
+
+/**
  * Register widget area.
- *
- * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  */
 function aspiring_knight_widgets_init() {
-	register_sidebar(
-		array(
-			'name'          => esc_html__( 'Sidebar', 'aspiring-knight' ),
-			'id'            => 'sidebar-1',
-			'description'   => esc_html__( 'Add widgets here.', 'aspiring-knight' ),
-			'before_widget' => '<section id="%1$s" class="widget %2$s bg-white p-6 rounded-lg shadow-sm mb-8">',
-			'after_widget'  => '</section>',
-			'before_title'  => '<h2 class="widget-title text-lg font-headings font-headings-bold mb-4 pb-2 border-b border-gray-100">',
-			'after_title'   => '</h2>',
-		)
-	);
+	register_sidebar( array(
+		'name'          => esc_html__( 'Sidebar', 'aspiring-knight' ),
+		'id'            => 'sidebar-1',
+		'description'   => esc_html__( 'Add widgets here.', 'aspiring-knight' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
 
-	for ( $i = 1; $i <= 4; $i++ ) {
-		register_sidebar(
-			array(
-				'name'          => sprintf( esc_html__( 'Footer %d', 'aspiring-knight' ), $i ),
-				'id'            => 'footer-' . $i,
-				'description'   => sprintf( esc_html__( 'Add widgets here for footer column %d.', 'aspiring-knight' ), $i ),
-				'before_widget' => '<section id="%1$s" class="widget %2$s mb-8">',
-				'after_widget'  => '</section>',
-				'before_title'  => '<h2 class="widget-title text-lg font-headings font-headings-bold mb-4">',
-				'after_title'   => '</h2>',
-			)
-		);
-	}
+	register_sidebar( array(
+		'name'          => esc_html__( 'Footer Widget Area', 'aspiring-knight' ),
+		'id'            => 'footer-1',
+		'description'   => esc_html__( 'Add footer widgets here.', 'aspiring-knight' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
 }
 add_action( 'widgets_init', 'aspiring_knight_widgets_init' );
 
@@ -121,57 +90,40 @@ add_action( 'widgets_init', 'aspiring_knight_widgets_init' );
  * Enqueue scripts and styles.
  */
 function aspiring_knight_scripts() {
-	wp_enqueue_style( 'aspiring-knight-style', get_stylesheet_uri(), array(), '0.2.0b' );
+	wp_enqueue_style( 'aspiring-knight-style', get_stylesheet_uri(), array(), ASPIRING_KNIGHT_VERSION );
 
-	// Enqueue Compiled Tailwind CSS.
-	wp_enqueue_style( 'aspiring-knight-tailwind', get_template_directory_uri() . '/assets/css/dist/main.css', array(), '0.2.0b' );
+	wp_enqueue_style( 'aspiring-knight-tailwind', get_template_directory_uri() . '/assets/css/dist/main.css', array(), ASPIRING_KNIGHT_VERSION );
 
-	// Navigation script.
-	wp_enqueue_script( 'aspiring-knight-navigation', get_template_directory_uri() . '/assets/js/src/navigation.js', array(), '0.2.0b', true );
+	wp_enqueue_script( 'aspiring-knight-navigation', get_template_directory_uri() . '/assets/js/src/navigation.js', array(), ASPIRING_KNIGHT_VERSION, true );
+
+	wp_localize_script( 'aspiring-knight-navigation', 'aspiringKnight', array(
+		'ajaxurl' => admin_url( 'admin-ajax.php' ),
+	) );
+
+	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
+
+	wp_enqueue_script( 'aspiring-knight-customize-preview', get_template_directory_uri() . '/assets/js/src/customize-preview.js', array( 'customize-preview', 'jquery' ), ASPIRING_KNIGHT_VERSION, true );
+
+	wp_enqueue_script( 'aspiring-knight-customize-controls', get_template_directory_uri() . '/assets/js/src/customize-controls.js', array( 'customize-controls', 'jquery' ), ASPIRING_KNIGHT_VERSION, true );
+
+	wp_localize_script( 'aspiring-knight-customize-controls', 'akCustomizer', array(
+		'nonce' => wp_create_nonce( 'ak_restore_fonts_nonce' ),
+		'ajaxurl' => admin_url( 'admin-ajax.php' ),
+	) );
 }
 add_action( 'wp_enqueue_scripts', 'aspiring_knight_scripts' );
 
 /**
- * Add layout classes to the body.
+ * Include Customizer functionality.
  */
-function aspiring_knight_body_classes( $classes ) {
-	$layout = get_theme_mod( 'global_layout', 'sidebar-right' );
-	$classes[] = 'layout-' . $layout;
-
-	if ( 'full-width' === $layout || ! is_active_sidebar( 'sidebar-1' ) ) {
-		$classes[] = 'no-sidebar';
-	}
-
-	return $classes;
-}
-add_filter( 'body_class', 'aspiring_knight_body_classes' );
-
-/**
- * Enqueue JS for Customizer live preview.
- */
-function aspiring_knight_customize_preview_js() {
-	wp_enqueue_script( 'aspiring-knight-customize-preview', get_template_directory_uri() . '/assets/js/src/customize-preview.js', array( 'customize-preview', 'jquery' ), '0.2.0b', true );
-}
-add_action( 'customize_preview_init', 'aspiring_knight_customize_preview_js' );
-
-/**
- * Enqueue JS for Customizer controls (Presets).
- */
-function aspiring_knight_customize_controls_js() {
-	wp_enqueue_script( 'aspiring-knight-customize-controls', get_template_directory_uri() . '/assets/js/src/customize-controls.js', array( 'customize-controls', 'jquery' ), '0.2.0b', true );
-	wp_localize_script( 'aspiring-knight-customize-controls', 'akRestoreFontsNonce', wp_create_nonce( 'ak_restore_fonts' ) );
-}
-add_action( 'customize_controls_enqueue_scripts', 'aspiring_knight_customize_controls_js' );
+require get_template_directory() . '/inc/customizer.php';
 
 /**
  * TGM Plugin Activation.
  */
 require get_template_directory() . '/inc/tgmpa.php';
-
-/**
- * Customizer additions.
- */
-require get_template_directory() . '/inc/customizer.php';
 
 /**
  * Allow font file uploads in WordPress.
@@ -181,44 +133,43 @@ function aspiring_knight_mime_types( $mimes ) {
 	$mimes['otf']   = 'application/x-font-opentype';
 	$mimes['woff']  = 'application/font-woff';
 	$mimes['woff2'] = 'font/woff2';
-	error_log( 'AK DEBUG ttf in mimes: ' . ( isset( $mimes['ttf'] ) ? 'YES (' . $mimes['ttf'] . ')' : 'NO' ) );
-	error_log( 'AK DEBUG otf in mimes: ' . ( isset( $mimes['otf'] ) ? 'YES (' . $mimes['otf'] . ')' : 'NO' ) );
 	return $mimes;
 }
 add_filter( 'upload_mimes', 'aspiring_knight_mime_types' );
 
 /**
- * Add font extensions to Multisite allowed file types.
+ * Force font file type detection to succeed.
+ *
+ * PHP finfo detects TTF/OTF/WOFF files as 'application/octet-stream', which
+ * doesn't match our declared MIME types. This filter overrides the detection
+ * result for known font extensions so WordPress validation passes.
  */
-function aspiring_knight_enable_font_uploads() {
-	if ( is_multisite() ) {
-		$raw = get_site_option( 'upload_filetypes', '' );
-		$site_types = is_array( $raw ) ? $raw : explode( ' ', $raw );
-		error_log( 'AK DEBUG multisite upload_filetypes: ' . print_r( $site_types, true ) );
-		$font_exts = array( 'ttf', 'otf', 'woff', 'woff2' );
-		$missing = array_diff( $font_exts, $site_types );
-		if ( ! empty( $missing ) ) {
-			$site_types = array_unique( array_merge( $site_types, $font_exts ) );
-			update_site_option( 'upload_filetypes', $site_types );
-			error_log( 'AK DEBUG added missing font exts to upload_filetypes: ' . print_r( $missing, true ) );
-		}
+function aspiring_knight_fix_font_filetype_check( $result, $ext, $filename, $tmpfname ) {
+	$font_ext_map = array(
+		'ttf'   => 'application/x-font-ttf',
+		'otf'   => 'application/x-font-opentype',
+		'woff'  => 'application/font-woff',
+		'woff2' => 'font/woff2',
+	);
+	if ( isset( $font_ext_map[ $ext ] ) ) {
+		return array(
+			'ext'  => $ext,
+			'type' => $font_ext_map[ $ext ],
+		);
 	}
+	return $result;
 }
-add_action( 'init', 'aspiring_knight_enable_font_uploads' );
-add_action( 'after_switch_theme', 'aspiring_knight_enable_font_uploads' );
+add_filter( 'wp_check_filetype_and_ext', 'aspiring_knight_fix_font_filetype_check', 10, 4 );
 
 /**
- * Debug: Log wp_handle_upload_prefilter to find what's blocking font uploads.
+ * Explicitly allow font file uploads by clearing any error set during validation.
  */
-function aspiring_knight_debug_prefilter( $file ) {
-	$ext = isset( $file['name'] ) ? pathinfo( $file['name'], PATHINFO_EXTENSION ) : '';
+function aspiring_knight_allow_font_uploads( $file ) {
+	$ext = isset( $file['name'] ) ? strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) ) : '';
 	$font_exts = array( 'ttf', 'otf', 'woff', 'woff2' );
-	if ( in_array( strtolower( $ext ), $font_exts, true ) ) {
-		error_log( 'AK DEBUG prefilter for font (ext=' . $ext . '): name=' . $file['name'] . ' type=' . ( $file['type'] ?? 'none' ) . ' error=' . ( $file['error'] ?? 'none' ) );
-	}
-	if ( ! empty( $file['error'] ) && in_array( strtolower( $ext ), $font_exts, true ) ) {
-		error_log( 'AK DEBUG prefilter BLOCKED font: ' . $file['error'] );
+	if ( in_array( $ext, $font_exts, true ) && ! empty( $file['error'] ) ) {
+		$file['error'] = null;
 	}
 	return $file;
 }
-add_filter( 'wp_handle_upload_prefilter', 'aspiring_knight_debug_prefilter', 1 );
+add_filter( 'wp_handle_upload_prefilter', 'aspiring_knight_allow_font_uploads' );
