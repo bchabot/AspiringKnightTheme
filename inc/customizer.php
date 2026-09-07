@@ -516,18 +516,17 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'description' => __( 'Enter a name for your custom font (e.g., "MyFont"). This name will appear in font family dropdowns.', 'aspiring-knight' ),
 	) );
 
-	// Custom Font File URL
+	// Custom Font File Upload
 	$wp_customize->add_setting( 'custom_font_file', array(
 		'default'           => '',
 		'sanitize_callback' => 'esc_url_raw',
 		'transport'         => 'refresh',
 	) );
-	$wp_customize->add_control( 'custom_font_file', array(
-		'label'       => __( 'Custom Font URL', 'aspiring-knight' ),
+	$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'custom_font_file', array(
+		'label'       => __( 'Upload Custom Font', 'aspiring-knight' ),
 		'section'     => 'ds_custom_fonts_section',
-		'type'        => 'url',
-		'description' => __( 'Paste the URL of a TTF, OTF, WOFF, or WOFF2 font file (e.g., from your Media Library or an external host).', 'aspiring-knight' ),
-	) );
+		'description' => __( 'Upload a TTF, OTF, WOFF, or WOFF2 font file. This font will be added to all font family dropdowns.', 'aspiring-knight' ),
+	) ) );
 
 	// Use custom font for headings toggle
 	$wp_customize->add_setting( 'use_custom_font_headings', array(
