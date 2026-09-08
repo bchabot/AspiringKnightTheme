@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Aspiring Knight Customizer configuration
  *
@@ -38,6 +38,27 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
 	}
 }
 
+// Custom Control for per-section Restore Defaults button
+if ( class_exists( 'WP_Customize_Control' ) ) {
+	class Aspiring_Knight_Restore_Section_Control extends WP_Customize_Control {
+		public $type = 'ak_restore_section';
+		public $section_to_restore = '';
+
+		public function render_content() {
+			?>
+			<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+				<button type="button" class="button ak-restore-section-btn" data-section-id="<?php echo esc_attr( $this->section_to_restore ); ?>" style="width: 100%;">
+					<?php echo esc_html( $this->label ); ?>
+				</button>
+				<?php if ( $this->description ) : ?>
+					<span class="description" style="display: block; margin-top: 5px;"><?php echo esc_html( $this->description ); ?></span>
+				<?php endif; ?>
+			</div>
+			<?php
+		}
+	}
+}
+
 /**
  * Sanitize JSON data for custom presets.
  */
@@ -47,6 +68,123 @@ function aspiring_knight_sanitize_json( $value ) {
 		return wp_json_encode( $decoded ? $decoded : array() );
 	}
 	return '{}';
+}
+
+/**
+ * Get default values for a typography section's settings.
+ */
+function aspiring_knight_get_section_defaults( $section_id ) {
+	$defaults = array(
+		'ds_site_title_section' => array(
+			'site_title_font_family' => 'TexturaLibera', 'site_title_font_size' => '2.5rem',
+			'site_title_font_weight' => 'inherit', 'site_title_italic' => false, 'site_title_underline' => false,
+			'site_title_color' => '#F4F1EA', 'site_title_shadow_enable' => false,
+			'site_title_shadow_color' => '#000000', 'site_title_shadow_size' => '2px 2px 4px',
+			'site_title_glow_enable' => false, 'site_title_glow_color' => '#0000FF', 'site_title_glow_size' => '10px',
+			'site_title_dropcaps_enable' => false, 'site_title_dropcaps_color' => '#FF0000', 'site_title_dropcaps_size' => '4rem',
+		),
+		'ds_site_tagline_section' => array(
+			'site_tagline_font_family' => 'Rotunda', 'site_tagline_font_size' => '18px',
+			'site_tagline_font_weight' => 'inherit', 'site_tagline_italic' => false, 'site_tagline_underline' => false,
+			'site_tagline_color' => '#F4F1EA', 'site_tagline_shadow_enable' => false,
+			'site_tagline_shadow_color' => '#000000', 'site_tagline_shadow_size' => '2px 2px 4px',
+			'site_tagline_glow_enable' => false, 'site_tagline_glow_color' => '#0000FF', 'site_tagline_glow_size' => '10px',
+		),
+		'ds_blog_title_section' => array(
+			'blog_title_font_family' => 'TexturaLibera', 'blog_title_font_size' => '32px',
+			'blog_title_font_weight' => 'inherit', 'blog_title_italic' => false, 'blog_title_underline' => false,
+			'blog_title_color' => '#1E2229', 'blog_title_shadow_enable' => false,
+			'blog_title_shadow_color' => '#000000', 'blog_title_shadow_size' => '2px 2px 4px',
+			'blog_title_glow_enable' => false, 'blog_title_glow_color' => '#0000FF', 'blog_title_glow_size' => '10px',
+		),
+		'ds_page_title_section' => array(
+			'page_title_font_family' => 'TexturaLibera', 'page_title_font_size' => '32px',
+			'page_title_font_weight' => 'inherit', 'page_title_italic' => false, 'page_title_underline' => false,
+			'page_title_color' => '#1E2229', 'page_title_shadow_enable' => false,
+			'page_title_shadow_color' => '#000000', 'page_title_shadow_size' => '2px 2px 4px',
+			'page_title_glow_enable' => false, 'page_title_glow_color' => '#0000FF', 'page_title_glow_size' => '10px',
+		),
+		'ds_headings_section' => array(
+			'headings_font_family' => 'Rotunda', 'headings_font_size' => '30px',
+			'headings_font_weight' => 'inherit', 'headings_italic' => false, 'headings_underline' => false,
+			'headings_color' => '#1E2229', 'headings_shadow_enable' => false,
+			'headings_shadow_color' => '#000000', 'headings_shadow_size' => '2px 2px 4px',
+			'headings_glow_enable' => false, 'headings_glow_color' => '#0000FF', 'headings_glow_size' => '10px',
+		),
+		'ds_h1_section' => array(
+			'h1_font_family' => 'Rotunda', 'h1_font_size' => '48px',
+			'h1_font_weight' => 'inherit', 'h1_italic' => false, 'h1_underline' => false,
+			'h1_color' => '#1E2229', 'h1_shadow_enable' => false,
+			'h1_shadow_color' => '#000000', 'h1_shadow_size' => '2px 2px 4px',
+			'h1_glow_enable' => false, 'h1_glow_color' => '#0000FF', 'h1_glow_size' => '10px',
+		),
+		'ds_h2_section' => array(
+			'h2_font_family' => 'Rotunda', 'h2_font_size' => '36px',
+			'h2_font_weight' => 'inherit', 'h2_italic' => false, 'h2_underline' => false,
+			'h2_color' => '#1E2229', 'h2_shadow_enable' => false,
+			'h2_shadow_color' => '#000000', 'h2_shadow_size' => '2px 2px 4px',
+			'h2_glow_enable' => false, 'h2_glow_color' => '#0000FF', 'h2_glow_size' => '10px',
+		),
+		'ds_h3_section' => array(
+			'h3_font_family' => 'Rotunda', 'h3_font_size' => '30px',
+			'h3_font_weight' => 'inherit', 'h3_italic' => false, 'h3_underline' => false,
+			'h3_color' => '#1E2229', 'h3_shadow_enable' => false,
+			'h3_shadow_color' => '#000000', 'h3_shadow_size' => '2px 2px 4px',
+			'h3_glow_enable' => false, 'h3_glow_color' => '#0000FF', 'h3_glow_size' => '10px',
+		),
+		'ds_h4_section' => array(
+			'h4_font_family' => 'Rotunda', 'h4_font_size' => '24px',
+			'h4_font_weight' => 'inherit', 'h4_italic' => false, 'h4_underline' => false,
+			'h4_color' => '#1E2229', 'h4_shadow_enable' => false,
+			'h4_shadow_color' => '#000000', 'h4_shadow_size' => '2px 2px 4px',
+			'h4_glow_enable' => false, 'h4_glow_color' => '#0000FF', 'h4_glow_size' => '10px',
+		),
+		'ds_h5_section' => array(
+			'h5_font_family' => 'Rotunda', 'h5_font_size' => '20px',
+			'h5_font_weight' => 'inherit', 'h5_italic' => false, 'h5_underline' => false,
+			'h5_color' => '#1E2229', 'h5_shadow_enable' => false,
+			'h5_shadow_color' => '#000000', 'h5_shadow_size' => '2px 2px 4px',
+			'h5_glow_enable' => false, 'h5_glow_color' => '#0000FF', 'h5_glow_size' => '10px',
+		),
+		'ds_h6_section' => array(
+			'h6_font_family' => 'Rotunda', 'h6_font_size' => '18px',
+			'h6_font_weight' => 'inherit', 'h6_italic' => false, 'h6_underline' => false,
+			'h6_color' => '#1E2229', 'h6_shadow_enable' => false,
+			'h6_shadow_color' => '#000000', 'h6_shadow_size' => '2px 2px 4px',
+			'h6_glow_enable' => false, 'h6_glow_color' => '#0000FF', 'h6_glow_size' => '10px',
+		),
+		'ds_body_text_section' => array(
+			'body_text_font_family' => 'Inter', 'body_text_font_size' => '16px',
+			'body_text_font_weight' => 'inherit', 'body_text_italic' => false, 'body_text_underline' => false,
+			'body_text_color' => '#1E2229', 'body_text_shadow_enable' => false,
+			'body_text_shadow_color' => '#000000', 'body_text_shadow_size' => '2px 2px 4px',
+			'body_text_glow_enable' => false, 'body_text_glow_color' => '#0000FF', 'body_text_glow_size' => '10px',
+			'body_text_dropcaps_enable' => false, 'body_text_dropcaps_color' => '#FF0000', 'body_text_dropcaps_size' => '4rem',
+		),
+		'ds_body_links_section' => array(
+			'body_links_font_family' => 'Inter', 'body_links_font_size' => '16px',
+			'body_links_font_weight' => 'inherit', 'body_links_italic' => false, 'body_links_underline' => true,
+			'body_links_color' => '#0000FF', 'body_links_shadow_enable' => false,
+			'body_links_shadow_color' => '#000000', 'body_links_shadow_size' => '2px 2px 4px',
+			'body_links_glow_enable' => false, 'body_links_glow_color' => '#0000FF', 'body_links_glow_size' => '10px',
+		),
+		'ds_sidebar_typo_section' => array(
+			'sidebars_font_family' => 'Inter', 'sidebars_font_size' => '16px',
+			'sidebars_font_weight' => 'inherit', 'sidebars_italic' => false, 'sidebars_underline' => false,
+			'sidebars_color' => '#1E2229', 'sidebars_shadow_enable' => false,
+			'sidebars_shadow_color' => '#000000', 'sidebars_shadow_size' => '2px 2px 4px',
+			'sidebars_glow_enable' => false, 'sidebars_glow_color' => '#0000FF', 'sidebars_glow_size' => '10px',
+		),
+		'ds_footer_typo_section' => array(
+			'footer_font_family' => 'Inter', 'footer_font_size' => '16px',
+			'footer_font_weight' => 'inherit', 'footer_italic' => false, 'footer_underline' => false,
+			'footer_color' => '#F4F1EA', 'footer_shadow_enable' => false,
+			'footer_shadow_color' => '#000000', 'footer_shadow_size' => '2px 2px 4px',
+			'footer_glow_enable' => false, 'footer_glow_color' => '#0000FF', 'footer_glow_size' => '10px',
+		),
+	);
+
+	return isset( $defaults[ $section_id ] ) ? $defaults[ $section_id ] : array();
 }
 
 /**
@@ -117,15 +255,13 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	);
 
 	$bg_colors = array(
-		'top_bar_bg_color'     => array( 'label' => __( 'Top Bar Background', 'aspiring-knight' ), 'default' => '#3a3a3a' ),
-		'top_bar_text_color'   => array( 'label' => __( 'Top Bar Text Color', 'aspiring-knight' ), 'default' => '#ffffff' ),
-		'accent_gold'          => array( 'label' => __( 'Gold Accent / Highlights', 'aspiring-knight' ), 'default' => '#d4af37' ),
-		'site_bg_color'        => array( 'label' => __( 'Global Site Background', 'aspiring-knight' ), 'default' => '#f4f4f4' ),
-		'article_bg_color'     => array( 'label' => __( 'Article Box Background', 'aspiring-knight' ), 'default' => '#ffffff' ),
-		'header_bg_color'      => array( 'label' => __( 'Header Background', 'aspiring-knight' ), 'default' => '#3a3a3a' ),
-		'footer_bg_color'      => array( 'label' => __( 'Footer Background', 'aspiring-knight' ), 'default' => '#3a3a3a' ),
-		'sidebar_bg_color'     => array( 'label' => __( 'Sidebar Background', 'aspiring-knight' ), 'default' => '#ffffff' ),
-		'sidebar_border_color' => array( 'label' => __( 'Sidebar Border', 'aspiring-knight' ), 'default' => '#eeeeee' ),
+		'top_bar_bg_color'   => array( 'label' => __( 'Top Bar Background', 'aspiring-knight' ), 'default' => '#1E2229' ),
+		'top_bar_text_color' => array( 'label' => __( 'Top Bar Text Color', 'aspiring-knight' ), 'default' => '#F4F1EA' ),
+		'accent_gold'        => array( 'label' => __( 'Highlight Color', 'aspiring-knight' ), 'default' => '#0000FF' ),
+		'site_bg_color'      => array( 'label' => __( 'Global Site Background', 'aspiring-knight' ), 'default' => '#F4F1EA' ),
+		'article_bg_color'   => array( 'label' => __( 'Article Box Background', 'aspiring-knight' ), 'default' => '#F4F1EA' ),
+		'header_bg_color'    => array( 'label' => __( 'Header Background', 'aspiring-knight' ), 'default' => '#1E2229' ),
+		'footer_bg_color'    => array( 'label' => __( 'Footer Background', 'aspiring-knight' ), 'default' => '#1E2229' ),
 	);
 
 	foreach ( $bg_colors as $id => $data ) {
@@ -194,17 +330,31 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	) ) );
 
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_body_text_section', array(
-		'title'       => esc_html__( 'Body Text', 'aspiring-knight' ),
+		'title'       => esc_html__( 'Post Content', 'aspiring-knight' ),
 		'section'     => 'ds_typography_section',
 		'priority'    => 50,
-		'description' => esc_html__( 'Configure typography for the main body text content.', 'aspiring-knight' ),
+		'description' => esc_html__( 'Configure typography for the main post/page body text content.', 'aspiring-knight' ),
 	) ) );
 
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_body_links_section', array(
-		'title'       => esc_html__( 'Body Text Links', 'aspiring-knight' ),
+		'title'       => esc_html__( 'Post Content Links', 'aspiring-knight' ),
 		'section'     => 'ds_typography_section',
 		'priority'    => 60,
-		'description' => esc_html__( 'Configure typography for links within body text content.', 'aspiring-knight' ),
+		'description' => esc_html__( 'Configure typography for links within post/page content.', 'aspiring-knight' ),
+	) ) );
+
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_sidebar_typo_section', array(
+		'title'       => esc_html__( 'Sidebar', 'aspiring-knight' ),
+		'section'     => 'ds_typography_section',
+		'priority'    => 70,
+		'description' => esc_html__( 'Configure typography for sidebar widget text and links.', 'aspiring-knight' ),
+	) ) );
+
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_footer_typo_section', array(
+		'title'       => esc_html__( 'Footer', 'aspiring-knight' ),
+		'section'     => 'ds_typography_section',
+		'priority'    => 80,
+		'description' => esc_html__( 'Configure typography for footer area text and links.', 'aspiring-knight' ),
 	) ) );
 
 	// Default/Custom Radio Buttons for each typography section
@@ -213,8 +363,10 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'ds_blog_title_section' => array( 'label' => __( 'Blog Post Titles', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default blog post title typography.', 'aspiring-knight' ) ),
 		'ds_page_title_section' => array( 'label' => __( 'Page Titles', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default page title typography.', 'aspiring-knight' ) ),
 		'ds_headings_section'   => array( 'label' => __( 'Content Headers', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default content header typography.', 'aspiring-knight' ) ),
-		'ds_body_text_section'  => array( 'label' => __( 'Body Text', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default body text typography.', 'aspiring-knight' ) ),
-		'ds_body_links_section' => array( 'label' => __( 'Body Text Links', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default body link typography.', 'aspiring-knight' ) ),
+		'ds_body_text_section'  => array( 'label' => __( 'Post Content', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default post content typography.', 'aspiring-knight' ) ),
+		'ds_body_links_section' => array( 'label' => __( 'Post Content Links', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default post content link typography.', 'aspiring-knight' ) ),
+		'ds_sidebar_typo_section' => array( 'label' => __( 'Sidebar', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default sidebar typography.', 'aspiring-knight' ) ),
+		'ds_footer_typo_section'  => array( 'label' => __( 'Footer', 'aspiring-knight' ), 'desc' => __( 'Choose "Custom" to override default footer typography.', 'aspiring-knight' ) ),
 	);
 
 	foreach ( $typo_sections as $section_id => $config ) {
@@ -268,18 +420,32 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'priority'    => 30,
 		'description' => esc_html__( 'Configure typography and styling for your navigation menus and sub-menus.', 'aspiring-knight' ),
 	) );
+
+	// Sidebar & Footer top-level structural sections (content, layout, widgets)
 	$wp_customize->add_section( 'ds_sidebars_section', array(
-		'title'       => esc_html__( 'Sidebars', 'aspiring-knight' ),
+		'title'       => esc_html__( 'Sidebar Layout', 'aspiring-knight' ),
 		'panel'       => 'design_system_panel',
 		'priority'    => 50,
-		'description' => esc_html__( 'Configure typography and styling for sidebar widgets.', 'aspiring-knight' ),
+		'description' => esc_html__( 'Configure sidebar structure: background, border, padding, and widget areas.', 'aspiring-knight' ),
 	) );
-	$wp_customize->add_section( 'ds_footer_section', array(
-		'title'       => esc_html__( 'Footer Area', 'aspiring-knight' ),
-		'panel'       => 'design_system_panel',
-		'priority'    => 55,
-		'description' => esc_html__( 'Configure typography and styling for the footer area.', 'aspiring-knight' ),
-	) );
+
+	// Sidebar structural controls
+	$wp_customize->add_setting( 'sidebar_bg_color', array( 'default' => '#F4F1EA', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'sidebar_bg_color', array(
+		'label'    => __( 'Sidebar Background', 'aspiring-knight' ),
+		'section'  => 'ds_sidebars_section',
+		'settings' => 'sidebar_bg_color',
+	) ) );
+
+	$wp_customize->add_setting( 'sidebar_border_color', array( 'default' => '#d6cfc3', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'sidebar_border_color', array(
+		'label'    => __( 'Sidebar Border', 'aspiring-knight' ),
+		'section'  => 'ds_sidebars_section',
+		'settings' => 'sidebar_border_color',
+	) ) );
+
+	$wp_customize->add_setting( 'sidebar_padding', array( 'default' => '1.5rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
+	$wp_customize->add_control( 'sidebar_padding', array( 'label' => __( 'Sidebar Widget Padding', 'aspiring-knight' ), 'section' => 'ds_sidebars_section', 'type' => 'text' ) );
 
 	// Navigation menu structural settings inside ds_navigation_menus_section
 	$wp_customize->add_setting( 'menu_spacing', array( 'default' => '2rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
@@ -292,7 +458,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'settings' => 'menu_bg_color',
 	) ) );
 
-	$wp_customize->add_setting( 'submenu_bg_color', array( 'default' => '#3a3a3a', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+	$wp_customize->add_setting( 'submenu_bg_color', array( 'default' => '#1E2229', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'submenu_bg_color', array(
 		'label'    => __( 'Sub-Menu Background Color', 'aspiring-knight' ),
 		'section'  => 'ds_navigation_menus_section',
@@ -300,25 +466,23 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	) ) );
 
 	$categories_config = array(
-		'site_title'   => array( 'label' => __( 'Title', 'aspiring-knight' ), 'section' => 'ds_site_title_section', 'default_font' => 'Cinzel', 'default_size' => '2.5rem', 'default_color' => '#ffffff', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'site_tagline' => array( 'label' => __( 'Tagline', 'aspiring-knight' ), 'section' => 'ds_site_tagline_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'blog_title'   => array( 'label' => __( 'Blog Post Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_blog_title_section', 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'page_title'   => array( 'label' => __( 'Page Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_page_title_section', 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'headings'     => array( 'label' => __( 'Content Headers Fallback', 'aspiring-knight' ), 'section' => 'ds_headings_section', 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'h1'           => array( 'label' => __( 'H1', 'aspiring-knight' ), 'section' => 'ds_h1_section', 'default_font' => 'Cinzel', 'default_size' => '48px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'h2'           => array( 'label' => __( 'H2', 'aspiring-knight' ), 'section' => 'ds_h2_section', 'default_font' => 'Cinzel', 'default_size' => '36px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'h3'           => array( 'label' => __( 'H3', 'aspiring-knight' ), 'section' => 'ds_h3_section', 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'h4'           => array( 'label' => __( 'H4', 'aspiring-knight' ), 'section' => 'ds_h4_section', 'default_font' => 'Cinzel', 'default_size' => '24px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'h5'           => array( 'label' => __( 'H5', 'aspiring-knight' ), 'section' => 'ds_h5_section', 'default_font' => 'Cinzel', 'default_size' => '20px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'h6'           => array( 'label' => __( 'H6', 'aspiring-knight' ), 'section' => 'ds_h6_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => false ),
-		'body_text'    => array( 'label' => __( 'Body Text', 'aspiring-knight' ), 'section' => 'ds_body_text_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#333333', 'has_dropcaps' => true, 'has_link_color' => false ),
-		'body_links'   => array( 'label' => __( 'Body Text Links', 'aspiring-knight' ), 'section' => 'ds_body_links_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#d4af37', 'has_dropcaps' => false, 'has_link_color' => false ),
-		
-		'menus'        => array( 'label' => __( 'Main Menu Links', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff', 'has_dropcaps' => false, 'has_link_color' => true ),
-		'submenus'     => array( 'label' => __( 'Sub-Menu Links', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#ffffff', 'has_dropcaps' => false, 'has_link_color' => true ),
-		
-		'sidebars'     => array( 'label' => __( 'Sidebar Text', 'aspiring-knight' ), 'section' => 'ds_sidebars_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#333333', 'has_dropcaps' => false, 'has_link_color' => true ),
-		'footer'       => array( 'label' => __( 'Footer Text', 'aspiring-knight' ), 'section' => 'ds_footer_section', 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#ffffff', 'has_dropcaps' => false, 'has_link_color' => true ),
+		'site_title'   => array( 'label' => __( 'Title', 'aspiring-knight' ), 'section' => 'ds_site_title_section', 'default_font' => 'TexturaLibera', 'default_size' => '2.5rem', 'default_color' => '#F4F1EA', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'site_tagline' => array( 'label' => __( 'Tagline', 'aspiring-knight' ), 'section' => 'ds_site_tagline_section', 'default_font' => 'Rotunda', 'default_size' => '18px', 'default_color' => '#F4F1EA', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'blog_title'   => array( 'label' => __( 'Blog Post Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_blog_title_section', 'default_font' => 'TexturaLibera', 'default_size' => '32px', 'default_color' => '#1E2229', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'page_title'   => array( 'label' => __( 'Page Titles (Single)', 'aspiring-knight' ), 'section' => 'ds_page_title_section', 'default_font' => 'TexturaLibera', 'default_size' => '32px', 'default_color' => '#1E2229', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'headings'     => array( 'label' => __( 'Content Headers Fallback', 'aspiring-knight' ), 'section' => 'ds_headings_section', 'default_font' => 'Rotunda', 'default_size' => '30px', 'default_color' => '#1E2229', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h1'           => array( 'label' => __( 'H1', 'aspiring-knight' ), 'section' => 'ds_h1_section', 'default_font' => 'Rotunda', 'default_size' => '48px', 'default_color' => '#1E2229', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h2'           => array( 'label' => __( 'H2', 'aspiring-knight' ), 'section' => 'ds_h2_section', 'default_font' => 'Rotunda', 'default_size' => '36px', 'default_color' => '#1E2229', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h3'           => array( 'label' => __( 'H3', 'aspiring-knight' ), 'section' => 'ds_h3_section', 'default_font' => 'Rotunda', 'default_size' => '30px', 'default_color' => '#1E2229', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h4'           => array( 'label' => __( 'H4', 'aspiring-knight' ), 'section' => 'ds_h4_section', 'default_font' => 'Rotunda', 'default_size' => '24px', 'default_color' => '#1E2229', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h5'           => array( 'label' => __( 'H5', 'aspiring-knight' ), 'section' => 'ds_h5_section', 'default_font' => 'Rotunda', 'default_size' => '20px', 'default_color' => '#1E2229', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'h6'           => array( 'label' => __( 'H6', 'aspiring-knight' ), 'section' => 'ds_h6_section', 'default_font' => 'Rotunda', 'default_size' => '18px', 'default_color' => '#1E2229', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'body_text'    => array( 'label' => __( 'Post Content', 'aspiring-knight' ), 'section' => 'ds_body_text_section', 'default_font' => 'Inter', 'default_size' => '16px', 'default_color' => '#1E2229', 'has_dropcaps' => true, 'has_link_color' => false ),
+		'body_links'   => array( 'label' => __( 'Post Content Links', 'aspiring-knight' ), 'section' => 'ds_body_links_section', 'default_font' => 'Inter', 'default_size' => '16px', 'default_color' => '#0000FF', 'has_dropcaps' => false, 'has_link_color' => false ),
+		'menus'        => array( 'label' => __( 'Main Menu Links', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'default_font' => 'Inter', 'default_size' => '18px', 'default_color' => '#F4F1EA', 'has_dropcaps' => false, 'has_link_color' => true ),
+		'submenus'     => array( 'label' => __( 'Sub-Menu Links', 'aspiring-knight' ), 'section' => 'ds_navigation_menus_section', 'default_font' => 'Inter', 'default_size' => '16px', 'default_color' => '#F4F1EA', 'has_dropcaps' => false, 'has_link_color' => true ),
+		'sidebars'     => array( 'label' => __( 'Sidebar Text', 'aspiring-knight' ), 'section' => 'ds_sidebar_typo_section', 'default_font' => 'Inter', 'default_size' => '16px', 'default_color' => '#1E2229', 'has_dropcaps' => false, 'has_link_color' => true ),
+		'footer'       => array( 'label' => __( 'Footer Text', 'aspiring-knight' ), 'section' => 'ds_footer_typo_section', 'default_font' => 'Inter', 'default_size' => '16px', 'default_color' => '#F4F1EA', 'has_dropcaps' => false, 'has_link_color' => true ),
 	);
 
 	foreach ( $categories_config as $id => $cat ) {
@@ -386,7 +550,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 
 		// Link Color
 		if ( ! empty( $cat['has_link_color'] ) ) {
-			$wp_customize->add_setting( "{$id}_link_color", array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+		$wp_customize->add_setting( "{$id}_link_color", array( 'default' => '#0000FF', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 			$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_link_color", array(
 				'label'           => sprintf( __( '%s Link Color', 'aspiring-knight' ), $cat['label'] ),
 				'section'         => $section_id,
@@ -402,7 +566,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'type'            => 'checkbox',
 		) );
 
-		$wp_customize->add_setting( "{$id}_glow_color", array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+	$wp_customize->add_setting( "{$id}_glow_color", array( 'default' => '#0000FF', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_glow_color", array(
 			'label'           => __( 'Glow Color', 'aspiring-knight' ),
 			'section'         => $section_id,
@@ -450,7 +614,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 				'description'     => __( 'Display a large decorative first letter at the start of paragraphs.', 'aspiring-knight' ),
 			) );
 
-			$wp_customize->add_setting( "{$id}_dropcaps_color", array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+		$wp_customize->add_setting( "{$id}_dropcaps_color", array( 'default' => '#FF0000', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 			$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_dropcaps_color", array(
 				'label'           => __( 'Drop Caps Color', 'aspiring-knight' ),
 				'section'         => $section_id,
@@ -470,24 +634,24 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	// Legacy global dropcap controls override body_text if present (for backward compatibility)
 	$wp_customize->add_setting( 'dropcap_enable', array( 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( 'dropcap_enable', array( 'label' => __( 'Legacy Global Drop Cap?', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'type' => 'checkbox', 'description' => __( 'Legacy toggle for global body first-letter styling.', 'aspiring-knight' ) ) );
-	$wp_customize->add_setting( 'dropcap_font_family', array( 'default' => 'Cinzel', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
+	$wp_customize->add_setting( 'dropcap_font_family', array( 'default' => 'TexturaLibera', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( 'dropcap_font_family', array( 'label' => __( 'Legacy Drop Cap Font', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'type' => 'select', 'choices' => aspiring_knight_get_font_choices() ) );
 	$wp_customize->add_setting( 'dropcap_font_size', array( 'default' => '4rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( 'dropcap_font_size', array( 'label' => __( 'Legacy Drop Cap Size', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'type' => 'text' ) );
-	$wp_customize->add_setting( 'dropcap_color', array( 'default' => '#d4af37', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+	$wp_customize->add_setting( 'dropcap_color', array( 'default' => '#FF0000', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'dropcap_color', array(
 		'label'    => __( 'Legacy Drop Cap Color', 'aspiring-knight' ),
 		'section'  => 'ds_typography_section',
 		'settings' => 'dropcap_color',
 	) ) );
 
-	// Custom Fonts Section
-	$wp_customize->add_section( 'ds_custom_fonts_section', array(
+	// Custom Fonts Section (nested under Typography, first item)
+	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_custom_fonts_section', array(
 		'title'       => esc_html__( 'Custom Fonts', 'aspiring-knight' ),
-		'panel'       => 'design_system_panel',
-		'priority'    => 25,
+		'section'     => 'ds_typography_section',
+		'priority'    => 5,
 		'description' => esc_html__( 'Specify which fonts are available for use throughout the theme. Choose from Google Fonts or upload your own font files.', 'aspiring-knight' ),
-	) );
+	) ) );
 
 	// Custom Font Selection (Google Fonts)
 	$wp_customize->add_setting( 'custom_google_font', array(
@@ -541,6 +705,39 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		'description' => __( 'When enabled, your custom font will be automatically applied to all heading elements (site title, tagline, content headers).', 'aspiring-knight' ),
 	) );
 
+	// Add Restore Defaults button to each leaf typography section
+	$restore_sections = array(
+		'ds_site_title_section'   => 'Restore Site Title Defaults',
+		'ds_site_tagline_section' => 'Restore Tagline Defaults',
+		'ds_blog_title_section'   => 'Restore Blog Title Defaults',
+		'ds_page_title_section'   => 'Restore Page Title Defaults',
+		'ds_headings_section'     => 'Restore Content Headers Defaults',
+		'ds_h1_section'           => 'Restore H1 Defaults',
+		'ds_h2_section'           => 'Restore H2 Defaults',
+		'ds_h3_section'           => 'Restore H3 Defaults',
+		'ds_h4_section'           => 'Restore H4 Defaults',
+		'ds_h5_section'           => 'Restore H5 Defaults',
+		'ds_h6_section'           => 'Restore H6 Defaults',
+		'ds_body_text_section'    => 'Restore Post Content Defaults',
+		'ds_body_links_section'   => 'Restore Post Content Links Defaults',
+		'ds_sidebar_typo_section' => 'Restore Sidebar Defaults',
+		'ds_footer_typo_section'  => 'Restore Footer Defaults',
+	);
+
+	foreach ( $restore_sections as $section_id => $label ) {
+		$setting_id = $section_id . '_restore';
+		$wp_customize->add_setting( $setting_id, array(
+			'default'           => '',
+			'sanitize_callback' => 'sanitize_text_field',
+		) );
+		$wp_customize->add_control( new Aspiring_Knight_Restore_Section_Control( $wp_customize, $setting_id, array(
+			'label'              => $label,
+			'section'            => $section_id,
+			'section_to_restore' => $section_id,
+			'description'        => 'Reset all typography settings in this section to defaults.',
+		) ) );
+	}
+
 	// Restore Default Fonts button (using a custom control for button behavior)
 	$wp_customize->add_setting( 'restore_default_fonts', array(
 		'default'           => false,
@@ -583,8 +780,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 	$wp_customize->add_control( 'container_width', array( 'label' => __( 'Max Site Width', 'aspiring-knight' ), 'section' => 'ds_layout_section', 'type' => 'text' ) );
 	$wp_customize->add_setting( 'header_padding', array( 'default' => '20px', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
 	$wp_customize->add_control( 'header_padding', array( 'label' => __( 'Header Vertical Padding', 'aspiring-knight' ), 'section' => 'ds_layout_section', 'type' => 'text' ) );
-	$wp_customize->add_setting( 'sidebar_padding', array( 'default' => '1.5rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
-	$wp_customize->add_control( 'sidebar_padding', array( 'label' => __( 'Sidebar Widget Padding', 'aspiring-knight' ), 'section' => 'ds_layout_section', 'type' => 'text' ) );
 
 	$wp_customize->add_section( 'ds_footer_layout_section', array( 'title' => esc_html__( 'Footer Layout', 'aspiring-knight' ), 'panel' => 'design_system_panel', 'priority' => 120 ) );
 	$wp_customize->add_setting( 'footer_bg_image', array( 'default' => '', 'sanitize_callback' => 'esc_url_raw', 'transport' => 'refresh' ) );
@@ -626,6 +821,9 @@ function aspiring_knight_get_preset_choices() {
  */
 function aspiring_knight_get_font_choices() {
 	$fonts = array(
+		'TexturaLibera'    => 'TexturaLibera (Medieval Display)',
+		'Rotunda'          => 'Rotunda (Medieval Body)',
+		'Inter'            => 'Inter (Modern Sans)',
 		'Lora'             => 'Lora (Classic Serif)',
 		'Cinzel'           => 'Cinzel (Medieval Decorative)',
 		'MedievalSharp'    => 'MedievalSharp (Medieval Angular)',
@@ -659,6 +857,9 @@ function aspiring_knight_get_font_choices() {
  */
 function aspiring_knight_get_google_font_choices() {
 	return array(
+		'TexturaLibera'     => 'TexturaLibera',
+		'Rotunda'           => 'Rotunda',
+		'Inter'             => 'Inter',
 		'Lora'              => 'Lora',
 		'Cinzel'            => 'Cinzel',
 		'MedievalSharp'     => 'MedievalSharp',
@@ -764,23 +965,23 @@ function aspiring_knight_output_css_variables() {
 			/* Categorical Typography & Effects */
 			<?php
 			$categories_config = array(
-				'site_title'   => array( 'default_font' => 'Cinzel', 'default_size' => '2.5rem', 'default_color' => '#ffffff' ),
-				'site_tagline' => array( 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff' ),
-				'blog_title'   => array( 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333' ),
-				'page_title'   => array( 'default_font' => 'Cinzel', 'default_size' => '32px', 'default_color' => '#333333' ),
-				'headings'     => array( 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333' ),
-				'h1'           => array( 'default_font' => 'Cinzel', 'default_size' => '48px', 'default_color' => '#333333' ),
-				'h2'           => array( 'default_font' => 'Cinzel', 'default_size' => '36px', 'default_color' => '#333333' ),
-				'h3'           => array( 'default_font' => 'Cinzel', 'default_size' => '30px', 'default_color' => '#333333' ),
-				'h4'           => array( 'default_font' => 'Cinzel', 'default_size' => '24px', 'default_color' => '#333333' ),
-				'h5'           => array( 'default_font' => 'Cinzel', 'default_size' => '20px', 'default_color' => '#333333' ),
-				'h6'           => array( 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#333333' ),
-				'body_text'    => array( 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#333333' ),
-				'body_links'   => array( 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#d4af37' ),
-				'menus'        => array( 'default_font' => 'Cinzel', 'default_size' => '18px', 'default_color' => '#ffffff' ),
-				'submenus'     => array( 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#ffffff' ),
-				'sidebars'     => array( 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#333333' ),
-				'footer'       => array( 'default_font' => 'Lora', 'default_size' => '16px', 'default_color' => '#ffffff' ),
+				'site_title'   => array( 'default_font' => 'TexturaLibera', 'default_size' => '2.5rem', 'default_color' => '#F4F1EA' ),
+				'site_tagline' => array( 'default_font' => 'Rotunda', 'default_size' => '18px', 'default_color' => '#F4F1EA' ),
+				'blog_title'   => array( 'default_font' => 'TexturaLibera', 'default_size' => '32px', 'default_color' => '#1E2229' ),
+				'page_title'   => array( 'default_font' => 'TexturaLibera', 'default_size' => '32px', 'default_color' => '#1E2229' ),
+				'headings'     => array( 'default_font' => 'Rotunda', 'default_size' => '30px', 'default_color' => '#1E2229' ),
+				'h1'           => array( 'default_font' => 'Rotunda', 'default_size' => '48px', 'default_color' => '#1E2229' ),
+				'h2'           => array( 'default_font' => 'Rotunda', 'default_size' => '36px', 'default_color' => '#1E2229' ),
+				'h3'           => array( 'default_font' => 'Rotunda', 'default_size' => '30px', 'default_color' => '#1E2229' ),
+				'h4'           => array( 'default_font' => 'Rotunda', 'default_size' => '24px', 'default_color' => '#1E2229' ),
+				'h5'           => array( 'default_font' => 'Rotunda', 'default_size' => '20px', 'default_color' => '#1E2229' ),
+				'h6'           => array( 'default_font' => 'Rotunda', 'default_size' => '18px', 'default_color' => '#1E2229' ),
+				'body_text'    => array( 'default_font' => 'Inter', 'default_size' => '16px', 'default_color' => '#1E2229' ),
+				'body_links'   => array( 'default_font' => 'Inter', 'default_size' => '16px', 'default_color' => '#0000FF' ),
+				'menus'        => array( 'default_font' => 'Inter', 'default_size' => '18px', 'default_color' => '#F4F1EA' ),
+				'submenus'     => array( 'default_font' => 'Inter', 'default_size' => '16px', 'default_color' => '#F4F1EA' ),
+				'sidebars'     => array( 'default_font' => 'Inter', 'default_size' => '16px', 'default_color' => '#1E2229' ),
+				'footer'       => array( 'default_font' => 'Inter', 'default_size' => '16px', 'default_color' => '#F4F1EA' ),
 			);
 
 			foreach ($categories_config as $id => $cat) {
@@ -794,7 +995,7 @@ function aspiring_knight_output_css_variables() {
 				$weight = $get_mod("{$id}_font_weight", 'inherit');
 				$style = $get_mod("{$id}_italic", false) ? 'italic' : 'normal';
 				$color = $get_mod("{$id}_color", $cat['default_color']);
-				$link_color = isset($cat['default_color']) ? $get_mod("{$id}_link_color", '#d4af37') : 'inherit';
+				$link_color = isset($cat['default_color']) ? $get_mod("{$id}_link_color", '#0000FF') : 'inherit';
 				$underline = $get_mod("{$id}_underline", false) ? 'underline' : 'none';
 
 				// Effects
@@ -803,13 +1004,13 @@ function aspiring_knight_output_css_variables() {
 					$val .= $get_mod("{$id}_shadow_size", '2px 2px 4px') . ' ' . $get_mod("{$id}_shadow_color", '#000000');
 				}
 				if ($get_mod("{$id}_glow_enable", false)) {
-					$val .= ($val ? ', ' : '') . '0 0 ' . $get_mod("{$id}_glow_size", '10px') . ' ' . $get_mod("{$id}_glow_color", '#d4af37');
+					$val .= ($val ? ', ' : '') . '0 0 ' . $get_mod("{$id}_glow_size", '10px') . ' ' . $get_mod("{$id}_glow_color", '#0000FF');
 				}
 				$effect = $val ?: 'none';
 
 				// Drop Caps
 				$drop_display = $get_mod("{$id}_dropcaps_enable", false) ? 'block' : 'none';
-				$drop_color = $get_mod("{$id}_dropcaps_color", '#d4af37');
+				$drop_color = $get_mod("{$id}_dropcaps_color", '#FF0000');
 				$drop_size = $get_mod("{$id}_dropcaps_size", '4rem');
 
 				echo "--ak-{$var_id}-font-family: '" . esc_html($font) . "', serif;\n";
@@ -830,11 +1031,11 @@ function aspiring_knight_output_css_variables() {
 			<?php if ( $get_mod( 'dropcap_enable', true ) ) : ?>
 			--ak-dropcap-display: block;
 			--ak-dropcap-float: left;
-			--ak-dropcap-font-family: '<?php echo esc_html( $get_mod( 'dropcap_font_family', 'Cinzel' ) ); ?>', serif;
+			--ak-dropcap-font-family: '<?php echo esc_html( $get_mod( 'dropcap_font_family', 'TexturaLibera' ) ); ?>', serif;
 			--ak-dropcap-font-size: <?php echo esc_html( $get_mod( 'dropcap_font_size', '4rem' ) ); ?>;
 			--ak-dropcap-line-height: 1;
 			--ak-dropcap-margin: 0.1em 0.1em 0 0;
-			--ak-dropcap-color: <?php echo esc_html( $get_mod( 'dropcap_color', '#d4af37' ) ); ?>;
+			--ak-dropcap-color: <?php echo esc_html( $get_mod( 'dropcap_color', '#FF0000' ) ); ?>;
 			--ak-dropcap-font-weight: bold;
 			<?php else : ?>
 			--ak-dropcap-display: inline;
@@ -859,7 +1060,7 @@ function aspiring_knight_enqueue_customizer_fonts() {
 	$typos = array('site_title', 'site_tagline', 'blog_title', 'page_title', 'headings', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'body_text', 'body_links', 'menus', 'submenus', 'sidebars', 'footer');
 	$fonts = array();
 	foreach ($typos as $t) {
-		$font = get_theme_mod("{$t}_font_family", in_array($t, array('body_text', 'body_links', 'menus', 'submenus', 'sidebars', 'footer')) ? 'Lora' : 'Cinzel');
+		$font = get_theme_mod("{$t}_font_family", in_array($t, array('body_text', 'body_links', 'menus', 'submenus', 'sidebars', 'footer')) ? 'Inter' : 'Rotunda');
 		$fonts[] = $font . ':300,400,400i,500,600,700,700i,800,900';
 	}
 
@@ -870,8 +1071,9 @@ function aspiring_knight_enqueue_customizer_fonts() {
 	}
 
 	// Fallback/Default core theme fonts are always loaded
-	$fonts[] = 'Cinzel:400,700,900';
-	$fonts[] = 'Lora:400,400i,700,700i';
+	$fonts[] = 'TexturaLibera:400,700,900';
+	$fonts[] = 'Rotunda:400,400i,700,700i';
+	$fonts[] = 'Inter:300,400,500,600,700';
 
 	$fonts = array_unique($fonts);
 	$fonts_url = add_query_arg( array( 'family' => implode( '|', $fonts ), 'display' => 'swap' ), 'https://fonts.googleapis.com/css' );
@@ -903,6 +1105,8 @@ function aspiring_knight_restore_default_fonts() {
 		'ds_headings_section_mode',
 		'ds_body_text_section_mode',
 		'ds_body_links_section_mode',
+		'ds_sidebar_typo_section_mode',
+		'ds_footer_typo_section_mode',
 	);
 
 	// Reset font family settings for all categories
@@ -913,16 +1117,16 @@ function aspiring_knight_restore_default_fonts() {
 	);
 
 	$default_fonts = array(
-		'body_text' => 'Lora',
-		'body_links' => 'Lora',
-		'menus' => 'Cinzel',
-		'submenus' => 'Lora',
-		'sidebars' => 'Lora',
-		'footer' => 'Lora',
+		'body_text' => 'Inter',
+		'body_links' => 'Inter',
+		'menus' => 'Inter',
+		'submenus' => 'Inter',
+		'sidebars' => 'Inter',
+		'footer' => 'Inter',
 	);
 
 	foreach ( $categories as $cat ) {
-		$font_settings["{$cat}_font_family"] = isset( $default_fonts[ $cat ] ) ? $default_fonts[ $cat ] : 'Cinzel';
+		$font_settings["{$cat}_font_family"] = isset( $default_fonts[ $cat ] ) ? $default_fonts[ $cat ] : 'Rotunda';
 	}
 
 	// Apply all resets
@@ -933,6 +1137,34 @@ function aspiring_knight_restore_default_fonts() {
 	wp_send_json_success( array( 'message' => __( 'Font settings have been reset to defaults.', 'aspiring-knight' ) ) );
 }
 add_action( 'wp_ajax_ak_restore_fonts', 'aspiring_knight_restore_default_fonts' );
+
+/**
+ * Handle per-section Restore Defaults AJAX request.
+ */
+function aspiring_knight_restore_section_defaults() {
+	if ( ! isset( $_POST['ak_restore_section_nonce'] ) || ! wp_verify_nonce( $_POST['ak_restore_section_nonce'], 'ak_restore_section' ) ) {
+		return;
+	}
+
+	$section_id = isset( $_POST['section_id'] ) ? sanitize_text_field( $_POST['section_id'] ) : '';
+	$defaults = aspiring_knight_get_section_defaults( $section_id );
+
+	if ( empty( $defaults ) ) {
+		wp_send_json_error( array( 'message' => __( 'Unknown section.', 'aspiring-knight' ) ) );
+	}
+
+	// Reset the section mode to default
+	$mode_setting = $section_id . '_mode';
+	set_theme_mod( $mode_setting, 'default' );
+
+	// Reset each setting to its default
+	foreach ( $defaults as $key => $value ) {
+		set_theme_mod( $key, $value );
+	}
+
+	wp_send_json_success( array( 'message' => __( 'Section settings have been reset to defaults.', 'aspiring-knight' ) ) );
+}
+add_action( 'wp_ajax_ak_restore_section_defaults', 'aspiring_knight_restore_section_defaults' );
 
 /**
  * Enqueue Customizer admin controls styles for nested sections animation.

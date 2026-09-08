@@ -77,15 +77,6 @@ body {
     background-color: rgba(255,255,255,0.05) !important;
 }
 
-/* Global Links */
-a:not(#wpadminbar *) {
-    text-decoration: var(--ak-underline-body-links) !important;
-}
-
-body a:not(#wpadminbar *) {
-    color: var(--ak-body-links-color) !important;
-}
-
 /* Sidebar Styling */
 .widget-area section.widget {
     background-color: var(--ak-sidebar-bg) !important;

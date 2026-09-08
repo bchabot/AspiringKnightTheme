@@ -54,18 +54,24 @@ var akRestoreFontsNonce = '';
 
         // 1c. Default/Custom Mode Toggle Logic
         const typoModeSections = [
+            'ds_custom_fonts_section',
             'ds_header_section',
             'ds_blog_title_section',
             'ds_page_title_section',
             'ds_headings_section',
             'ds_body_text_section',
-            'ds_body_links_section'
+            'ds_body_links_section',
+            'ds_sidebar_typo_section',
+            'ds_footer_typo_section'
         ];
 
         // Map parent sections to their child/grandchild sections
         const sectionHierarchy = {
             'ds_header_section': ['ds_site_title_section', 'ds_site_tagline_section'],
-            'ds_headings_section': ['ds_h1_section', 'ds_h2_section', 'ds_h3_section', 'ds_h4_section', 'ds_h5_section', 'ds_h6_section']
+            'ds_headings_section': ['ds_h1_section', 'ds_h2_section', 'ds_h3_section', 'ds_h4_section', 'ds_h5_section', 'ds_h6_section'],
+            'ds_custom_fonts_section': [],
+            'ds_sidebar_typo_section': [],
+            'ds_footer_typo_section': []
         };
 
         function toggleTypoSectionControls(sectionId) {
@@ -116,6 +122,29 @@ var akRestoreFontsNonce = '';
                     });
                 });
             }
+        });
+
+        // 1d. Back Navigation Buttons for Nested Sections
+        function addBackButtons() {
+            wp.customize.section.each(function(section) {
+                if (section.params && section.params.section && !section.headContainer.find('.ak-back-btn').length) {
+                    var $sectionTitle = section.headContainer.find('.customize-section-title');
+                    if ($sectionTitle.length) {
+                        var $backBtn = $('<button type="button" class="customize-section-back ak-back-btn" title="Back"><span class="dashicons dashicons-arrow-left-alt2"></span></button>');
+                        $backBtn.css({ 'position': 'absolute', 'left': '0', 'top': '0', 'padding': '10px 12px', 'z-index': '10', 'background': 'none', 'border': 'none', 'cursor': 'pointer', 'line-height': '1', 'color': '#1d2327' });
+                        $sectionTitle.prepend($backBtn);
+                        $backBtn.on('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            wp.customize.section(section.params.section).expand();
+                        });
+                    }
+                }
+            });
+        }
+        addBackButtons();
+        wp.customize.bind('pane-contents-reflowed', function() {
+            setTimeout(addBackButtons, 100);
         });
 
         // 2. Preset Application Logic
@@ -233,7 +262,8 @@ var akRestoreFontsNonce = '';
             // Add typography section mode settings
             const typoSections = [
                 'ds_header_section', 'ds_blog_title_section', 'ds_page_title_section',
-                'ds_headings_section', 'ds_body_text_section', 'ds_body_links_section'
+                'ds_headings_section', 'ds_body_text_section', 'ds_body_links_section',
+                'ds_sidebar_typo_section', 'ds_footer_typo_section'
             ];
             typoSections.forEach(section => {
                 settingsToCapture.push(section + '_mode');
@@ -289,6 +319,32 @@ var akRestoreFontsNonce = '';
                     $(this).prop('checked', false);
                 }
             }
+        });
+
+        // 7. Per-Section Restore Defaults Logic
+        $(document).on('click', '.ak-restore-section-btn', function(e) {
+            e.preventDefault();
+            var sectionId = $(this).data('section-id');
+            if (!sectionId) return;
+            if (!confirm('Reset all typography settings in this section to defaults?')) return;
+
+            var nonce = typeof akRestoreFontsNonce !== 'undefined' ? akRestoreFontsNonce : '';
+            $.ajax({
+                url: '/wp-admin/admin-ajax.php',
+                type: 'POST',
+                data: {
+                    action: 'ak_restore_section_defaults',
+                    section_id: sectionId,
+                    ak_restore_section_nonce: nonce
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + (response.data ? response.data.message : 'Unknown error'));
+                    }
+                }
+            });
         });
     });
 })(jQuery);
