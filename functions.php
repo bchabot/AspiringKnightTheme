@@ -168,7 +168,7 @@ function aspiring_knight_allow_font_uploads( $file ) {
 	$ext = isset( $file['name'] ) ? strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) ) : '';
 	$font_exts = array( 'ttf', 'otf', 'woff', 'woff2' );
 	if ( in_array( $ext, $font_exts, true ) && ! empty( $file['error'] ) ) {
-		$file['error'] = null;
+		$file['error'] = 0;
 	}
 	return $file;
 }

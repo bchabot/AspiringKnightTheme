@@ -6,8 +6,9 @@
  * and performing nested customizer sections reflowing.
  */
 
-// Global nonce for restore fonts AJAX
-var akRestoreFontsNonce = '';
+// Global nonce and AJAX URL from wp_localize_script
+var akRestoreFontsNonce = (typeof akCustomizer !== 'undefined') ? akCustomizer.nonce : '';
+var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '/wp-admin/admin-ajax.php';
 
 (function($) {
     // 1. Nested Sections Reflow Logic
@@ -205,7 +206,8 @@ var akRestoreFontsNonce = '';
                     }
                 };
 
-                const customData = JSON.parse(wp.customize('custom_presets_data').get() || '{}');
+                var customData = {};
+                try { customData = JSON.parse(wp.customize('custom_presets_data').get() || '{}'); } catch(e) { customData = {}; }
                 const allPresets = { ...presets, ...customData };
                 const data = allPresets[newval];
                 if (!data) return;
@@ -278,7 +280,8 @@ var akRestoreFontsNonce = '';
             });
             settingsToCapture.forEach(key => { if (wp.customize(key)) currentData[key] = wp.customize(key).get(); });
             currentData.name = name;
-            const customPresets = JSON.parse(wp.customize('custom_presets_data').get() || '{}');
+            var customPresets = {};
+            try { customPresets = JSON.parse(wp.customize('custom_presets_data').get() || '{}'); } catch(e) { customPresets = {}; }
             customPresets[id] = currentData;
             wp.customize('custom_presets_data').set(JSON.stringify(customPresets));
             location.reload(); 
@@ -290,7 +293,8 @@ var akRestoreFontsNonce = '';
             const selected = wp.customize('theme_preset').get();
             if (!selected.startsWith('custom_')) { alert('Select a custom preset to delete.'); return; }
             if (!confirm('Delete this preset?')) return;
-            const customPresets = JSON.parse(wp.customize('custom_presets_data').get() || '{}');
+            var customPresets = {};
+            try { customPresets = JSON.parse(wp.customize('custom_presets_data').get() || '{}'); } catch(e) { customPresets = {}; }
             delete customPresets[selected];
             wp.customize('custom_presets_data').set(JSON.stringify(customPresets));
             wp.customize('theme_preset').set('default');
@@ -303,7 +307,7 @@ var akRestoreFontsNonce = '';
                 if (confirm('This will reset ALL font settings to defaults. Are you sure?')) {
                     // Send AJAX request to reset fonts
                     $.ajax({
-                        url: '/wp-admin/admin-ajax.php',
+                        url: akAjaxUrl,
                         type: 'POST',
                         data: {
                             action: 'ak_restore_fonts',
@@ -330,7 +334,7 @@ var akRestoreFontsNonce = '';
 
             var nonce = typeof akRestoreFontsNonce !== 'undefined' ? akRestoreFontsNonce : '';
             $.ajax({
-                url: '/wp-admin/admin-ajax.php',
+                url: akAjaxUrl,
                 type: 'POST',
                 data: {
                     action: 'ak_restore_section_defaults',

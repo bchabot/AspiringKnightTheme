@@ -566,7 +566,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 			'type'            => 'checkbox',
 		) );
 
-	$wp_customize->add_setting( "{$id}_glow_color", array( 'default' => '#0000FF', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+		$wp_customize->add_setting( "{$id}_glow_color", array( 'default' => '#0000FF', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_glow_color", array(
 			'label'           => __( 'Glow Color', 'aspiring-knight' ),
 			'section'         => $section_id,
@@ -614,7 +614,7 @@ function aspiring_knight_customize_register( $wp_customize ) {
 				'description'     => __( 'Display a large decorative first letter at the start of paragraphs.', 'aspiring-knight' ),
 			) );
 
-		$wp_customize->add_setting( "{$id}_dropcaps_color", array( 'default' => '#FF0000', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+			$wp_customize->add_setting( "{$id}_dropcaps_color", array( 'default' => '#FF0000', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
 			$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "{$id}_dropcaps_color", array(
 				'label'           => __( 'Drop Caps Color', 'aspiring-knight' ),
 				'section'         => $section_id,
@@ -943,18 +943,18 @@ function aspiring_knight_output_css_variables() {
 
 		:root {
 			/* Global Colors */
-			--ak-top-bar-bg: <?php echo esc_html( $get_mod( 'top_bar_bg_color', '#3a3a3a' ) ); ?>;
-			--ak-top-bar-text: <?php echo esc_html( $get_mod( 'top_bar_text_color', '#ffffff' ) ); ?>;
-			--ak-accent-gold: <?php echo esc_html( $get_mod( 'accent_gold', '#d4af37' ) ); ?>;
-			--ak-site-bg: <?php echo esc_html( $get_mod( 'site_bg_color', '#f4f4f4' ) ); ?>;
-			--ak-article-bg: <?php echo esc_html( $get_mod( 'article_bg_color', '#ffffff' ) ); ?>;
+			--ak-top-bar-bg: <?php echo esc_html( $get_mod( 'top_bar_bg_color', '#1E2229' ) ); ?>;
+			--ak-top-bar-text: <?php echo esc_html( $get_mod( 'top_bar_text_color', '#F4F1EA' ) ); ?>;
+			--ak-accent-gold: <?php echo esc_html( $get_mod( 'accent_gold', '#0000FF' ) ); ?>;
+			--ak-site-bg: <?php echo esc_html( $get_mod( 'site_bg_color', '#F4F1EA' ) ); ?>;
+			--ak-article-bg: <?php echo esc_html( $get_mod( 'article_bg_color', '#F4F1EA' ) ); ?>;
 			--ak-article-bg-image: <?php echo $article_bg_image ? 'url(' . esc_url($article_bg_image) . ')' : 'none'; ?>;
-			--ak-header-bg: <?php echo esc_html( $get_mod( 'header_bg_color', '#3a3a3a' ) ); ?>;
+			--ak-header-bg: <?php echo esc_html( $get_mod( 'header_bg_color', '#1E2229' ) ); ?>;
 			--ak-menu-bg: <?php echo esc_html( $get_mod( 'menu_bg_color', 'transparent' ) ); ?>;
-			--ak-submenu-bg: <?php echo esc_html( $get_mod( 'submenu_bg_color', '#3a3a3a' ) ); ?>;
-			--ak-footer-bg: <?php echo esc_html( $get_mod( 'footer_bg_color', '#3a3a3a' ) ); ?>;
-			--ak-sidebar-bg: <?php echo esc_html( $get_mod( 'sidebar_bg_color', '#ffffff' ) ); ?>;
-			--ak-sidebar-border: <?php echo esc_html( $get_mod( 'sidebar_border_color', '#eeeeee' ) ); ?>;
+			--ak-submenu-bg: <?php echo esc_html( $get_mod( 'submenu_bg_color', '#1E2229' ) ); ?>;
+			--ak-footer-bg: <?php echo esc_html( $get_mod( 'footer_bg_color', '#1E2229' ) ); ?>;
+			--ak-sidebar-bg: <?php echo esc_html( $get_mod( 'sidebar_bg_color', '#F4F1EA' ) ); ?>;
+			--ak-sidebar-border: <?php echo esc_html( $get_mod( 'sidebar_border_color', '#d6cfc3' ) ); ?>;
 
 			/* Layout */
 			--ak-container-width: <?php echo esc_html( $get_mod( 'container_width', '1200px' ) ); ?>;
@@ -1086,6 +1086,7 @@ add_action( 'wp_enqueue_scripts', 'aspiring_knight_enqueue_customizer_fonts' );
  */
 function aspiring_knight_restore_default_fonts() {
 	if ( ! isset( $_POST['ak_restore_fonts_nonce'] ) || ! wp_verify_nonce( $_POST['ak_restore_fonts_nonce'], 'ak_restore_fonts' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Security check failed.', 'aspiring-knight' ) ) );
 		return;
 	}
 
@@ -1143,6 +1144,7 @@ add_action( 'wp_ajax_ak_restore_fonts', 'aspiring_knight_restore_default_fonts' 
  */
 function aspiring_knight_restore_section_defaults() {
 	if ( ! isset( $_POST['ak_restore_section_nonce'] ) || ! wp_verify_nonce( $_POST['ak_restore_section_nonce'], 'ak_restore_section' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Security check failed.', 'aspiring-knight' ) ) );
 		return;
 	}
 
