@@ -14,12 +14,6 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
 (function($) {
     if (typeof wp === 'undefined' || !wp.customize) return;
 
-    // Helper: get the <li> headContainer for a section ID, or null
-    function getSectionHead(sectionId) {
-        var section = wp.customize.section(sectionId);
-        return section && section.headContainer ? section.headContainer : null;
-    }
-
     // 1. Nested Sections Reflow Logic
     var isReflowing = false;
 
@@ -37,12 +31,14 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
         nestedSections.sort(wp.customize.utils.prioritySort).reverse();
 
         $.each(nestedSections, function(i, section) {
-            var $parentHead = getSectionHead(section.params.section);
-            if ($parentHead && $parentHead.length && !$parentHead[0].contains(section.headContainer[0])) {
-                var $content = $parentHead.children('.accordion-section-content');
-                if ($content.length) {
-                    $content.prepend(section.headContainer);
-                }
+            var parentSection = wp.customize.section(section.params.section);
+            if (!parentSection || !parentSection.headContainer || !parentSection.headContainer.length) return;
+            if (!section.headContainer || !section.headContainer.length) return;
+            if (parentSection.headContainer[0].contains(section.headContainer[0])) return;
+
+            var $content = parentSection.headContainer.children('.accordion-section-content');
+            if ($content.length) {
+                $content.prepend(section.headContainer);
             }
         });
 
@@ -53,10 +49,10 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
 
     wp.customize.bind('ready', function() {
 
-        // Run reflow immediately and with retry to catch DOM readiness
+        // Run reflow immediately and with retries to catch DOM readiness
         doReflow();
-        setTimeout(doReflow, 200);
-        setTimeout(doReflow, 500);
+        setTimeout(doReflow, 300);
+        setTimeout(doReflow, 800);
 
         // 1b. Initialize all color pickers with their current saved values
         wp.customize.control.each(function(control) {
@@ -86,7 +82,6 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
             'ds_footer_typo_section'
         ];
 
-        // Map parent sections to their child/grandchild sections
         var sectionHierarchy = {
             'ds_header_section': ['ds_site_title_section', 'ds_site_tagline_section'],
             'ds_headings_section': ['ds_h1_section', 'ds_h2_section', 'ds_h3_section', 'ds_h4_section', 'ds_h5_section', 'ds_h6_section'],
@@ -100,16 +95,13 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
             if (!wp.customize(modeSetting)) return;
 
             var mode = wp.customize(modeSetting).get();
-            var $sectionHead = getSectionHead(sectionId);
-            if (!$sectionHead) return;
+            var section = wp.customize.section(sectionId);
+            if (!section || !section.headContainer) return;
 
-            // Find all controls in this section (excluding the mode radio itself)
-            $sectionHead.find('.customize-control').each(function() {
+            section.headContainer.find('.customize-control').each(function() {
                 var $control = $(this);
                 var controlSetting = $control.find('[data-customize-setting-link]').attr('data-customize-setting-link');
-
                 if (controlSetting === modeSetting) return;
-
                 if (mode === 'default') {
                     $control.hide();
                 } else {
@@ -119,19 +111,18 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
 
             if (sectionHierarchy[sectionId]) {
                 sectionHierarchy[sectionId].forEach(function(childSectionId) {
-                    var $childHead = getSectionHead(childSectionId);
-                    if ($childHead && $childHead.length) {
+                    var childSection = wp.customize.section(childSectionId);
+                    if (childSection && childSection.headContainer && childSection.headContainer.length) {
                         if (mode === 'default') {
-                            $childHead.hide();
+                            childSection.headContainer.hide();
                         } else {
-                            $childHead.show();
+                            childSection.headContainer.show();
                         }
                     }
                 });
             }
         }
 
-        // Initialize toggle after reflow has had time to nest DOM
         setTimeout(function() {
             typoModeSections.forEach(function(sectionId) {
                 toggleTypoSectionControls(sectionId);
@@ -145,29 +136,32 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                     });
                 }
             });
-        }, 600);
+        }, 1000);
 
         // 1d. Back Navigation Buttons for Nested Sections
         function addBackButtons() {
             wp.customize.section.each(function(section) {
-                if (section.params && section.params.section && section.headContainer && !section.headContainer.find('.ak-back-btn').length) {
-                    var $sectionTitle = section.headContainer.find('.accordion-section-title');
-                    if ($sectionTitle.length) {
-                        var $backBtn = $('<button type="button" class="customize-section-back ak-back-btn" title="Back"><span class="dashicons dashicons-arrow-left-alt2"></span></button>');
-                        $backBtn.css({ 'position': 'absolute', 'left': '0', 'top': '0', 'padding': '10px 12px', 'z-index': '10', 'background': 'none', 'border': 'none', 'cursor': 'pointer', 'line-height': '1', 'color': '#1d2327' });
-                        $sectionTitle.prepend($backBtn);
-                        $backBtn.on('click', function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            wp.customize.section(section.params.section).expand();
-                        });
-                    }
+                if (!section.params || !section.params.section) return;
+                if (!section.headContainer || !section.headContainer.length) return;
+                if (section.headContainer.find('.ak-back-btn').length) return;
+
+                var $sectionTitle = section.headContainer.find('.accordion-section-title');
+                if ($sectionTitle.length) {
+                    var $backBtn = $('<button type="button" class="customize-section-back ak-back-btn" title="Back"><span class="dashicons dashicons-arrow-left-alt2"></span></button>');
+                    $backBtn.css({ 'position': 'absolute', 'left': '0', 'top': '0', 'padding': '10px 12px', 'z-index': '10', 'background': 'none', 'border': 'none', 'cursor': 'pointer', 'line-height': '1', 'color': '#1d2327' });
+                    $sectionTitle.prepend($backBtn);
+                    $backBtn.on('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        var parentSection = wp.customize.section(section.params.section);
+                        if (parentSection) parentSection.expand();
+                    });
                 }
             });
         }
-        setTimeout(addBackButtons, 600);
+        setTimeout(addBackButtons, 1000);
         wp.customize.bind('pane-contents-reflowed', function() {
-            setTimeout(addBackButtons, 100);
+            setTimeout(addBackButtons, 200);
         });
 
         // 2. Preset Application Logic
@@ -175,13 +169,11 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
             value.bind(function(newval) {
                 if (newval === 'default') return;
 
-                // Built-in Presets
                 var presets = {
                     medieval: {
                         'top_bar_bg_color': '#1a1a1a', 'top_bar_text_color': '#d4af37', 'accent_gold': '#d4af37', 
                         'site_bg_color': '#0a0a0a', 'article_bg_color': '#2a2a2a',
                         'header_bg_color': '#1a1a1a', 'footer_bg_color': '#0a0a0a',
-                        
                         'site_title_font_family': 'Cinzel', 'site_title_font_size': '4rem', 'site_title_color': '#ffffff', 'site_title_glow_enable': true, 'site_title_glow_color': '#d4af37',
                         'site_tagline_font_family': 'Almendra', 'site_tagline_font_size': '18px', 'site_tagline_color': '#d4af37',
                         'headings_font_family': 'Cinzel', 'headings_color': '#ffffff',
@@ -194,7 +186,6 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                         'top_bar_bg_color': '#007aff', 'top_bar_text_color': '#ffffff', 'accent_gold': '#007aff', 
                         'site_bg_color': '#f5f5f7', 'article_bg_color': '#ffffff',
                         'header_bg_color': '#ffffff', 'footer_bg_color': '#f5f5f7',
-                        
                         'site_title_font_family': 'Montserrat', 'site_title_font_size': '2rem', 'site_title_color': '#000000',
                         'site_tagline_font_family': 'Open Sans', 'site_tagline_font_size': '14px', 'site_tagline_color': '#666666',
                         'headings_font_family': 'Montserrat', 'headings_color': '#000000',
@@ -205,7 +196,6 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                     dark: {
                         'top_bar_bg_color': '#000000', 'top_bar_text_color': '#d4af37', 'accent_gold': '#d4af37', 
                         'site_bg_color': '#000000', 'header_bg_color': '#000000', 'footer_bg_color': '#000000', 'article_bg_color': '#111111',
-                        
                         'site_title_font_family': 'Cinzel', 'site_title_font_size': '3rem', 'site_title_color': '#d4af37',
                         'headings_font_family': 'Cinzel', 'headings_color': '#ffffff',
                         'body_text_font_family': 'Lora', 'body_text_color': '#aaaaaa'
@@ -213,7 +203,6 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                     monochrome: {
                         'top_bar_bg_color': '#333333', 'top_bar_text_color': '#ffffff', 'accent_gold': '#666666', 
                         'site_bg_color': '#ffffff', 'article_bg_color': '#f9f9f9',
-                        
                         'site_title_font_family': 'Cinzel', 'site_title_color': '#000000',
                         'headings_font_family': 'Cinzel', 'headings_color': '#000000',
                         'body_text_font_family': 'Lora', 'body_text_color': '#333333'
@@ -221,7 +210,6 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                     high_contrast: {
                         'top_bar_bg_color': '#ffff00', 'top_bar_text_color': '#000000', 'accent_gold': '#ffff00', 
                         'site_bg_color': '#000000', 'header_bg_color': '#000000', 'footer_bg_color': '#000000', 'article_bg_color': '#000000',
-                        
                         'site_title_font_family': 'Montserrat', 'site_title_color': '#ffffff', 'site_title_font_size': '3.5rem',
                         'headings_font_family': 'Montserrat', 'headings_color': '#ffffff',
                         'body_text_font_family': 'Open Sans', 'body_text_color': '#ffffff', 'body_text_font_size': '22px'
@@ -237,7 +225,6 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                 Object.keys(data).forEach(function(key) {
                     if (key !== 'name' && wp.customize(key)) {
                         wp.customize(key).set(data[key]);
-
                         var control = wp.customize.control(key);
                         if (control && control.container) {
                             var $picker = control.container.find('.wp-color-picker');
