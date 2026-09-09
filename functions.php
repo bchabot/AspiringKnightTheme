@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ASPIRING_KNIGHT_VERSION', '0.2b2' );
+define( 'ASPIRING_KNIGHT_VERSION', '0.2b3' );
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
