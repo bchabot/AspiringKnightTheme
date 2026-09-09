@@ -56,7 +56,6 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
 
         // 1c. Default/Custom Mode Toggle Logic
         const typoModeSections = [
-            'ds_custom_fonts_section',
             'ds_header_section',
             'ds_blog_title_section',
             'ds_page_title_section',

@@ -156,6 +156,7 @@ function aspiring_knight_fix_font_filetype_check( $result, $ext, $filename, $tmp
 		return array(
 			'ext'  => $ext,
 			'type' => $font_ext_map[ $ext ],
+			'proper_filename' => $filename,
 		);
 	}
 	return $result;

@@ -171,14 +171,16 @@ function aspiring_knight_get_section_defaults( $section_id ) {
 		'ds_sidebar_typo_section' => array(
 			'sidebars_font_family' => 'Inter', 'sidebars_font_size' => '16px',
 			'sidebars_font_weight' => 'inherit', 'sidebars_italic' => false, 'sidebars_underline' => false,
-			'sidebars_color' => '#1E2229', 'sidebars_shadow_enable' => false,
+			'sidebars_color' => '#1E2229', 'sidebars_link_color' => '#0000FF',
+			'sidebars_shadow_enable' => false,
 			'sidebars_shadow_color' => '#000000', 'sidebars_shadow_size' => '2px 2px 4px',
 			'sidebars_glow_enable' => false, 'sidebars_glow_color' => '#0000FF', 'sidebars_glow_size' => '10px',
 		),
 		'ds_footer_typo_section' => array(
 			'footer_font_family' => 'Inter', 'footer_font_size' => '16px',
 			'footer_font_weight' => 'inherit', 'footer_italic' => false, 'footer_underline' => false,
-			'footer_color' => '#F4F1EA', 'footer_shadow_enable' => false,
+			'footer_color' => '#F4F1EA', 'footer_link_color' => '#0000FF',
+			'footer_shadow_enable' => false,
 			'footer_shadow_color' => '#000000', 'footer_shadow_size' => '2px 2px 4px',
 			'footer_glow_enable' => false, 'footer_glow_color' => '#0000FF', 'footer_glow_size' => '10px',
 		),
@@ -810,7 +812,7 @@ function aspiring_knight_get_preset_choices() {
 	$custom_presets = json_decode( get_theme_mod( 'custom_presets_data', '{}' ), true );
 	if ( ! empty( $custom_presets ) ) {
 		foreach ( $custom_presets as $id => $data ) {
-			$choices[ $id ] = '👤 ' . $data['name'];
+			$choices[ $id ] = '👤 ' . ( isset( $data['name'] ) ? $data['name'] : 'Custom Preset' );
 		}
 	}
 	return $choices;
