@@ -12,38 +12,58 @@ var akRestoreSectionNonce = (typeof akCustomizer !== 'undefined') ? akCustomizer
 var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '/wp-admin/admin-ajax.php';
 
 (function($) {
-    // 1. Nested Sections Reflow Logic
-    if (typeof wp !== 'undefined' && wp.customize) {
-        wp.customize.bind('pane-contents-reflowed', function() {
-            var nestedSections = [];
+    if (typeof wp === 'undefined' || !wp.customize) return;
 
-            // Find all sections of our custom type
-            wp.customize.section.each(function(section) {
-                if (section.params.type === 'aspiring_knight_nested_section' && section.params.section) {
-                    nestedSections.push(section);
-                }
-            });
-
-            // Sort and move them into their parent sections
-            nestedSections.sort(wp.customize.utils.prioritySort).reverse();
-
-            $.each(nestedSections, function(i, section) {
-                var parentContainer = $('#sub-accordion-section-' + section.params.section);
-                if (parentContainer.length) {
-                    parentContainer.children('.section-meta').after(section.headContainer);
-                }
-            });
-        });
+    // Helper: get the <li> headContainer for a section ID, or null
+    function getSectionHead(sectionId) {
+        var section = wp.customize.section(sectionId);
+        return section && section.headContainer ? section.headContainer : null;
     }
 
+    // 1. Nested Sections Reflow Logic
+    var isReflowing = false;
+
+    function doReflow() {
+        if (isReflowing) return;
+        isReflowing = true;
+
+        var nestedSections = [];
+        wp.customize.section.each(function(section) {
+            if (section.params.type === 'aspiring_knight_nested_section' && section.params.section) {
+                nestedSections.push(section);
+            }
+        });
+
+        nestedSections.sort(wp.customize.utils.prioritySort).reverse();
+
+        $.each(nestedSections, function(i, section) {
+            var $parentHead = getSectionHead(section.params.section);
+            if ($parentHead && $parentHead.length && !$parentHead[0].contains(section.headContainer[0])) {
+                var $content = $parentHead.children('.accordion-section-content');
+                if ($content.length) {
+                    $content.prepend(section.headContainer);
+                }
+            }
+        });
+
+        isReflowing = false;
+    }
+
+    wp.customize.bind('pane-contents-reflowed', doReflow);
+
     wp.customize.bind('ready', function() {
+
+        // Run reflow immediately and with retry to catch DOM readiness
+        doReflow();
+        setTimeout(doReflow, 200);
+        setTimeout(doReflow, 500);
 
         // 1b. Initialize all color pickers with their current saved values
         wp.customize.control.each(function(control) {
             if (control.setting && control.setting.id && control.container) {
-                const $input = control.container.find('.wp-color-picker');
+                var $input = control.container.find('.wp-color-picker');
                 if ($input.length) {
-                    const currentVal = control.setting.get();
+                    var currentVal = control.setting.get();
                     if (currentVal) {
                         $input.val(currentVal).trigger('change');
                         if ($.fn.wpColorPicker) {
@@ -55,7 +75,7 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
         });
 
         // 1c. Default/Custom Mode Toggle Logic
-        const typoModeSections = [
+        var typoModeSections = [
             'ds_header_section',
             'ds_blog_title_section',
             'ds_page_title_section',
@@ -67,7 +87,7 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
         ];
 
         // Map parent sections to their child/grandchild sections
-        const sectionHierarchy = {
+        var sectionHierarchy = {
             'ds_header_section': ['ds_site_title_section', 'ds_site_tagline_section'],
             'ds_headings_section': ['ds_h1_section', 'ds_h2_section', 'ds_h3_section', 'ds_h4_section', 'ds_h5_section', 'ds_h6_section'],
             'ds_custom_fonts_section': [],
@@ -76,18 +96,18 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
         };
 
         function toggleTypoSectionControls(sectionId) {
-            const modeSetting = sectionId + '_mode';
+            var modeSetting = sectionId + '_mode';
             if (!wp.customize(modeSetting)) return;
 
-            const mode = wp.customize(modeSetting).get();
-            const $section = $('#sub-accordion-section-' + sectionId);
+            var mode = wp.customize(modeSetting).get();
+            var $sectionHead = getSectionHead(sectionId);
+            if (!$sectionHead) return;
 
             // Find all controls in this section (excluding the mode radio itself)
-            $section.find('.customize-control').each(function() {
-                const $control = $(this);
-                const controlSetting = $control.find('[data-customize-setting-link]').attr('data-customize-setting-link');
+            $sectionHead.find('.customize-control').each(function() {
+                var $control = $(this);
+                var controlSetting = $control.find('[data-customize-setting-link]').attr('data-customize-setting-link');
 
-                // Skip the mode radio control
                 if (controlSetting === modeSetting) return;
 
                 if (mode === 'default') {
@@ -97,39 +117,41 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                 }
             });
 
-            // Handle child/grandchild sections
             if (sectionHierarchy[sectionId]) {
                 sectionHierarchy[sectionId].forEach(function(childSectionId) {
-                    const $childSection = $('#sub-accordion-section-' + childSectionId);
-                    if (mode === 'default') {
-                        $childSection.hide();
-                    } else {
-                        $childSection.show();
+                    var $childHead = getSectionHead(childSectionId);
+                    if ($childHead && $childHead.length) {
+                        if (mode === 'default') {
+                            $childHead.hide();
+                        } else {
+                            $childHead.show();
+                        }
                     }
                 });
             }
         }
 
-        // Initialize toggle state for all typo sections
-        typoModeSections.forEach(function(sectionId) {
-            toggleTypoSectionControls(sectionId);
+        // Initialize toggle after reflow has had time to nest DOM
+        setTimeout(function() {
+            typoModeSections.forEach(function(sectionId) {
+                toggleTypoSectionControls(sectionId);
 
-            // Bind to mode changes
-            const modeSetting = sectionId + '_mode';
-            if (wp.customize(modeSetting)) {
-                wp.customize(modeSetting, function(value) {
-                    value.bind(function() {
-                        toggleTypoSectionControls(sectionId);
+                var modeSetting = sectionId + '_mode';
+                if (wp.customize(modeSetting)) {
+                    wp.customize(modeSetting, function(value) {
+                        value.bind(function() {
+                            toggleTypoSectionControls(sectionId);
+                        });
                     });
-                });
-            }
-        });
+                }
+            });
+        }, 600);
 
         // 1d. Back Navigation Buttons for Nested Sections
         function addBackButtons() {
             wp.customize.section.each(function(section) {
-                if (section.params && section.params.section && !section.headContainer.find('.ak-back-btn').length) {
-                    var $sectionTitle = section.headContainer.find('.customize-section-title');
+                if (section.params && section.params.section && section.headContainer && !section.headContainer.find('.ak-back-btn').length) {
+                    var $sectionTitle = section.headContainer.find('.accordion-section-title');
                     if ($sectionTitle.length) {
                         var $backBtn = $('<button type="button" class="customize-section-back ak-back-btn" title="Back"><span class="dashicons dashicons-arrow-left-alt2"></span></button>');
                         $backBtn.css({ 'position': 'absolute', 'left': '0', 'top': '0', 'padding': '10px 12px', 'z-index': '10', 'background': 'none', 'border': 'none', 'cursor': 'pointer', 'line-height': '1', 'color': '#1d2327' });
@@ -143,7 +165,7 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                 }
             });
         }
-        addBackButtons();
+        setTimeout(addBackButtons, 600);
         wp.customize.bind('pane-contents-reflowed', function() {
             setTimeout(addBackButtons, 100);
         });
@@ -154,7 +176,7 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                 if (newval === 'default') return;
 
                 // Built-in Presets
-                const presets = {
+                var presets = {
                     medieval: {
                         'top_bar_bg_color': '#1a1a1a', 'top_bar_text_color': '#d4af37', 'accent_gold': '#d4af37', 
                         'site_bg_color': '#0a0a0a', 'article_bg_color': '#2a2a2a',
@@ -208,18 +230,17 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
 
                 var customData = {};
                 try { customData = JSON.parse(wp.customize('custom_presets_data').get() || '{}'); } catch(e) { customData = {}; }
-                const allPresets = { ...presets, ...customData };
-                const data = allPresets[newval];
+                var allPresets = $.extend({}, presets, customData);
+                var data = allPresets[newval];
                 if (!data) return;
 
-                Object.keys(data).forEach(key => {
+                Object.keys(data).forEach(function(key) {
                     if (key !== 'name' && wp.customize(key)) {
                         wp.customize(key).set(data[key]);
 
-                        // Force update the UI for color picker controls to show the current/new preset colors
-                        const control = wp.customize.control(key);
+                        var control = wp.customize.control(key);
                         if (control && control.container) {
-                            const $picker = control.container.find('.wp-color-picker');
+                            var $picker = control.container.find('.wp-color-picker');
                             if ($picker.length && $.fn.wpColorPicker) {
                                 $picker.wpColorPicker('color', data[key]);
                             }
@@ -227,58 +248,56 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                     }
                 });
 
-                // Reset the preset selector to default so the same preset can be reapplied
                 wp.customize('theme_preset').set('default');
             });
         });
 
         // 3. Inject Save/Delete Buttons
-        const $container = $('#customize-control-new_preset_name');
+        var $container = $('#customize-control-new_preset_name');
         if ($container.length) {
-            $container.append(`
-                <div style="margin-top: 10px; display: flex; gap: 10px;">
-                    <button type="button" class="button button-primary" id="ak-save-preset">💾 Save Current</button>
-                    <button type="button" class="button" id="ak-delete-preset" style="color: #d63638; border-color: #d63638;">🗑️ Delete Selected</button>
-                </div>
-            `);
+            $container.append(
+                '<div style="margin-top: 10px; display: flex; gap: 10px;">' +
+                    '<button type="button" class="button button-primary" id="ak-save-preset">Save Current</button>' +
+                    '<button type="button" class="button" id="ak-delete-preset" style="color: #d63638; border-color: #d63638;">Delete Selected</button>' +
+                '</div>'
+            );
         }
 
         // 4. Save Logic
         $(document).on('click', '#ak-save-preset', function() {
             if (typeof wp === 'undefined' || !wp.customize) return;
-            const name = wp.customize('new_preset_name').get();
+            var name = wp.customize('new_preset_name').get();
             if (!name) { alert('Please enter a name.'); return; }
-            const id = 'custom_' + Date.now();
-            const currentData = {};
-            const settingsToCapture = [
+            var id = 'custom_' + Date.now();
+            var currentData = {};
+            var settingsToCapture = [
                 'top_bar_bg_color', 'top_bar_text_color', 'accent_gold', 'site_bg_color', 'article_bg_color', 'header_bg_color', 'menu_bg_color', 'submenu_bg_color', 'footer_bg_color', 'sidebar_bg_color', 'sidebar_border_color',
                 'container_width', 'header_padding', 'menu_spacing', 'sidebar_padding',
                 'custom_google_font', 'custom_font_name', 'custom_font_file', 'use_custom_font_headings'
             ];
-            const categories = [
+            var categories = [
                 'site_title', 'site_tagline', 'blog_title', 'page_title', 'headings',
                 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'body_text', 'body_links',
                 'menus', 'submenus', 'sidebars', 'footer'
             ];
 
-            // Add typography section mode settings
-            const typoSections = [
+            var typoSections = [
                 'ds_header_section', 'ds_blog_title_section', 'ds_page_title_section',
                 'ds_headings_section', 'ds_body_text_section', 'ds_body_links_section',
                 'ds_sidebar_typo_section', 'ds_footer_typo_section'
             ];
-            typoSections.forEach(section => {
+            typoSections.forEach(function(section) {
                 settingsToCapture.push(section + '_mode');
             });
-            categories.forEach(cat => {
+            categories.forEach(function(cat) {
                 settingsToCapture.push(
-                    `${cat}_font_family`, `${cat}_font_size`, `${cat}_font_weight`, `${cat}_italic`, `${cat}_underline`, `${cat}_color`, `${cat}_link_color`,
-                    `${cat}_shadow_enable`, `${cat}_shadow_color`, `${cat}_shadow_size`,
-                    `${cat}_glow_enable`, `${cat}_glow_color`, `${cat}_glow_size`,
-                    `${cat}_dropcaps_enable`, `${cat}_dropcaps_color`, `${cat}_dropcaps_size`
+                    cat + '_font_family', cat + '_font_size', cat + '_font_weight', cat + '_italic', cat + '_underline', cat + '_color', cat + '_link_color',
+                    cat + '_shadow_enable', cat + '_shadow_color', cat + '_shadow_size',
+                    cat + '_glow_enable', cat + '_glow_color', cat + '_glow_size',
+                    cat + '_dropcaps_enable', cat + '_dropcaps_color', cat + '_dropcaps_size'
                 );
             });
-            settingsToCapture.forEach(key => { if (wp.customize(key)) currentData[key] = wp.customize(key).get(); });
+            settingsToCapture.forEach(function(key) { if (wp.customize(key)) currentData[key] = wp.customize(key).get(); });
             currentData.name = name;
             var customPresets = {};
             try { customPresets = JSON.parse(wp.customize('custom_presets_data').get() || '{}'); } catch(e) { customPresets = {}; }
@@ -290,7 +309,7 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
         // 5. Delete Logic
         $(document).on('click', '#ak-delete-preset', function() {
             if (typeof wp === 'undefined' || !wp.customize) return;
-            const selected = wp.customize('theme_preset').get();
+            var selected = wp.customize('theme_preset').get();
             if (!selected.startsWith('custom_')) { alert('Select a custom preset to delete.'); return; }
             if (!confirm('Delete this preset?')) return;
             var customPresets = {};
@@ -305,7 +324,6 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
         $(document).on('change', '#customize-control-restore_default_fonts input[type="checkbox"]', function() {
             if ($(this).is(':checked')) {
                 if (confirm('This will reset ALL font settings to defaults. Are you sure?')) {
-                    // Send AJAX request to reset fonts
                     $.ajax({
                         url: akAjaxUrl,
                         type: 'POST',

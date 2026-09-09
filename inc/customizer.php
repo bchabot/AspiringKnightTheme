@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Aspiring Knight Customizer configuration
  *
@@ -633,20 +633,6 @@ function aspiring_knight_customize_register( $wp_customize ) {
 		}
 	}
 
-	// Legacy global dropcap controls override body_text if present (for backward compatibility)
-	$wp_customize->add_setting( 'dropcap_enable', array( 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean', 'transport' => 'postMessage' ) );
-	$wp_customize->add_control( 'dropcap_enable', array( 'label' => __( 'Legacy Global Drop Cap?', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'type' => 'checkbox', 'description' => __( 'Legacy toggle for global body first-letter styling.', 'aspiring-knight' ) ) );
-	$wp_customize->add_setting( 'dropcap_font_family', array( 'default' => 'TexturaLibera', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
-	$wp_customize->add_control( 'dropcap_font_family', array( 'label' => __( 'Legacy Drop Cap Font', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'type' => 'select', 'choices' => aspiring_knight_get_font_choices() ) );
-	$wp_customize->add_setting( 'dropcap_font_size', array( 'default' => '4rem', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
-	$wp_customize->add_control( 'dropcap_font_size', array( 'label' => __( 'Legacy Drop Cap Size', 'aspiring-knight' ), 'section' => 'ds_typography_section', 'type' => 'text' ) );
-	$wp_customize->add_setting( 'dropcap_color', array( 'default' => '#FF0000', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
-	$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'dropcap_color', array(
-		'label'    => __( 'Legacy Drop Cap Color', 'aspiring-knight' ),
-		'section'  => 'ds_typography_section',
-		'settings' => 'dropcap_color',
-	) ) );
-
 	// Custom Fonts Section (nested under Typography, first item)
 	$wp_customize->add_section( new Aspiring_Knight_Nested_Section( $wp_customize, 'ds_custom_fonts_section', array(
 		'title'       => esc_html__( 'Custom Fonts', 'aspiring-knight' ),
@@ -1028,28 +1014,6 @@ function aspiring_knight_output_css_variables() {
 				echo "--ak-dropcap-font-size-{$var_id}: " . esc_html($drop_size) . ";\n";
 			}
 			?>
-
-			/* Legacy global dropcap setting output for backward compatibility */
-			<?php if ( $get_mod( 'dropcap_enable', true ) ) : ?>
-			--ak-dropcap-display: block;
-			--ak-dropcap-float: left;
-			--ak-dropcap-font-family: '<?php echo esc_html( $get_mod( 'dropcap_font_family', 'TexturaLibera' ) ); ?>', serif;
-			--ak-dropcap-font-size: <?php echo esc_html( $get_mod( 'dropcap_font_size', '4rem' ) ); ?>;
-			--ak-dropcap-line-height: 1;
-			--ak-dropcap-margin: 0.1em 0.1em 0 0;
-			--ak-dropcap-color: <?php echo esc_html( $get_mod( 'dropcap_color', '#FF0000' ) ); ?>;
-			--ak-dropcap-font-weight: bold;
-			<?php else : ?>
-			--ak-dropcap-display: inline;
-			--ak-dropcap-float: none;
-			--ak-dropcap-font-family: inherit;
-			--ak-dropcap-font-size: inherit;
-			--ak-dropcap-line-height: inherit;
-			--ak-dropcap-margin: 0;
-			--ak-dropcap-color: inherit;
-			--ak-dropcap-font-weight: inherit;
-			<?php endif; ?>
-		}
 	</style>
 	<?php
 }
