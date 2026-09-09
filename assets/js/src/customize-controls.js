@@ -6,8 +6,9 @@
  * and performing nested customizer sections reflowing.
  */
 
-// Global nonce and AJAX URL from wp_localize_script
-var akRestoreFontsNonce = (typeof akCustomizer !== 'undefined') ? akCustomizer.nonce : '';
+// Global nonces and AJAX URL from wp_localize_script
+var akRestoreFontsNonce = (typeof akCustomizer !== 'undefined') ? akCustomizer.restoreFontsNonce : '';
+var akRestoreSectionNonce = (typeof akCustomizer !== 'undefined') ? akCustomizer.restoreSectionNonce : '';
 var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '/wp-admin/admin-ajax.php';
 
 (function($) {
@@ -311,7 +312,7 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
                         type: 'POST',
                         data: {
                             action: 'ak_restore_fonts',
-                            ak_restore_fonts_nonce: typeof akRestoreFontsNonce !== 'undefined' ? akRestoreFontsNonce : ''
+                            ak_restore_fonts_nonce: akRestoreFontsNonce
                         },
                         success: function(response) {
                             if (response.success) {
@@ -332,14 +333,13 @@ var akAjaxUrl = (typeof akCustomizer !== 'undefined') ? akCustomizer.ajaxurl : '
             if (!sectionId) return;
             if (!confirm('Reset all typography settings in this section to defaults?')) return;
 
-            var nonce = typeof akRestoreFontsNonce !== 'undefined' ? akRestoreFontsNonce : '';
             $.ajax({
                 url: akAjaxUrl,
                 type: 'POST',
                 data: {
                     action: 'ak_restore_section_defaults',
                     section_id: sectionId,
-                    ak_restore_section_nonce: nonce
+                    ak_restore_section_nonce: akRestoreSectionNonce
                 },
                 success: function(response) {
                     if (response.success) {

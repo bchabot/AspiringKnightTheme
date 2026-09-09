@@ -109,7 +109,8 @@ function aspiring_knight_scripts() {
 	wp_enqueue_script( 'aspiring-knight-customize-controls', get_template_directory_uri() . '/assets/js/src/customize-controls.js', array( 'customize-controls', 'jquery' ), ASPIRING_KNIGHT_VERSION, true );
 
 	wp_localize_script( 'aspiring-knight-customize-controls', 'akCustomizer', array(
-		'nonce' => wp_create_nonce( 'ak_restore_fonts_nonce' ),
+		'restoreFontsNonce' => wp_create_nonce( 'ak_restore_fonts' ),
+		'restoreSectionNonce' => wp_create_nonce( 'ak_restore_section' ),
 		'ajaxurl' => admin_url( 'admin-ajax.php' ),
 	) );
 }
